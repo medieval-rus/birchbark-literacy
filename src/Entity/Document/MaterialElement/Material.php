@@ -25,11 +25,12 @@ declare(strict_types=1);
 
 namespace App\Entity\Document\MaterialElement;
 
+use App\Repository\Document\MaterialElement\MaterialRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="bb__material_element__material")
- * @ORM\Entity(repositoryClass="App\Repository\Document\MaterialElement\MaterialRepository")
+ * @ORM\Entity(repositoryClass=MaterialRepository::class)
  */
 class Material
 {

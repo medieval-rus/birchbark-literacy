@@ -25,13 +25,14 @@ declare(strict_types=1);
 
 namespace App\Entity\Document\OrderedList;
 
+use App\Repository\Document\OrderedList\OrderedListRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="bb__ordered_list__ordered_list")
- * @ORM\Entity(repositoryClass="App\Repository\Document\OrderedList\OrderedListRepository")
+ * @ORM\Entity(repositoryClass=OrderedListRepository::class)
  */
 class OrderedList
 {

@@ -25,13 +25,14 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
+use App\Repository\Document\TownRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="bb__town")
- * @ORM\Entity(repositoryClass="App\Repository\Document\TownRepository")
+ * @ORM\Entity(repositoryClass=TownRepository::class)
  */
 class Town
 {

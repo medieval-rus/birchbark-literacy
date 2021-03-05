@@ -29,6 +29,7 @@ use App\Entity\Bibliography\Record;
 use App\Entity\Document\ContentElement\ContentElement;
 use App\Entity\Document\MaterialElement\MaterialElement;
 use App\Entity\MediaBundle\Media;
+use App\Repository\Document\DocumentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,7 +39,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     name="bb__document",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="town__number", columns={"town_id", "number"})}
  * )
- * @ORM\Entity(repositoryClass="App\Repository\Document\DocumentRepository")
+ * @ORM\Entity(repositoryClass=DocumentRepository::class)
  */
 class Document
 {

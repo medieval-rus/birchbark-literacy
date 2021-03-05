@@ -33,7 +33,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     name="bb__material_element__find__excavation",
  *     uniqueConstraints={@ORM\UniqueConstraint(columns={"name", "town_id"})}
  * )
- * @ORM\Entity(repositoryClass="App\Repository\Document\MaterialElement\Find\ExcavationRepository")
+ * @ORM\Entity
  */
 class Excavation
 {

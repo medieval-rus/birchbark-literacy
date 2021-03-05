@@ -25,11 +25,12 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
+use App\Repository\Document\ConditionalDateCellRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="bb__conditional_date_cell")
- * @ORM\Entity(repositoryClass="App\Repository\Document\ConditionalDateCellRepository")
+ * @ORM\Entity(repositoryClass=ConditionalDateCellRepository::class)
  */
 class ConditionalDateCell
 {
