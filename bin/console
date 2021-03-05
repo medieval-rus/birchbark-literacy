@@ -4,15 +4,15 @@
 declare(strict_types=1);
 
 /*
- * This file is part of «Letters of Russian sovereigns to the Republic of Venice» database.
+ * This file is part of «Birchbark Literacy from Medieval Rus» database.
  *
  * Copyright (c) Department of Linguistic and Literary Studies of the University of Padova
  *
- * «Letters of Russian sovereigns to the Republic of Venice» database is free software:
+ * «Birchbark Literacy from Medieval Rus» database is free software:
  * you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, version 3.
  *
- * «Letters of Russian sovereigns to the Republic of Venice» database is distributed
+ * «Birchbark Literacy from Medieval Rus» database is distributed
  * in the hope  that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
@@ -20,7 +20,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code. If you have not received
  * a copy of the GNU General Public License along with
- * «Letters of Russian sovereigns to the Republic of Venice» database,
+ * «Birchbark Literacy from Medieval Rus» database,
  * see <http://www.gnu.org/licenses/>.
  */
 
@@ -29,7 +29,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\ErrorHandler\Debug;
 
-if (false === in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
+if (!in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
     echo 'Warning: The console should be invoked via the CLI version of PHP, not the '.\PHP_SAPI.' SAPI'.\PHP_EOL;
 }
 
@@ -38,7 +38,7 @@ set_time_limit(0);
 require dirname(__DIR__).'/vendor/autoload.php';
 
 if (!class_exists(Application::class)) {
-    throw new RuntimeException('You need to add "symfony/framework-bundle" as a Composer dependency.');
+    throw new LogicException('You need to add "symfony/framework-bundle" as a Composer dependency.');
 }
 
 $input = new ArgvInput();

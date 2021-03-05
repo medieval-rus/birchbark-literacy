@@ -27,16 +27,16 @@ use Symfony\Component\Dotenv\Dotenv;
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-if (is_array($env = @include dirname(__DIR__).'/.env.local.php') &&
-    ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? $env['APP_ENV'] ?? null) === ($env['APP_ENV'] ?? null)
-) {
-    foreach ($env as $k => $v) {
-        $_ENV[$k] = $_ENV[$k] ?? (isset($_SERVER[$k]) && 0 !== strpos($k, 'HTTP_') ? $_SERVER[$k] : $v);
-    }
-} elseif (!class_exists(Dotenv::class)) {
+if (!class_exists(Dotenv::class)) {
     $message = 'Please run "composer require symfony/dotenv" to load the ".env" files configuring the application.';
 
-    throw new RuntimeException($message);
+    throw new LogicException($message);
+}
+
+if (is_array($env = @include dirname(__DIR__).'/.env.local.php') &&
+    (!isset($env['APP_ENV']) || ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? $env['APP_ENV']) === $env['APP_ENV'])
+) {
+    (new Dotenv(false))->populate($env);
 } else {
     (new Dotenv(false))->loadEnv(dirname(__DIR__).'/.env');
 }
@@ -46,4 +46,4 @@ $_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'
 $_SERVER['APP_DEBUG'] = $_SERVER['APP_DEBUG'] ?? $_ENV['APP_DEBUG'] ?? 'prod' !== $_SERVER['APP_ENV'];
 $_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] =
     (int) $_SERVER['APP_DEBUG'] ||
-    filter_var($_SERVER['APP_DEBUG'], FILTER_VALIDATE_BOOLEAN) ? '1' : '0';
+    filter_var($_SERVER['APP_DEBUG'], \FILTER_VALIDATE_BOOLEAN) ? '1' : '0';

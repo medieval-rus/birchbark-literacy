@@ -18,8 +18,8 @@
 # see <http://www.gnu.org/licenses/>.
 
 framework:
-  default_locale: en
+  default_locale: '%locale%'
   translator:
     default_path: '%kernel.project_dir%/translations'
     fallbacks:
-      - en
+      - '%locale%'
