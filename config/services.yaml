@@ -19,6 +19,12 @@
 
 parameters:
   locale: 'ru'
+  web_images_max_size: 10000000
+  web_images_max_compression_quality: 70
+  web_images_max_dimension: 15000
+  web_images_fallback_compression_quality: 65
+  web_images_fallback_dimension: 10000
+  favorite_documents_count: 6
 
 services:
   _defaults:

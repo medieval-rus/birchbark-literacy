@@ -23,42 +23,22 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Controller;
+namespace App\Repository;
 
-use App\Repository\Content\PostRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityRepository;
 
-class InformationController extends AbstractController
+abstract class AbstractRepository extends EntityRepository
 {
     /**
-     * @Route("/about", name="information__about")
+     * @param int[] $ids
      */
-    public function about(PostRepository $postRepository): Response
+    public function findByIds(array $ids): array
     {
-        return $this->render(
-            'information/about.html.twig',
-            [
-                'controller' => 'information',
-                'method' => 'about',
-                'post' => $postRepository->findAbout(),
-            ]
-        );
-    }
+        $queryBuilder = $this->createQueryBuilder('e');
 
-    /**
-     * @Route("/news", name="information__news")
-     */
-    public function news(PostRepository $postRepository): Response
-    {
-        return $this->render(
-            'information/news.html.twig',
-            [
-                'controller' => 'information',
-                'method' => 'news',
-                'post' => $postRepository->findNews(),
-            ]
-        );
+        return $queryBuilder
+            ->where($queryBuilder->expr()->in('e.id', $ids))
+            ->getQuery()
+            ->getResult();
     }
 }

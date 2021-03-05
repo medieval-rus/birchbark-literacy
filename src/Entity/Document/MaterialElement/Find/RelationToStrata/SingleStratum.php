@@ -23,42 +23,34 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Controller;
+namespace App\Entity\Document\MaterialElement\Find\RelationToStrata;
 
-use App\Repository\Content\PostRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Document\MaterialElement\Find\Stratum;
+use Doctrine\ORM\Mapping as ORM;
 
-class InformationController extends AbstractController
+/**
+ * @ORM\Table(name="bb__material_element__find__relation_to_strata__single")
+ * @ORM\Entity
+ */
+class SingleStratum extends AbstractRelationToStrata
 {
     /**
-     * @Route("/about", name="information__about")
+     * @var Stratum
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document\MaterialElement\Find\Stratum", cascade={"persist"})
+     * @ORM\JoinColumn(name="stratum_id", referencedColumnName="id", nullable=false)
      */
-    public function about(PostRepository $postRepository): Response
+    private $stratum;
+
+    public function setStratum(Stratum $stratum): self
     {
-        return $this->render(
-            'information/about.html.twig',
-            [
-                'controller' => 'information',
-                'method' => 'about',
-                'post' => $postRepository->findAbout(),
-            ]
-        );
+        $this->stratum = $stratum;
+
+        return $this;
     }
 
-    /**
-     * @Route("/news", name="information__news")
-     */
-    public function news(PostRepository $postRepository): Response
+    public function getStratum(): Stratum
     {
-        return $this->render(
-            'information/news.html.twig',
-            [
-                'controller' => 'information',
-                'method' => 'news',
-                'post' => $postRepository->findNews(),
-            ]
-        );
+        return $this->stratum;
     }
 }

@@ -23,42 +23,68 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Controller;
+namespace App\Entity\Content;
 
 use App\Repository\Content\PostRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\Mapping as ORM;
 
-class InformationController extends AbstractController
+/**
+ * @ORM\Entity(repositoryClass=PostRepository::class)
+ */
+class Post
 {
     /**
-     * @Route("/about", name="information__about")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
-    public function about(PostRepository $postRepository): Response
-    {
-        return $this->render(
-            'information/about.html.twig',
-            [
-                'controller' => 'information',
-                'method' => 'about',
-                'post' => $postRepository->findAbout(),
-            ]
-        );
-    }
+    private $id;
 
     /**
-     * @Route("/news", name="information__news")
+     * @var string|null
+     *
+     * @ORM\Column(type="text")
      */
-    public function news(PostRepository $postRepository): Response
+    private $title;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text")
+     */
+    private $body;
+
+    public function __toString(): string
     {
-        return $this->render(
-            'information/news.html.twig',
-            [
-                'controller' => 'information',
-                'method' => 'news',
-                'post' => $postRepository->findNews(),
-            ]
-        );
+        return (string) $this->title;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getBody(): ?string
+    {
+        return $this->body;
+    }
+
+    public function setBody(string $body): self
+    {
+        $this->body = $body;
+
+        return $this;
     }
 }

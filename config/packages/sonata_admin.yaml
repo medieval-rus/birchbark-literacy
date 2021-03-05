@@ -49,7 +49,7 @@ sonata_block:
 services:
   admin.post:
     class: App\Admin\PostAdmin
-    arguments: [null, App\Entity\Post, null]
+    arguments: [null, App\Entity\Content\Post, null]
     calls:
       - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
     tags:

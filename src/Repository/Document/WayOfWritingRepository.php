@@ -23,32 +23,21 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Repository;
+namespace App\Repository\Document;
 
-use App\Entity\Post;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Document\WayOfWriting;
+use App\Repository\AbstractRepository;
 
 /**
- * @method Post|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
- * @method Post|null findOneBy(array $criteria, ?array $orderBy = null)
- * @method Post[]    findAll()
- * @method Post[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
+ * @method WayOfWriting|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
+ * @method WayOfWriting|null findOneBy(array $criteria, ?array $orderBy = null)
+ * @method WayOfWriting[]    findAll()
+ * @method WayOfWriting[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
  */
-class PostRepository extends ServiceEntityRepository
+final class WayOfWritingRepository extends AbstractRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Post::class);
-    }
-
-    public function findAbout(): Post
+    public function findIncised(): ?WayOfWriting
     {
         return $this->find(1);
-    }
-
-    public function findNews(): Post
-    {
-        return $this->find(2);
     }
 }

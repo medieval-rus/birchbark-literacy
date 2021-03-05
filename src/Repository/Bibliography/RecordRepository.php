@@ -23,42 +23,24 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Controller;
+namespace App\Repository\Bibliography;
 
-use App\Repository\Content\PostRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Bibliography\Record;
+use Doctrine\ORM\EntityRepository;
 
-class InformationController extends AbstractController
+/**
+ * @method Record|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
+ * @method Record|null findOneBy(array $criteria, ?array $orderBy = null)
+ * @method Record[]    findAll()
+ * @method Record[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
+ */
+final class RecordRepository extends EntityRepository
 {
     /**
-     * @Route("/about", name="information__about")
+     * @return Record[]
      */
-    public function about(PostRepository $postRepository): Response
+    public function findOrderedByShortName(bool $isAsc = true): array
     {
-        return $this->render(
-            'information/about.html.twig',
-            [
-                'controller' => 'information',
-                'method' => 'about',
-                'post' => $postRepository->findAbout(),
-            ]
-        );
-    }
-
-    /**
-     * @Route("/news", name="information__news")
-     */
-    public function news(PostRepository $postRepository): Response
-    {
-        return $this->render(
-            'information/news.html.twig',
-            [
-                'controller' => 'information',
-                'method' => 'news',
-                'post' => $postRepository->findNews(),
-            ]
-        );
+        return $this->findBy([], ['shortName' => $isAsc ? 'ASC' : 'DESC']);
     }
 }

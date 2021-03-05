@@ -23,42 +23,32 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Controller;
+namespace App\Repository\Content;
 
-use App\Repository\Content\PostRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Content\Post;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-class InformationController extends AbstractController
+/**
+ * @method Post|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
+ * @method Post|null findOneBy(array $criteria, ?array $orderBy = null)
+ * @method Post[]    findAll()
+ * @method Post[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
+ */
+class PostRepository extends ServiceEntityRepository
 {
-    /**
-     * @Route("/about", name="information__about")
-     */
-    public function about(PostRepository $postRepository): Response
+    public function __construct(ManagerRegistry $registry)
     {
-        return $this->render(
-            'information/about.html.twig',
-            [
-                'controller' => 'information',
-                'method' => 'about',
-                'post' => $postRepository->findAbout(),
-            ]
-        );
+        parent::__construct($registry, Post::class);
     }
 
-    /**
-     * @Route("/news", name="information__news")
-     */
-    public function news(PostRepository $postRepository): Response
+    public function findAbout(): Post
     {
-        return $this->render(
-            'information/news.html.twig',
-            [
-                'controller' => 'information',
-                'method' => 'news',
-                'post' => $postRepository->findNews(),
-            ]
-        );
+        return $this->find(1);
+    }
+
+    public function findNews(): Post
+    {
+        return $this->find(2);
     }
 }
