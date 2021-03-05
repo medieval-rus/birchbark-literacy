@@ -23,42 +23,35 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Controller;
+namespace App\Entity\Document\MaterialElement\Find\RelationToSquares;
 
-use App\Repository\Content\PostRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\Mapping as ORM;
 
-class InformationController extends AbstractController
+/**
+ * @ORM\Table(name="bb__material_element__find__relation_to_squares")
+ * @ORM\Entity
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="relation_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *     "single"="App\Entity\Document\MaterialElement\Find\RelationToSquares\SingleSquare",
+ *     "between"="App\Entity\Document\MaterialElement\Find\RelationToSquares\BetweenSquares",
+ *     "one_of"="App\Entity\Document\MaterialElement\Find\RelationToSquares\OneOfSquares",
+ *     "unknown"="App\Entity\Document\MaterialElement\Find\RelationToSquares\UnknownSquare"
+ * })
+ */
+abstract class AbstractRelationToSquares
 {
     /**
-     * @Route("/about", name="information__about")
+     * @var int
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
-    public function about(PostRepository $postRepository): Response
-    {
-        return $this->render(
-            'information/about.html.twig',
-            [
-                'controller' => 'information',
-                'method' => 'about',
-                'post' => $postRepository->findAbout(),
-            ]
-        );
-    }
+    private $id;
 
-    /**
-     * @Route("/news", name="information__news")
-     */
-    public function news(PostRepository $postRepository): Response
+    public function getId(): int
     {
-        return $this->render(
-            'information/news.html.twig',
-            [
-                'controller' => 'information',
-                'method' => 'news',
-                'post' => $postRepository->findNews(),
-            ]
-        );
+        return $this->id;
     }
 }

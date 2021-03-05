@@ -17,11 +17,10 @@
 # «Birchbark Literacy from Medieval Rus» database,
 # see <http://www.gnu.org/licenses/>.
 
-controllers:
-  resource: ../../src/Controller/
-  type: annotation
-  prefix: /birchbark
+sonata_media_gallery:
+  resource: '@SonataMediaBundle/Resources/config/routing/gallery.xml'
+  prefix: /media/gallery
 
-kernel:
-  resource: ../../src/Kernel.php
-  type: annotation
+sonata_media:
+  resource: '@SonataMediaBundle/Resources/config/routing/media.xml'
+  prefix: /media

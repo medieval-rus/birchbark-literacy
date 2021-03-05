@@ -23,68 +23,54 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Entity;
+namespace App\Entity\Document\MaterialElement\Find\RelationToSquares;
 
-use App\Repository\PostRepository;
+use App\Entity\Document\MaterialElement\Find\Square;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=PostRepository::class)
+ * @ORM\Table(name="bb__material_element__find__relation_to_squares__between")
+ * @ORM\Entity
  */
-class Post
+class BetweenSquares extends AbstractRelationToSquares
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @var Square
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document\MaterialElement\Find\Square", cascade={"persist"})
+     * @ORM\JoinColumn(name="square_1_id", referencedColumnName="id", nullable=false)
      */
-    private $id;
+    private $squareOne;
 
     /**
-     * @var string|null
+     * @var Square
      *
-     * @ORM\Column(type="text")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document\MaterialElement\Find\Square", cascade={"persist"})
+     * @ORM\JoinColumn(name="square_2_id", referencedColumnName="id", nullable=false)
      */
-    private $title;
+    private $squareTwo;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="text")
-     */
-    private $body;
-
-    public function __toString(): string
+    public function setSquareOne(Square $squareOne): self
     {
-        return (string) $this->title;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
+        $this->squareOne = $squareOne;
 
         return $this;
     }
 
-    public function getBody(): ?string
+    public function getSquareOne(): Square
     {
-        return $this->body;
+        return $this->squareOne;
     }
 
-    public function setBody(string $body): self
+    public function setSquareTwo(Square $squareTwo): self
     {
-        $this->body = $body;
+        $this->squareTwo = $squareTwo;
 
         return $this;
+    }
+
+    public function getSquareTwo(): Square
+    {
+        return $this->squareTwo;
     }
 }

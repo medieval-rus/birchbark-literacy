@@ -23,42 +23,47 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Controller;
+namespace App\Entity\Document\MaterialElement;
 
-use App\Repository\Content\PostRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\Document\MaterialElement\MaterialRepository;
+use Doctrine\ORM\Mapping as ORM;
 
-class InformationController extends AbstractController
+/**
+ * @ORM\Table(name="bb__material_element__material")
+ * @ORM\Entity(repositoryClass=MaterialRepository::class)
+ */
+class Material
 {
     /**
-     * @Route("/about", name="information__about")
+     * @var int
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
-    public function about(PostRepository $postRepository): Response
-    {
-        return $this->render(
-            'information/about.html.twig',
-            [
-                'controller' => 'information',
-                'method' => 'about',
-                'post' => $postRepository->findAbout(),
-            ]
-        );
-    }
+    private $id;
 
     /**
-     * @Route("/news", name="information__news")
+     * @var string
+     *
+     * @ORM\Column(type="string", unique=true)
      */
-    public function news(PostRepository $postRepository): Response
+    private $name;
+
+    public function getId(): int
     {
-        return $this->render(
-            'information/news.html.twig',
-            [
-                'controller' => 'information',
-                'method' => 'news',
-                'post' => $postRepository->findNews(),
-            ]
-        );
+        return $this->id;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 }

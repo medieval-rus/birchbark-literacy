@@ -17,11 +17,7 @@
 # «Birchbark Literacy from Medieval Rus» database,
 # see <http://www.gnu.org/licenses/>.
 
-controllers:
-  resource: ../../src/Controller/
-  type: annotation
-  prefix: /birchbark
-
-kernel:
-  resource: ../../src/Kernel.php
-  type: annotation
+jms_serializer:
+  visitors:
+    xml_serialization:
+      format_output: '%kernel.debug%'
