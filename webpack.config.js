@@ -19,7 +19,7 @@
  * see <http://www.gnu.org/licenses/>.
  */
 
-var Encore = require('@symfony/webpack-encore');
+const Encore = require('@symfony/webpack-encore');
 
 if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
@@ -31,7 +31,6 @@ Encore
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
-    .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
     .enableVersioning(Encore.isProduction())
     .configureBabelPresetEnv((config) => {
@@ -39,6 +38,13 @@ Encore
         config.corejs = 3;
     })
     .enableSassLoader()
+    .addStyleEntry('css/site/security/login', './assets/scss/pages/site/security/login.scss')
+    .addStyleEntry('css/site/information/about', './assets/scss/pages/site/information/about.scss')
+    .addStyleEntry('css/site/information/news', './assets/scss/pages/site/information/news.scss')
+    .copyFiles({
+        from: './assets/fonts',
+        to: 'fonts/[path][name].[ext]',
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();

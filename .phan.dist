@@ -27,7 +27,9 @@ return [
     'files_list' => [
         '.phan.dist',
         '.php_cs.dist',
+        'config/bootstrap.php',
         'config/bundles.php',
+        'config/preload.php',
         'public/index.php',
     ],
     'directory_list' => [

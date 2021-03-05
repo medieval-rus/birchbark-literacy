@@ -17,14 +17,12 @@
 # «Birchbark Literacy from Medieval Rus» database,
 # see <http://www.gnu.org/licenses/>.
 
-parameters:
+grumphp:
   hide_circumvention_tip: true
   process_timeout: null
-  git_dir: .
-  bin_dir: vendor/bin
   tasks:
     phpversion:
-      project: '7.2'
+      project: '7.4'
       metadata:
         priority: 0
     git_blacklist:
@@ -60,8 +58,7 @@ parameters:
       standard: PSR2
       ignore_patterns:
         - '/node_modules/*'
-        - '/src/Persistence/DataFixtures/*'
-        - '/src/Persistence/Migrations/*'
+        - '/migrations/*'
         - '/tests/*'
         - '/var/*'
         - '/vendor/*'
@@ -71,7 +68,9 @@ parameters:
       always_execute: true
       metadata:
         priority: -110
-    securitychecker:
+    securitychecker_enlightn:
+      lockfile: ./composer.lock
+      run_always: true
       metadata:
         priority: -120
     phan:

@@ -13,46 +13,66 @@
         }
     ],
     "require": {
-        "php": "^7.2.5",
+        "php": "^7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
+        "composer/package-versions-deprecated": "1.11.99.1",
+        "doctrine/annotations": "^1.0",
+        "doctrine/doctrine-bundle": "^2.2",
+        "doctrine/doctrine-migrations-bundle": "^3.0",
+        "doctrine/orm": "^2.8",
+        "knplabs/knp-menu-bundle": "^3.1",
+        "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^5.1",
-        "symfony/asset": "5.0.*",
-        "symfony/console": "5.0.*",
-        "symfony/dotenv": "5.0.*",
-        "symfony/expression-language": "5.0.*",
+        "sonata-project/admin-bundle": "^3.91",
+        "sonata-project/doctrine-orm-admin-bundle": "^3.30",
+        "symfony/asset": "4.4.*",
+        "symfony/console": "4.4.*",
+        "symfony/dotenv": "4.4.*",
+        "symfony/expression-language": "4.4.*",
         "symfony/flex": "^1.3.1",
-        "symfony/form": "5.0.*",
-        "symfony/framework-bundle": "5.0.*",
-        "symfony/http-client": "5.0.*",
-        "symfony/intl": "5.0.*",
-        "symfony/mailer": "5.0.*",
+        "symfony/form": "4.4.*",
+        "symfony/framework-bundle": "4.4.*",
+        "symfony/http-client": "4.4.*",
+        "symfony/intl": "4.4.*",
+        "symfony/mailer": "4.4.*",
         "symfony/monolog-bundle": "^3.1",
-        "symfony/notifier": "5.0.*",
-        "symfony/orm-pack": "*",
-        "symfony/process": "5.0.*",
-        "symfony/security-bundle": "5.0.*",
-        "symfony/serializer-pack": "*",
-        "symfony/string": "5.0.*",
-        "symfony/translation": "5.0.*",
-        "symfony/twig-pack": "*",
-        "symfony/validator": "5.0.*",
-        "symfony/web-link": "5.0.*",
+        "symfony/process": "4.4.*",
+        "symfony/property-access": "4.4.*",
+        "symfony/property-info": "4.4.*",
+        "symfony/proxy-manager-bridge": "4.4.*",
+        "symfony/security-bundle": "4.4.*",
+        "symfony/serializer": "4.4.*",
+        "symfony/translation": "4.4.*",
+        "symfony/twig-bundle": "^4.4",
+        "symfony/validator": "4.4.*",
+        "symfony/web-link": "4.4.*",
         "symfony/webpack-encore-bundle": "^1.7",
-        "symfony/yaml": "5.0.*"
+        "symfony/yaml": "4.4.*",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
+        "enlightn/security-checker": "^1.7",
         "friendsofphp/php-cs-fixer": "^2.16",
-        "jakub-onderka/php-parallel-lint": "^1.0",
-        "phan/phan": "^2.4",
-        "phpro/grumphp": "^0.17",
-        "sensiolabs/security-checker": "^6.0",
+        "phan/phan": "^2.7",
+        "php-parallel-lint/php-parallel-lint": "^1.2",
+        "phpro/grumphp": "^1.0",
+        "povils/phpmnd": "^2.3",
         "squizlabs/php_codesniffer": "^3.5",
-        "symfony/debug-pack": "^1.0",
-        "symfony/maker-bundle": "^1.0",
-        "symfony/profiler-pack": "^1.0",
-        "symfony/test-pack": "^1.0",
-        "symfony/web-server-bundle": "^4.4"
+        "symfony/browser-kit": "^4.4",
+        "symfony/css-selector": "^4.4",
+        "symfony/debug-bundle": "^4.4",
+        "symfony/debug-pack": "*",
+        "symfony/maker-bundle": "^1.21",
+        "symfony/phpunit-bridge": "^5.2",
+        "symfony/profiler-pack": "*",
+        "symfony/stopwatch": "^4.4",
+        "symfony/test-pack": "*",
+        "symfony/var-dumper": "^4.4",
+        "symfony/web-profiler-bundle": "^4.4",
+        "symfony/web-server-bundle": "4.4.*"
     },
     "config": {
         "preferred-install": {
@@ -74,7 +94,6 @@
         "paragonie/random_compat": "2.*",
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",
-        "symfony/polyfill-php72": "*",
         "symfony/polyfill-php71": "*",
         "symfony/polyfill-php70": "*",
         "symfony/polyfill-php56": "*"
@@ -82,8 +101,7 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "security-checker security:check": "script"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -97,8 +115,8 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": true,
-            "require": "5.0.*"
+            "allow-contrib": false,
+            "require": "4.4.*"
         }
     }
 }

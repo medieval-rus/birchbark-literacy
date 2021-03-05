@@ -18,6 +18,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 parameters:
+  locale: 'ru'
 
 services:
   _defaults:
@@ -25,9 +26,17 @@ services:
     autoconfigure: true
 
   App\:
-    resource: '../src/*'
-    exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+    resource: '../src/'
+    exclude:
+      - '../src/DependencyInjection/'
+      - '../src/Entity/'
+      - '../src/Kernel.php'
 
   App\Controller\:
-    resource: '../src/Controller'
+    resource: '../src/Controller/'
     tags: ['controller.service_arguments']
+
+  App\Menu\MenuBuilder:
+    arguments: [ '@knp_menu.factory', '@request_stack' ]
+    tags:
+      - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
