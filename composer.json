@@ -1,8 +1,8 @@
 {
     "name": "medieval-rus/birchbark-literacy",
-    "description": "«Birchbark Literacy of Medieval Rus'» database",
+    "description": "«Birchbark Literacy from Medieval Rus» database",
     "type": "project",
-    "keywords": ["rus'" ,"medieval rus'", "birchbark", "linguistics", "science"],
+    "keywords": ["rus" ,"medieval rus'", "birchbark", "linguistics", "science"],
     "license": "GPL-3.0-only",
     "authors": [
         {
@@ -17,13 +17,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
-        "composer/package-versions-deprecated": "1.11.99.1",
-        "doctrine/annotations": "^1.0",
-        "doctrine/doctrine-bundle": "^2.2",
-        "doctrine/doctrine-migrations-bundle": "^3.0",
-        "doctrine/orm": "^2.8",
         "knplabs/knp-menu-bundle": "^3.1",
-        "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^5.1",
         "sonata-project/admin-bundle": "^3.91",
         "sonata-project/doctrine-orm-admin-bundle": "^3.30",
@@ -36,13 +30,10 @@
         "symfony/form": "4.4.*",
         "symfony/framework-bundle": "4.4.*",
         "symfony/http-client": "4.4.*",
-        "symfony/intl": "4.4.*",
         "symfony/mailer": "4.4.*",
         "symfony/monolog-bundle": "^3.1",
+        "symfony/orm-pack": "*",
         "symfony/process": "4.4.*",
-        "symfony/property-access": "4.4.*",
-        "symfony/property-info": "4.4.*",
-        "symfony/proxy-manager-bridge": "4.4.*",
         "symfony/security-bundle": "4.4.*",
         "symfony/serializer": "4.4.*",
         "symfony/translation": "4.4.*",
@@ -52,7 +43,8 @@
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "4.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "vyfony/bibliography-bundle": "^0.1.1"
     },
     "require-dev": {
         "enlightn/security-checker": "^1.7",
@@ -116,7 +108,7 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "4.4.*"
         }
     }

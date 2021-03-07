@@ -1,4 +1,3 @@
-{#
 # This file is part of «Birchbark Literacy from Medieval Rus» database.
 #
 # Copyright (c) Department of Linguistic and Literary Studies of the University of Padova
@@ -17,10 +16,34 @@
 # a copy of the GNU General Public License along with
 # «Birchbark Literacy from Medieval Rus» database,
 # see <http://www.gnu.org/licenses/>.
-#}
 
-{% trans_default_domain 'admin' %}
+doctrine:
+  orm:
+    mappings:
+      VyfonyBibliographyBundle:
+        is_bundle: false
+        type: annotation
+        dir: '%kernel.project_dir%/vendor/vyfony/bibliography-bundle/src/Persistence/Entity'
+        prefix: 'Vyfony\Bundle\BibliographyBundle\Persistence\Entity'
+        alias: Vyfony\Bundle\BibliographyBundle
 
-<li class="user-body">
-    <a href="{{ path('security_logout') }}">{{ 'userMenu.logout.label'|trans() }}</a>
-</li>
+framework:
+  translator:
+    paths:
+      - '%kernel.project_dir%/vendor/vyfony/bibliography-bundle/translations'
+
+twig:
+  paths:
+    '%kernel.project_dir%/vendor/vyfony/bibliography-bundle/templates': VyfonyBibliography
+
+sonata_admin:
+  dashboard:
+    groups:
+      bibliography:
+        label_catalogue: vyfony_bibliography_admin
+        label: menu.groups.bibliography.label
+        items:
+          - vyfony_bibliography.admin.bibliographic_record
+          - vyfony_bibliography.admin.author
+          - vyfony_bibliography.admin.references_list
+        roles: [ ROLE_ADMIN ]

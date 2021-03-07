@@ -23,7 +23,7 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Admin\Abstraction;
+namespace App\Admin;
 
 use ReflectionClass;
 use Sonata\AdminBundle\Admin\AbstractAdmin;

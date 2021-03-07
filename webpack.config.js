@@ -39,8 +39,11 @@ Encore
     })
     .enableSassLoader()
     .addStyleEntry('css/site/security/login', './assets/scss/pages/site/security/login.scss')
-    .addStyleEntry('css/site/information/about', './assets/scss/pages/site/information/about.scss')
-    .addStyleEntry('css/site/information/news', './assets/scss/pages/site/information/news.scss')
+    .addStyleEntry('css/site/content/about', './assets/scss/pages/site/content/about.scss')
+    .addStyleEntry('css/site/content/news', './assets/scss/pages/site/content/news.scss')
+    .addStyleEntry('css/site/book/list', './assets/scss/pages/site/book/list.scss')
+    .addStyleEntry('css/site/book/show', './assets/scss/pages/site/book/show.scss')
+    .addStyleEntry('css/site/bibliography/list', './assets/scss/pages/site/bibliography/list.scss')
     .copyFiles({
         from: './assets/fonts',
         to: 'fonts/[path][name].[ext]',

@@ -38,10 +38,10 @@ security:
         lazy: true
       guard:
         authenticators:
-          - App\Security\AppLoginAuthenticator
+          - App\Security\LoginFormAuthenticator
       logout:
-        path: app_logout
-        target: app_login
+        path: security_logout
+        target: security_login
   access_control:
     - { path: ^/admin/security.*, role: [ ROLE_SUPER_ADMIN ] }
     - { path: ^/admin.*, role: [ ROLE_ADMIN ] }

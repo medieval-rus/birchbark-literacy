@@ -586,9 +586,6 @@
     "symfony/property-access": {
         "version": "v4.4.19"
     },
-    "symfony/property-info": {
-        "version": "v4.4.19"
-    },
     "symfony/proxy-manager-bridge": {
         "version": "v4.4.19"
     },
@@ -768,6 +765,9 @@
     },
     "twig/twig": {
         "version": "v3.3.0"
+    },
+    "vyfony/bibliography-bundle": {
+        "version": "0.1.0"
     },
     "webmozart/assert": {
         "version": "1.9.1"

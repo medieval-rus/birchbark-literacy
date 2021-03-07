@@ -23,9 +23,9 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Admin;
+namespace App\Admin\Security;
 
-use App\Admin\Abstraction\AbstractEntityAdmin;
+use App\Admin\AbstractEntityAdmin;
 use App\Entity\Security\User;
 use RuntimeException;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -86,9 +86,9 @@ final class UserAdmin extends AbstractEntityAdmin
         $this->encodePassword($object);
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('id', null, $this->createLabeledListOptions('id'))
             ->add('username', null, $this->createLabeledListOptions('username'))
             ->add('fullName', null, $this->createLabeledListOptions('fullName'))
@@ -96,19 +96,19 @@ final class UserAdmin extends AbstractEntityAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         $isEditForm = $this->isEditForm();
 
-        $formMapper->with($this->getSectionLabel('common'));
+        $form->with($this->getSectionLabel('common'));
 
         if ($isEditForm) {
-            $formMapper
+            $form
                 ->add('id', null, $this->createLabeledFormOptions('id', ['required' => true, 'disabled' => true]))
             ;
         }
 
-        $formMapper
+        $form
             ->add('username', null, $this->createLabeledFormOptions('username', ['required' => true]))
             ->add('fullName', null, $this->createLabeledFormOptions('fullName', ['required' => true]))
             ->add(
@@ -134,7 +134,7 @@ final class UserAdmin extends AbstractEntityAdmin
             )
         ;
 
-        $formMapper->end();
+        $form->end();
     }
 
     private function encodePassword(User $user): void

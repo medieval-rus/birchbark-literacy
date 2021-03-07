@@ -23,39 +23,19 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Admin;
+namespace App\Form\Security;
 
-use App\Admin\Abstraction\AbstractEntityAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
 
-final class PostAdmin extends AbstractEntityAdmin
+final class AdminLoginForm extends AbstractType
 {
-    /**
-     * @var string
-     */
-    protected $baseRouteName = 'information_post';
-
-    /**
-     * @var string
-     */
-    protected $baseRoutePattern = 'information/post';
-
-    protected function configureListFields(ListMapper $listMapper): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $listMapper
-            ->addIdentifier('id', null, $this->createLabeledListOptions('id'))
-            ->add('title', null, $this->createLabeledListOptions('title'))
-        ;
-    }
-
-    protected function configureFormFields(FormMapper $formMapper): void
-    {
-        $formMapper
-            ->with($this->getSectionLabel('common'))
-                ->add('title', null, $this->createLabeledFormOptions('title', ['required' => true]))
-                ->add('body', null, $this->createLabeledFormOptions('body', ['required' => true]))
-            ->end()
-        ;
+        $builder
+            ->add('username', TextType::class)
+            ->add('password', PasswordType::class);
     }
 }

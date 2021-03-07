@@ -19,13 +19,13 @@
 # see <http://www.gnu.org/licenses/>.
 #}
 
-{%- extends 'base.html.twig' -%}
+{%- extends 'site/base.html.twig' -%}
 
 {% block page_title %}{{ post.title }}{% endblock %}
 
 {%- block page_content -%}
 
-    {% import '_post_macros.html.twig' as post_macros %}
+    {% import 'site/content/macro__post.html.twig' as post_macros %}
 
     {{ post_macros.render_post_body(post.body) }}
 {%- endblock -%}
