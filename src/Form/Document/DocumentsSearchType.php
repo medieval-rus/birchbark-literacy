@@ -46,18 +46,18 @@ final class DocumentsSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('number', SearchType::class, ['label' => 'documentsSearch.search'])
+            ->add('number', SearchType::class, ['label' => 'form.documentsSearchType.fields.search'])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'translation_domain' => 'DocumentsSearchType',
             'attr' => [
-                'class' => 'bb-search-form',
+                'class' => 'mr-search-form',
             ],
-            'action' => $this->router->generate('index'/*'birch_bark_document_search'*/),
+            // todo change to real search route
+            'action' => $this->router->generate('index'),
             'method' => 'GET',
             'csrf_protection' => false,
         ]);

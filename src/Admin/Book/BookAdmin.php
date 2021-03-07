@@ -42,16 +42,16 @@ final class BookAdmin extends AbstractEntityAdmin
      */
     protected $baseRoutePattern = 'book/book';
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('name', null, $this->createLabeledListOptions('name'))
         ;
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('name', null, $this->createLabeledFormOptions('name'))
             ->add('description', null, $this->createLabeledFormOptions('description'))
             ->add(
