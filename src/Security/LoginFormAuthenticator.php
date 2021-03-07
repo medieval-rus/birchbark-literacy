@@ -25,7 +25,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
-use App\Form\AdminLoginForm;
+use App\Form\Security\AdminLoginForm;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +38,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 
-final class AppLoginAuthenticator extends AbstractFormLoginAuthenticator
+final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     /**
      * @var FormFactoryInterface
@@ -70,7 +70,7 @@ final class AppLoginAuthenticator extends AbstractFormLoginAuthenticator
         $route = $request->attributes->get('_route');
 
         return
-            'app_login' === $route &&
+            'security_login' === $route &&
             'POST' === $request->getMethod();
     }
 
@@ -104,7 +104,7 @@ final class AppLoginAuthenticator extends AbstractFormLoginAuthenticator
     {
         $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
 
-        return new RedirectResponse($this->urlGenerator->generate('app_login'));
+        return new RedirectResponse($this->urlGenerator->generate('security_login'));
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
@@ -114,6 +114,6 @@ final class AppLoginAuthenticator extends AbstractFormLoginAuthenticator
 
     protected function getLoginUrl(): string
     {
-        return $this->urlGenerator->generate('app_login');
+        return $this->urlGenerator->generate('security_login');
     }
 }

@@ -1,0 +1,50 @@
+{#
+# This file is part of «Birchbark Literacy from Medieval Rus» database.
+#
+# Copyright (c) Department of Linguistic and Literary Studies of the University of Padova
+#
+# «Birchbark Literacy from Medieval Rus» database is free software:
+# you can redistribute it and/or modify it under the terms of the
+# GNU General Public License as published by the Free Software Foundation, version 3.
+#
+# «Birchbark Literacy from Medieval Rus» database is distributed
+# in the hope  that it will be useful, but WITHOUT ANY WARRANTY; without even
+# the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code. If you have not received
+# a copy of the GNU General Public License along with
+# «Birchbark Literacy from Medieval Rus» database,
+# see <http://www.gnu.org/licenses/>.
+#}
+
+{% extends 'site/base.html.twig' %}
+
+{% block page_title %}{{ book.name }}{% endblock %}
+
+{% block page_content %}
+    {%- import 'site/book/macro__book_helper.html.twig' as book_helper -%}
+
+    {% if book.image is not null %}
+        {% thumbnail book.image, 'showPagePreview' with {'class': 'bb-book-show-image'} %}
+    {% endif %}
+
+    {% if book.description is not null %}
+        <p>
+            {{ book.description|nl2br }}
+        </p>
+    {% endif %}
+
+    {% if book.pdfDocument is not null %}
+        <p>
+            <a href="{{ path('sonata_media_download', {'id': book.pdfDocument|sonata_urlsafeid }) }}">
+                {{ 'downloadInPdf'|transWithContext(translationContext) }}
+            </a>
+        </p>
+    {% endif %}
+
+    {% if book.parts|length > 0 %}
+        {{ book_helper.book_list_table(book.parts, false, 'table.column.partName'|transWithContext(translationContext), 'table.column.download'|transWithContext(translationContext)) }}
+    {% endif %}
+{% endblock %}

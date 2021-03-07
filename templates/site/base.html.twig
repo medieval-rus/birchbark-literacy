@@ -23,10 +23,10 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>{% block title %}{{ ('controller.'~controller~'.'~method~'.title')|trans }}{% endblock %} – {{ 'page.label'|trans }}</title>
+        <title>{% block title %}{{ 'title'|transWithContext(translationContext) }}{% endblock %} – {{ 'page.label'|trans }}</title>
 
         {% block stylesheets %}
-            <link href="{{ asset('build/css/site/'~controller~'/'~method~'.css') }}" rel="stylesheet">
+            <link href="{{ asset('build/css/site/'~assetsContext~'.css') }}" rel="stylesheet">
         {% endblock %}
     </head>
 
@@ -75,6 +75,8 @@
             </div>
         </footer>
 
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            <script src="{{ asset('build/js/site/'~assetsContext~'.js') }}"></script>
+        {% endblock %}
     </body>
 </html>

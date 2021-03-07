@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Entity\Bibliography\Record;
 use App\Entity\Document\ContentElement\ContentElement;
 use App\Entity\Document\MaterialElement\MaterialElement;
 use App\Entity\MediaBundle\Media;
@@ -33,6 +32,7 @@ use App\Repository\Document\DocumentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Vyfony\Bundle\BibliographyBundle\Persistence\Entity\BibliographicRecord;
 
 /**
  * @ORM\Table(
@@ -167,9 +167,9 @@ class Document
     private $contentElements;
 
     /**
-     * @var Collection|Record[]
+     * @var Collection|BibliographicRecord[]
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Bibliography\Record")
+     * @ORM\ManyToMany(targetEntity="Vyfony\Bundle\BibliographyBundle\Persistence\Entity\BibliographicRecord")
      * @ORM\JoinTable(
      *     name="bb__document_record",
      *     joinColumns={@ORM\JoinColumn(name="birch_bark_document_id", referencedColumnName="id")},
@@ -454,7 +454,7 @@ class Document
     }
 
     /**
-     * @param Collection|Record[] $literature
+     * @param Collection|BibliographicRecord[] $literature
      *
      * @return Document
      */
@@ -470,14 +470,14 @@ class Document
     }
 
     /**
-     * @return Collection|Record[]
+     * @return Collection|BibliographicRecord[]
      */
     public function getLiterature(): Collection
     {
         return $this->literature;
     }
 
-    public function addLiteratureItem(Record $literatureItem): void
+    public function addLiteratureItem(BibliographicRecord $literatureItem): void
     {
         $this->literature[] = $literatureItem;
     }

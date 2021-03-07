@@ -67,6 +67,20 @@ final class MenuBuilder
             ->addChild('page.menu.news', ['route' => 'information__news'])
         ;
 
+        $menu
+            ->addChild('page.menu.library', ['route' => 'library_book_list'])->setCurrent(
+                \in_array(
+                    $currentRoute,
+                    [
+                        'library_book_list',
+                        'library_book_show',
+                        'library_bibliography_list',
+                    ],
+                    true
+                )
+            )
+        ;
+
         foreach ($menu->getChildren() as $child) {
             $child
                 ->setAttribute('class', 'nav-item mr-nav-item')

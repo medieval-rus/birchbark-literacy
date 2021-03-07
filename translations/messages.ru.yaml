@@ -18,6 +18,31 @@
 # see <http://www.gnu.org/licenses/>.
 
 controller:
+  information:
+    about:
+      title: О проекте
+    news:
+      title: Новости
+  library:
+    book:
+      list:
+        title: Библиотека
+        favoriteBibliography: Раздел «Избранная библиография»
+        table:
+          column:
+            bookName: Название
+            download: Скачать
+      show:
+        title: Библиотека
+        downloadInPdf: Скачать в формате PDF
+        table:
+          column:
+            partName: Название
+            download: Скачать
+    bibliography:
+      list:
+        title: Избранная библиография
+        favoriteBibliographyDescription: В список включены основные издания берестяных грамот, первые публикации, а также учтенные в базе данных работы, в которых специально комментируются тексты берестяных грамот, уточняются чтения, переводы и трактовки.
   security:
     login:
       title: Авторизация
@@ -26,11 +51,6 @@ controller:
         password: Пароль
         rememberMe: Запомнить меня
         signIn: Войти
-  information:
-    about:
-      title: О проекте
-    news:
-      title: Новости
 
 page:
   label: Древнерусские берестяные грамоты
@@ -39,6 +59,7 @@ page:
     index: Главная
     about: О проекте
     news: Новости
+    library: Библиотека
   footer: © 2021 – Национальный исследовательский университет «Высшая школа экономики»; Институт славяноведения Российской академии наук
 
 type:

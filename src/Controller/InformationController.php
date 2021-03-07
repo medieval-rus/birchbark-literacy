@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Form\Document\DocumentsSearchType;
 use App\Repository\Content\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,10 +39,11 @@ class InformationController extends AbstractController
     public function about(PostRepository $postRepository): Response
     {
         return $this->render(
-            'information/about.html.twig',
+            'site/content/about.html.twig',
             [
-                'controller' => 'information',
-                'method' => 'about',
+                'translationContext' => 'controller.information.about',
+                'assetsContext' => 'content/about',
+                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'post' => $postRepository->findAbout(),
             ]
         );
@@ -53,10 +55,11 @@ class InformationController extends AbstractController
     public function news(PostRepository $postRepository): Response
     {
         return $this->render(
-            'information/news.html.twig',
+            'site/content/news.html.twig',
             [
-                'controller' => 'information',
-                'method' => 'news',
+                'translationContext' => 'controller.information.news',
+                'assetsContext' => 'content/news',
+                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'post' => $postRepository->findNews(),
             ]
         );

@@ -19,8 +19,15 @@
 # see <http://www.gnu.org/licenses/>.
 #}
 
-{% trans_default_domain 'admin' %}
+{% extends 'site/base.html.twig' %}
 
-<li class="user-body">
-    <a href="{{ path('security_logout') }}">{{ 'userMenu.logout.label'|trans() }}</a>
-</li>
+{%- block page_content -%}
+
+    <p>{{ 'favoriteBibliographyDescription'|transWithContext(translationContext) }}</p>
+
+    {% import '@VyfonyBibliography/bibliographic_record.html.twig' as bibliographic_record %}
+
+    {% for record in records %}
+        <p>{{ bibliographic_record.render_record(record) }}</p>
+    {% endfor %}
+{%- endblock -%}

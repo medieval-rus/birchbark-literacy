@@ -25,7 +25,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Form\AdminLoginForm;
+use App\Form\Document\DocumentsSearchType;
+use App\Form\Security\AdminLoginForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,7 +35,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 final class SecurityController extends AbstractController
 {
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/login", name="security_login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -43,10 +44,11 @@ final class SecurityController extends AbstractController
         }
 
         return $this->render(
-            'security/login.html.twig',
+            'site/security/login.html.twig',
             [
-                'controller' => 'security',
-                'method' => 'login',
+                'translationContext' => 'controller.security.login',
+                'assetsContext' => 'security/login',
+                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'last_username' => $authenticationUtils->getLastUsername(),
                 'error' => $authenticationUtils->getLastAuthenticationError(),
                 'form' => $this
@@ -62,7 +64,7 @@ final class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/logout", name="app_logout")
+     * @Route("/logout", name="security_logout")
      */
     public function logout(): void
     {

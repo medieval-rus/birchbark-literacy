@@ -32,7 +32,7 @@ menu:
 list:
   post:
     fields:
-      id: Id
+      id: Внутренний идентификатор
       title: Заголовок
   user:
     fields:

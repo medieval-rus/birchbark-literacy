@@ -19,8 +19,12 @@
 # see <http://www.gnu.org/licenses/>.
 #}
 
-{% trans_default_domain 'admin' %}
+{% extends 'site/base.html.twig' %}
 
-<li class="user-body">
-    <a href="{{ path('security_logout') }}">{{ 'userMenu.logout.label'|trans() }}</a>
-</li>
+{% block page_content %}
+    {% import 'site/book/macro__book_helper.html.twig' as book_helper %}
+
+    <h5><a href="{{ path('library_bibliography_list') }}">{{ 'favoriteBibliography'|transWithContext(translationContext) }}</a></h5>
+
+    {{ book_helper.book_list_table(books, true, 'table.column.bookName'|transWithContext(translationContext), 'table.column.download'|transWithContext(translationContext)) }}
+{% endblock %}

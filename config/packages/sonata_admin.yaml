@@ -48,14 +48,14 @@ sonata_block:
 
 services:
   admin.post:
-    class: App\Admin\PostAdmin
+    class: App\Admin\Content\PostAdmin
     arguments: [null, App\Entity\Content\Post, null]
     calls:
       - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.user:
-    class: App\Admin\UserAdmin
+    class: App\Admin\Security\UserAdmin
     arguments:
       - null
       - App\Entity\Security\User
