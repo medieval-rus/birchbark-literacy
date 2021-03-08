@@ -25,7 +25,7 @@ parameters:
   web_images_fallback_compression_quality: 65
   web_images_fallback_dimension: 10000
   favorite_documents_count: 6
-  google_maps_api_key: AIzaSyAY61iP19q5835My_-TPbQ_XEx4RDHf9lE
+  google_maps_api_key: '%env(resolve:GOOGLE_MAPS_API_KEY)%'
 
 services:
   _defaults:

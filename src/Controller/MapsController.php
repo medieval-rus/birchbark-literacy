@@ -34,7 +34,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class MapsController extends AbstractController
 {
     /**
-     * @Route("/maps/", name="maps_index")
+     * @Route("/maps/", name="maps__index")
      */
     public function index(): Response
     {
@@ -49,7 +49,7 @@ final class MapsController extends AbstractController
     }
 
     /**
-     * @Route("/maps/towns/", name="maps_towns")
+     * @Route("/maps/towns/", name="maps__towns")
      */
     public function townsMap(): Response
     {
@@ -76,7 +76,7 @@ final class MapsController extends AbstractController
     }
 
     /**
-     * @Route("/maps/excavations/", name="maps_excavations")
+     * @Route("/maps/excavations/", name="maps__excavations")
      */
     public function excavationsMap(): Response
     {

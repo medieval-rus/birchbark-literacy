@@ -25,7 +25,7 @@ sonata_admin:
     groups:
       information:
         label_catalogue: admin
-        label: menu.groups.information.label
+        label: menu.groups.content.label
         items:
           - admin.post
         roles: [ ROLE_ADMIN ]

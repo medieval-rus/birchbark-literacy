@@ -34,28 +34,60 @@ use Symfony\Component\Routing\Annotation\Route;
 class InformationController extends AbstractController
 {
     /**
-     * @Route("/about", name="information__about")
+     * @Route("/about-site/", name="information__about_site")
      */
-    public function about(PostRepository $postRepository): Response
+    public function aboutSite(PostRepository $postRepository): Response
     {
         return $this->render(
-            'site/content/about.html.twig',
+            'site/content/post.html.twig',
             [
-                'translationContext' => 'controller.information.about',
-                'assetsContext' => 'content/about',
+                'translationContext' => 'controller.information.aboutSite',
+                'assetsContext' => 'content/post',
                 'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
-                'post' => $postRepository->findAbout(),
+                'post' => $postRepository->findAboutSite(),
             ]
         );
     }
 
     /**
-     * @Route("/news", name="information__news")
+     * @Route("/about-source/", name="information__about_source")
+     */
+    public function aboutSource(PostRepository $postRepository): Response
+    {
+        return $this->render(
+            'site/content/post.html.twig',
+            [
+                'translationContext' => 'controller.information.aboutSource',
+                'assetsContext' => 'content/post',
+                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
+                'post' => $postRepository->findAboutSource(),
+            ]
+        );
+    }
+
+    /**
+     * @Route("/about-source/general-information", name="information__about_source__general_information")
+     */
+    public function generalInformation(PostRepository $postRepository): Response
+    {
+        return $this->render(
+            'site/content/post.html.twig',
+            [
+                'translationContext' => 'controller.information.generalInformation',
+                'assetsContext' => 'content/post',
+                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
+                'post' => $postRepository->findGeneralInformationAboutBirchbarkDocuments(),
+            ]
+        );
+    }
+
+    /**
+     * @Route("/news/", name="information__news")
      */
     public function news(PostRepository $postRepository): Response
     {
         return $this->render(
-            'site/content/news.html.twig',
+            'site/content/post.html.twig',
             [
                 'translationContext' => 'controller.information.news',
                 'assetsContext' => 'content/news',

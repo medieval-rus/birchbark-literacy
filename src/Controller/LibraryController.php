@@ -27,6 +27,7 @@ namespace App\Controller;
 
 use App\Entity\Book\Book;
 use App\Form\Document\DocumentsSearchType;
+use App\Repository\Content\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +37,7 @@ use Vyfony\Bundle\BibliographyBundle\Persistence\Entity\BibliographicRecord;
 final class LibraryController extends AbstractController
 {
     /**
-     * @Route("/library/book/", name="library_book_list")
+     * @Route("/library/book/", name="library__book_list")
      */
     public function listBooks(EntityManagerInterface $entityManager): Response
     {
@@ -52,7 +53,7 @@ final class LibraryController extends AbstractController
     }
 
     /**
-     * @Route("/library/book/{id}/", name="library_book_show")
+     * @Route("/library/book/{id}/", name="library__book_show")
      */
     public function showBook(int $id, EntityManagerInterface $entityManager): Response
     {
@@ -68,9 +69,9 @@ final class LibraryController extends AbstractController
     }
 
     /**
-     * @Route("/library/bibliography/", name="library_bibliography_list")
+     * @Route("/library/bibliography/", name="library__bibliography_list")
      */
-    public function listBibliography(EntityManagerInterface $entityManager): Response
+    public function listBibliography(EntityManagerInterface $entityManager, PostRepository $postRepository): Response
     {
         return $this->render(
             'site/bibliography/list.html.twig',
@@ -81,6 +82,7 @@ final class LibraryController extends AbstractController
                 'records' => $entityManager
                     ->getRepository(BibliographicRecord::class)
                     ->findBy([], ['shortName' => 'ASC']),
+                'post' => $postRepository->findFavoriteBibliographyDescription(),
             ]
         );
     }

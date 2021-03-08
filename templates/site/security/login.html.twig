@@ -23,7 +23,7 @@
 
 {% block page_content %}
 
-    <form action="{{ path("security_login") }}" method="post" role="form">
+    <form action="{{ path("security__login") }}" method="post" role="form">
 
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>

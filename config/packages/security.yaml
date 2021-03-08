@@ -40,8 +40,8 @@ security:
         authenticators:
           - App\Security\LoginFormAuthenticator
       logout:
-        path: security_logout
-        target: security_login
+        path: security__logout
+        target: security__login
   access_control:
     - { path: ^/admin/security.*, role: [ ROLE_SUPER_ADMIN ] }
     - { path: ^/admin.*, role: [ ROLE_ADMIN ] }
