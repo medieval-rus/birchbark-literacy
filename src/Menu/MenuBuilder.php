@@ -81,6 +81,21 @@ final class MenuBuilder
             )
         ;
 
+        $menu
+            ->addChild('page.menu.maps', ['route' => 'maps_index'])
+            ->setCurrent(
+                \in_array(
+                    $currentRoute,
+                    [
+                        'maps_index',
+                        'maps_towns',
+                        'maps_excavations',
+                    ],
+                    true
+                )
+            )
+        ;
+
         foreach ($menu->getChildren() as $child) {
             $child
                 ->setAttribute('class', 'nav-item mr-nav-item')

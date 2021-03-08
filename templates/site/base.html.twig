@@ -20,13 +20,13 @@
  #}
 
 <!doctype html>
-<html>
+<html lang="{{ app.request.locale }}">
     <head>
         <meta charset="utf-8">
         <title>{% block title %}{{ 'title'|transWithContext(translationContext) }}{% endblock %} – {{ 'page.label'|trans }}</title>
 
         {% block stylesheets %}
-            <link href="{{ asset('build/css/site/'~assetsContext~'.css') }}" rel="stylesheet">
+            {{ encore_entry_link_tags('css/site/'~assetsContext) }}
         {% endblock %}
     </head>
 
@@ -76,7 +76,7 @@
         </footer>
 
         {% block javascripts %}
-            <script src="{{ asset('build/js/site/'~assetsContext~'.js') }}"></script>
+            {{ encore_entry_script_tags('js/site/'~assetsContext) }}
         {% endblock %}
     </body>
 </html>
