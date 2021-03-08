@@ -32,7 +32,7 @@
             <tr>
                 <th scope="row">
                     {% if nameAsLink %}
-                        <a href="{{ path('library_book_show', {'id': element.id}) }}">
+                        <a href="{{ path('library__book_show', {'id': element.id}) }}">
                             {{ element.name }}
                         </a>
                     {% else %}

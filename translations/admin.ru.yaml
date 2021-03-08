@@ -19,8 +19,8 @@
 
 menu:
   groups:
-    information:
-      label: Разное
+    content:
+      label: Содержимое
     security:
       label: Безопасность
   paragraphs:

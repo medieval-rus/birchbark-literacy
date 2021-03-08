@@ -24,7 +24,7 @@
 {% block page_content %}
     {% import 'site/book/macro__book_helper.html.twig' as book_helper %}
 
-    <h5><a href="{{ path('library_bibliography_list') }}">{{ 'favoriteBibliography'|transWithContext(translationContext) }}</a></h5>
+    <h5><a href="{{ path('library__bibliography_list') }}">{{ 'favoriteBibliography'|transWithContext(translationContext) }}</a></h5>
 
     {{ book_helper.book_list_table(books, true, 'table.column.bookName'|transWithContext(translationContext), 'table.column.download'|transWithContext(translationContext)) }}
 {% endblock %}

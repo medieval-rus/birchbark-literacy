@@ -21,11 +21,16 @@
 
 {%- extends 'site/base.html.twig' -%}
 
-{% block page_title %}{{ post.title }}{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 
 {%- block page_content -%}
 
-    {% import 'site/content/macro__post.html.twig' as post_macros %}
+    {% import _self as self %}
 
-    {{ post_macros.render_post_body(post.body) }}
+    {{ self.render_post_body(post.body) }}
 {%- endblock -%}
+
+{% macro render_post_body(body) %}
+    {% import _self as self %}
+    <div>{{ body|raw }}</div>
+{% endmacro %}

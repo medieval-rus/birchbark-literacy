@@ -70,7 +70,7 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $route = $request->attributes->get('_route');
 
         return
-            'security_login' === $route &&
+            'security__login' === $route &&
             'POST' === $request->getMethod();
     }
 
@@ -104,7 +104,7 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
 
-        return new RedirectResponse($this->urlGenerator->generate('security_login'));
+        return new RedirectResponse($this->urlGenerator->generate('security__login'));
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
@@ -114,6 +114,6 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     protected function getLoginUrl(): string
     {
-        return $this->urlGenerator->generate('security_login');
+        return $this->urlGenerator->generate('security__login');
     }
 }

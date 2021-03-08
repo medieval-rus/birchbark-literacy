@@ -35,14 +35,14 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Post[]    findAll()
  * @method Post[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
  */
-class PostRepository extends ServiceEntityRepository
+final class PostRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Post::class);
     }
 
-    public function findAbout(): Post
+    public function findAboutSite(): Post
     {
         return $this->find(1);
     }
@@ -50,5 +50,20 @@ class PostRepository extends ServiceEntityRepository
     public function findNews(): Post
     {
         return $this->find(2);
+    }
+
+    public function findAboutSource(): Post
+    {
+        return $this->find(3);
+    }
+
+    public function findGeneralInformationAboutBirchbarkDocuments(): Post
+    {
+        return $this->find(4);
+    }
+
+    public function findFavoriteBibliographyDescription(): Post
+    {
+        return $this->find(5);
     }
 }

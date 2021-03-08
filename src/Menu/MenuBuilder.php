@@ -60,21 +60,17 @@ final class MenuBuilder
         ;
 
         $menu
-            ->addChild('page.menu.about', ['route' => 'information__about'])
+            ->addChild('page.menu.aboutSite', ['route' => 'information__about_site'])
         ;
 
         $menu
-            ->addChild('page.menu.news', ['route' => 'information__news'])
-        ;
-
-        $menu
-            ->addChild('page.menu.library', ['route' => 'library_book_list'])->setCurrent(
+            ->addChild('page.menu.aboutSource', ['route' => 'information__about_source'])
+            ->setCurrent(
                 \in_array(
                     $currentRoute,
                     [
-                        'library_book_list',
-                        'library_book_show',
-                        'library_bibliography_list',
+                        'information__about_source',
+                        'information__about_source__general_information',
                     ],
                     true
                 )
@@ -82,14 +78,33 @@ final class MenuBuilder
         ;
 
         $menu
-            ->addChild('page.menu.maps', ['route' => 'maps_index'])
+            ->addChild('page.menu.news', ['route' => 'information__news'])
+        ;
+
+        $menu
+            ->addChild('page.menu.library', ['route' => 'library__book_list'])
             ->setCurrent(
                 \in_array(
                     $currentRoute,
                     [
-                        'maps_index',
-                        'maps_towns',
-                        'maps_excavations',
+                        'library__book_list',
+                        'library__book_show',
+                        'library__bibliography_list',
+                    ],
+                    true
+                )
+            )
+        ;
+
+        $menu
+            ->addChild('page.menu.maps', ['route' => 'maps__index'])
+            ->setCurrent(
+                \in_array(
+                    $currentRoute,
+                    [
+                        'maps__index',
+                        'maps__towns',
+                        'maps__excavations',
                     ],
                     true
                 )
