@@ -28,8 +28,7 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 Encore
     .setOutputPath('public/build/')
     .setPublicPath('/build')
-    .splitEntryChunks()
-    .enableSingleRuntimeChunk()
+    .disableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
     .enableVersioning(Encore.isProduction())
@@ -44,6 +43,10 @@ Encore
     .addStyleEntry('css/site/book/list', './assets/scss/pages/site/book/list.scss')
     .addStyleEntry('css/site/book/show', './assets/scss/pages/site/book/show.scss')
     .addStyleEntry('css/site/bibliography/list', './assets/scss/pages/site/bibliography/list.scss')
+    .addStyleEntry('css/site/maps/index', './assets/scss/pages/site/maps/index.scss')
+    .addStyleEntry('css/site/maps/towns', './assets/scss/pages/site/maps/towns.scss')
+    .addEntry('js/site/maps/towns', './assets/js/pages/site/maps/towns.js')
+    .addStyleEntry('css/site/maps/excavations', './assets/scss/pages/site/maps/excavations.scss')
     .copyFiles({
         from: './assets/fonts',
         to: 'fonts/[path][name].[ext]',
