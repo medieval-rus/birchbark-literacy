@@ -23,52 +23,38 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Entity\Document;
+namespace App\Admin\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
-use Doctrine\ORM\Mapping as ORM;
+use App\Admin\AbstractEntityAdmin;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 
-/**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
- */
-class WayOfWriting
+final class ExcavationAdmin extends AbstractEntityAdmin
 {
     /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @var string
      */
-    private $id;
+    protected $baseRouteName = 'document_excavation';
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", unique=true)
      */
-    private $name;
+    protected $baseRoutePattern = 'document/excavation';
 
-    public function __toString(): string
+    protected function configureListFields(ListMapper $listMapper): void
     {
-        return (string) $this->name;
+        $listMapper
+            ->addIdentifier('id', null, $this->createLabeledListOptions('id'))
+            ->add('name', null, $this->createLabeledListOptions('name'))
+            ->add('town.name', null, $this->createLabeledListOptions('town.name'))
+        ;
     }
 
-    public function getId(): ?int
+    protected function configureFormFields(FormMapper $formMapper): void
     {
-        return $this->id;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
+        $formMapper
+            ->add('name', null, $this->createLabeledFormOptions('name'))
+            ->add('town', null, $this->createLabeledFormOptions('town'))
+        ;
     }
 }

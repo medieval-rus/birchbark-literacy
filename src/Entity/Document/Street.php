@@ -25,14 +25,13 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__material_element__find__street")
+ * @ORM\Entity
  */
-class WayOfWriting
+class Street
 {
     /**
      * @var int
@@ -46,16 +45,19 @@ class WayOfWriting
     /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $name;
 
-    public function __toString(): string
-    {
-        return (string) $this->name;
-    }
+    /**
+     * @var Town
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document\Town", cascade={"persist"})
+     * @ORM\JoinColumn(name="town_id", referencedColumnName="id", nullable=false)
+     */
+    private $town;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -67,8 +69,20 @@ class WayOfWriting
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setTown(Town $town): self
+    {
+        $this->town = $town;
+
+        return $this;
+    }
+
+    public function getTown(): Town
+    {
+        return $this->town;
     }
 }

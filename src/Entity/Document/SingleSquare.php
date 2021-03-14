@@ -25,50 +25,31 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__material_element__find__relation_to_squares__single")
+ * @ORM\Entity
  */
-class WayOfWriting
+class SingleSquare extends AbstractRelationToSquares
 {
     /**
-     * @var int
+     * @var Square
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document\Square", cascade={"persist"})
+     * @ORM\JoinColumn(name="square_id", referencedColumnName="id", nullable=false)
      */
-    private $id;
+    private $square;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", unique=true)
-     */
-    private $name;
-
-    public function __toString(): string
+    public function setSquare(Square $square): self
     {
-        return (string) $this->name;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+        $this->square = $square;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getSquare(): Square
     {
-        return $this->name;
+        return $this->square;
     }
 }

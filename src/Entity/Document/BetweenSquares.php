@@ -25,50 +25,51 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__material_element__find__relation_to_squares__between")
+ * @ORM\Entity
  */
-class WayOfWriting
+class BetweenSquares extends AbstractRelationToSquares
 {
     /**
-     * @var int
+     * @var Square
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document\Square", cascade={"persist"})
+     * @ORM\JoinColumn(name="square_1_id", referencedColumnName="id", nullable=false)
      */
-    private $id;
+    private $squareOne;
 
     /**
-     * @var string
+     * @var Square
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document\Square", cascade={"persist"})
+     * @ORM\JoinColumn(name="square_2_id", referencedColumnName="id", nullable=false)
      */
-    private $name;
+    private $squareTwo;
 
-    public function __toString(): string
+    public function setSquareOne(Square $squareOne): self
     {
-        return (string) $this->name;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+        $this->squareOne = $squareOne;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getSquareOne(): Square
     {
-        return $this->name;
+        return $this->squareOne;
+    }
+
+    public function setSquareTwo(Square $squareTwo): self
+    {
+        $this->squareTwo = $squareTwo;
+
+        return $this;
+    }
+
+    public function getSquareTwo(): Square
+    {
+        return $this->squareTwo;
     }
 }

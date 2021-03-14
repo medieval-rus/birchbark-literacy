@@ -25,50 +25,50 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__material_element__find__relation_to_strata__one_of")
+ * @ORM\Entity
  */
-class WayOfWriting
+class OneOfStrata extends AbstractRelationToStrata
 {
     /**
-     * @var int
+     * @var Collection|Stratum[]
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Document\Stratum", cascade={"persist"})
+     * @ORM\JoinTable(
+     *     name="bb__material_element__find__relation_to_strata__one_of_strata",
+     *     joinColumns={@ORM\JoinColumn(name="relation_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="stratum_id", referencedColumnName="id")}
+     * )
      */
-    private $id;
+    private $strata;
+
+    public function __construct()
+    {
+        $this->strata = new ArrayCollection();
+    }
 
     /**
-     * @var string
+     * @param Collection|Stratum[] $strata
      *
-     * @ORM\Column(type="string", unique=true)
+     * @return OneOfStrata
      */
-    private $name;
-
-    public function __toString(): string
+    public function setStrata(Collection $strata): self
     {
-        return (string) $this->name;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+        $this->strata = $strata;
 
         return $this;
     }
 
-    public function getName(): ?string
+    /**
+     * @return Collection|Stratum[]
+     */
+    public function getStrata(): Collection
     {
-        return $this->name;
+        return $this->strata;
     }
 }

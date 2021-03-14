@@ -25,30 +25,55 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
+use App\Repository\Document\DocumentListRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__ordered_list__ordered_list")
+ * @ORM\Entity(repositoryClass=DocumentListRepository::class)
  */
-class WayOfWriting
+class DocumentList
 {
     /**
      * @var int
      *
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string")
      */
     private $name;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var Collection|Document[]
+     *
+     * @ORM\ManyToMany(
+     *     targetEntity="App\Entity\Document\Document",
+     *     cascade={"persist"}
+     * )
+     * @ORM\JoinTable(name="bb__ordered_list__item")
+     */
+    private $documents;
+
+    public function __construct()
+    {
+        $this->documents = new ArrayCollection();
+    }
 
     public function __toString(): string
     {
@@ -70,5 +95,35 @@ class WayOfWriting
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return Collection|Document[]
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    /**
+     * @param Collection|Document[] $documents
+     */
+    public function setDocuments(Collection $documents): self
+    {
+        $this->documents = $documents;
+
+        return $this;
     }
 }

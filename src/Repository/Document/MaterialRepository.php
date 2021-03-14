@@ -23,52 +23,27 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Entity\Document;
+namespace App\Repository\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
-use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Document\Material;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @method Material|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
+ * @method Material|null findOneBy(array $criteria, ?array $orderBy = null)
+ * @method Material[]    findAll()
+ * @method Material[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
  */
-class WayOfWriting
+final class MaterialRepository extends ServiceEntityRepository
 {
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", unique=true)
-     */
-    private $name;
-
-    public function __toString(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return (string) $this->name;
+        parent::__construct($registry, Material::class);
     }
 
-    public function getId(): ?int
+    public function findBirchBark(): Material
     {
-        return $this->id;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
+        return $this->find(1);
     }
 }

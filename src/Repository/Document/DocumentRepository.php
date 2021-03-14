@@ -25,9 +25,9 @@ declare(strict_types=1);
 
 namespace App\Repository\Document;
 
-use App\Entity\Document\ConditionalDateCell;
+use App\Entity\Document\ConventionalDateCell;
 use App\Entity\Document\Document;
-use App\Entity\Document\MaterialElement\Find\ExcavationDependentFindInterface;
+use App\Entity\Document\ExcavationDependentFindInterface;
 use App\Entity\Document\Town;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -66,8 +66,8 @@ final class DocumentRepository extends ServiceEntityRepository
      * @return Document[]
      */
     public function findByFilters(
-        int $conditionalDateInitialYear,
-        int $conditionalDateFinalYear,
+        int $conventionalDateInitialYear,
+        int $conventionalDateFinalYear,
         array $townIds,
         array $stateOfPreservationIds,
         array $excavationIds,
@@ -77,23 +77,23 @@ final class DocumentRepository extends ServiceEntityRepository
 
         $whereArguments = [];
 
-        $totalCellsCount = $this->getEntityManager()->getRepository(ConditionalDateCell::class)->count([]);
+        $totalCellsCount = $this->getEntityManager()->getRepository(ConventionalDateCell::class)->count([]);
 
-        $conditionalDateCells = $this->getEntityManager()->getRepository(ConditionalDateCell::class)->findByFilters(
-            $conditionalDateInitialYear,
-            $conditionalDateFinalYear
+        $conventionalDateCells = $this->getEntityManager()->getRepository(ConventionalDateCell::class)->findByFilters(
+            $conventionalDateInitialYear,
+            $conventionalDateFinalYear
         );
 
-        $conditionalDateCellIds = [];
+        $conventionalDateCellIds = [];
 
-        if ($totalCellsCount !== \count($conditionalDateCells)) {
-            foreach ($conditionalDateCells as $conditionalDateCell) {
-                $conditionalDateCellIds[] = $conditionalDateCell->getId();
+        if ($totalCellsCount !== \count($conventionalDateCells)) {
+            foreach ($conventionalDateCells as $conventionalDateCell) {
+                $conventionalDateCellIds[] = $conventionalDateCell->getId();
             }
         }
 
-        if (\count($conditionalDateCellIds) > 0) {
-            $whereArguments[] = $queryBuilder->expr()->in('d.conditionalDate', $conditionalDateCellIds);
+        if (\count($conventionalDateCellIds) > 0) {
+            $whereArguments[] = $queryBuilder->expr()->in('d.conventionalDate', $conventionalDateCellIds);
         }
 
         if (\count($townIds) > 0) {

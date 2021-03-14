@@ -25,50 +25,50 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__material_element__find__relation_to_squares__one_of")
+ * @ORM\Entity
  */
-class WayOfWriting
+class OneOfSquares extends AbstractRelationToSquares
 {
     /**
-     * @var int
+     * @var Collection|Square[]
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Document\Square", cascade={"persist"})
+     * @ORM\JoinTable(
+     *     name="bb__material_element__find__relation_to_squares__one_of_square",
+     *     joinColumns={@ORM\JoinColumn(name="relation_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="square_id", referencedColumnName="id")}
+     * )
      */
-    private $id;
+    private $squares;
+
+    public function __construct()
+    {
+        $this->squares = new ArrayCollection();
+    }
 
     /**
-     * @var string
+     * @param Collection|Square[] $squares
      *
-     * @ORM\Column(type="string", unique=true)
+     * @return OneOfSquares
      */
-    private $name;
-
-    public function __toString(): string
+    public function setSquares(Collection $squares): self
     {
-        return (string) $this->name;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+        $this->squares = $squares;
 
         return $this;
     }
 
-    public function getName(): ?string
+    /**
+     * @return Collection|Square[]
+     */
+    public function getSquares(): Collection
     {
-        return $this->name;
+        return $this->squares;
     }
 }

@@ -25,50 +25,31 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__material_element__find__relation_to_estates__single")
+ * @ORM\Entity
  */
-class WayOfWriting
+class SingleEstate extends AbstractRelationToEstates
 {
     /**
-     * @var int
+     * @var Estate
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document\Estate", cascade={"persist"})
+     * @ORM\JoinColumn(name="estate_id", referencedColumnName="id", nullable=false)
      */
-    private $id;
+    private $estate;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", unique=true)
-     */
-    private $name;
-
-    public function __toString(): string
+    public function setEstate(Estate $estate): self
     {
-        return (string) $this->name;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+        $this->estate = $estate;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getEstate(): Estate
     {
-        return $this->name;
+        return $this->estate;
     }
 }

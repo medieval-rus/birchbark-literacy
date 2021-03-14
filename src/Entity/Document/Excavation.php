@@ -25,14 +25,16 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(
+ *     name="bb__material_element__find__excavation",
+ *     uniqueConstraints={@ORM\UniqueConstraint(columns={"name", "town_id"})}
+ * )
+ * @ORM\Entity
  */
-class WayOfWriting
+class Excavation
 {
     /**
      * @var int
@@ -46,9 +48,17 @@ class WayOfWriting
     /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $name;
+
+    /**
+     * @var Town
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document\Town", cascade={"persist"})
+     * @ORM\JoinColumn(name="town_id", referencedColumnName="id", nullable=false)
+     */
+    private $town;
 
     public function __toString(): string
     {
@@ -70,5 +80,17 @@ class WayOfWriting
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    public function setTown(Town $town): self
+    {
+        $this->town = $town;
+
+        return $this;
+    }
+
+    public function getTown(): ?Town
+    {
+        return $this->town;
     }
 }

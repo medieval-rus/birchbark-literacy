@@ -25,50 +25,49 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__material_element__find__accidental")
+ * @ORM\Entity
  */
-class WayOfWriting
+class AccidentalFind extends AbstractFind
 {
     /**
-     * @var int
+     * @var string|null
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="text", length=65535, nullable=true)
      */
-    private $id;
+    private $comment;
 
     /**
-     * @var string
+     * @var int|null
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $name;
+    private $year;
 
-    public function __toString(): string
+    public function setComment(?string $comment): self
     {
-        return (string) $this->name;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+        $this->comment = $comment;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getComment(): ?string
     {
-        return $this->name;
+        return $this->comment;
+    }
+
+    public function setYear(?int $year): self
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
     }
 }

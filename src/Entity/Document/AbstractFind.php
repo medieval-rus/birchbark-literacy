@@ -25,14 +25,19 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__material_element__find")
+ * @ORM\Entity
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="find_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *     "accidental"="App\Entity\Document\AccidentalFind",
+ *     "archaeological"="App\Entity\Document\ArchaeologicalFind"
+ * })
  */
-class WayOfWriting
+abstract class AbstractFind
 {
     /**
      * @var int
@@ -43,32 +48,8 @@ class WayOfWriting
      */
     private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", unique=true)
-     */
-    private $name;
-
-    public function __toString(): string
-    {
-        return (string) $this->name;
-    }
-
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
     }
 }

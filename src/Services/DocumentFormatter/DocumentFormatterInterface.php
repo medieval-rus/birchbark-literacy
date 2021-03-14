@@ -25,7 +25,7 @@ declare(strict_types=1);
 
 namespace App\Services\DocumentFormatter;
 
-use App\Entity\Document\ConditionalDateCell;
+use App\Entity\Document\ConventionalDateCell;
 use App\Entity\Document\Document;
 use App\Entity\MediaBundle\Media;
 use Doctrine\Common\Collections\Collection;
@@ -44,9 +44,9 @@ interface DocumentFormatterInterface
 
     public function getIsPreliminaryPublication(Document $document): bool;
 
-    public function getConditionalDate(Document $document): string;
+    public function getConventionalDate(Document $document): string;
 
-    public function formatConditionalDate(ConditionalDateCell $conditionalDateCell): string;
+    public function formatConventionalDate(ConventionalDateCell $conventionalDateCell): string;
 
     /**
      * @return Collection|Media[]

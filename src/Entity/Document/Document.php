@@ -25,8 +25,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Entity\Document\ContentElement\ContentElement;
-use App\Entity\Document\MaterialElement\MaterialElement;
 use App\Entity\MediaBundle\Media;
 use App\Repository\Document\DocumentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -98,26 +96,26 @@ class Document
     private $stateOfPreservation;
 
     /**
-     * @var ConditionalDateCell|null
+     * @var ConventionalDateCell|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Document\ConditionalDateCell")
-     * @ORM\JoinColumn(name="conditional_date_cell_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document\ConventionalDateCell")
+     * @ORM\JoinColumn(name="conventional_date_cell_id", referencedColumnName="id")
      */
-    private $conditionalDate;
+    private $conventionalDate;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $isConditionalDateBiasedBackward = false;
+    private $isConventionalDateBiasedBackward = false;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $isConditionalDateBiasedForward = false;
+    private $isConventionalDateBiasedForward = false;
 
     /**
      * @var string|null
@@ -145,7 +143,7 @@ class Document
      * @var Collection|MaterialElement[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Document\MaterialElement\MaterialElement",
+     *     targetEntity="App\Entity\Document\MaterialElement",
      *     cascade={"persist"},
      *     mappedBy="document",
      *     orphanRemoval=true
@@ -158,7 +156,7 @@ class Document
      * @var Collection|ContentElement[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Document\ContentElement\ContentElement",
+     *     targetEntity="App\Entity\Document\ContentElement",
      *     cascade={"persist"},
      *     mappedBy="document",
      *     orphanRemoval=true
@@ -242,7 +240,12 @@ class Document
         $this->sketches = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function __toString(): string
+    {
+        return sprintf('%s %s', $this->town->getName(), $this->number);
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -254,7 +257,7 @@ class Document
         return $this;
     }
 
-    public function getNumber(): string
+    public function getNumber(): ?string
     {
         return $this->number;
     }
@@ -266,12 +269,12 @@ class Document
         return $this;
     }
 
-    public function getTown(): Town
+    public function getTown(): ?Town
     {
         return $this->town;
     }
 
-    public function getIsShownOnSite(): bool
+    public function getIsShownOnSite(): ?bool
     {
         return $this->isShownOnSite;
     }
@@ -283,7 +286,7 @@ class Document
         return $this;
     }
 
-    public function getIsPreliminaryPublication(): bool
+    public function getIsPreliminaryPublication(): ?bool
     {
         return $this->isPreliminaryPublication;
     }
@@ -319,38 +322,38 @@ class Document
         return $this->stateOfPreservation;
     }
 
-    public function setConditionalDate(?ConditionalDateCell $conditionalDate): self
+    public function setConventionalDate(?ConventionalDateCell $conventionalDate): self
     {
-        $this->conditionalDate = $conditionalDate;
+        $this->conventionalDate = $conventionalDate;
 
         return $this;
     }
 
-    public function getConditionalDate(): ?ConditionalDateCell
+    public function getConventionalDate(): ?ConventionalDateCell
     {
-        return $this->conditionalDate;
+        return $this->conventionalDate;
     }
 
-    public function getIsConditionalDateBiasedBackward(): bool
+    public function getIsConventionalDateBiasedBackward(): ?bool
     {
-        return $this->isConditionalDateBiasedBackward;
+        return $this->isConventionalDateBiasedBackward;
     }
 
-    public function setIsConditionalDateBiasedBackward(bool $isConditionalDateBiasedBackward): self
+    public function setIsConventionalDateBiasedBackward(bool $isConventionalDateBiasedBackward): self
     {
-        $this->isConditionalDateBiasedBackward = $isConditionalDateBiasedBackward;
+        $this->isConventionalDateBiasedBackward = $isConventionalDateBiasedBackward;
 
         return $this;
     }
 
-    public function getIsConditionalDateBiasedForward(): bool
+    public function getIsConventionalDateBiasedForward(): ?bool
     {
-        return $this->isConditionalDateBiasedForward;
+        return $this->isConventionalDateBiasedForward;
     }
 
-    public function setIsConditionalDateBiasedForward(bool $isConditionalDateBiasedForward): self
+    public function setIsConventionalDateBiasedForward(bool $isConventionalDateBiasedForward): self
     {
-        $this->isConditionalDateBiasedForward = $isConditionalDateBiasedForward;
+        $this->isConventionalDateBiasedForward = $isConventionalDateBiasedForward;
 
         return $this;
     }
@@ -386,7 +389,7 @@ class Document
         return $this;
     }
 
-    public function getWayOfWriting(): WayOfWriting
+    public function getWayOfWriting(): ?WayOfWriting
     {
         return $this->wayOfWriting;
     }

@@ -25,50 +25,51 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__material_element__find__relation_to_estates__palisade")
+ * @ORM\Entity
  */
-class WayOfWriting
+class PalisadeBetweenEstates extends AbstractRelationToEstates
 {
     /**
-     * @var int
+     * @var Estate
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document\Estate", cascade={"persist"})
+     * @ORM\JoinColumn(name="estate_1_id", referencedColumnName="id", nullable=false)
      */
-    private $id;
+    private $estateOne;
 
     /**
-     * @var string
+     * @var Estate
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Document\Estate", cascade={"persist"})
+     * @ORM\JoinColumn(name="estate_2_id", referencedColumnName="id", nullable=false)
      */
-    private $name;
+    private $estateTwo;
 
-    public function __toString(): string
+    public function setEstateOne(Estate $estateOne): self
     {
-        return (string) $this->name;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+        $this->estateOne = $estateOne;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getEstateOne(): Estate
     {
-        return $this->name;
+        return $this->estateOne;
+    }
+
+    public function setEstateTwo(Estate $estateTwo): self
+    {
+        $this->estateTwo = $estateTwo;
+
+        return $this;
+    }
+
+    public function getEstateTwo(): Estate
+    {
+        return $this->estateTwo;
     }
 }
