@@ -20,7 +20,7 @@
 menu:
   groups:
     content:
-      label: Содержимое
+      label: Контент
     security:
       label: Безопасность
   paragraphs:

@@ -26,7 +26,8 @@ declare(strict_types=1);
 namespace App\Repository\Document;
 
 use App\Entity\Document\WayOfWriting;
-use App\Repository\AbstractRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method WayOfWriting|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
@@ -34,9 +35,14 @@ use App\Repository\AbstractRepository;
  * @method WayOfWriting[]    findAll()
  * @method WayOfWriting[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
  */
-final class WayOfWritingRepository extends AbstractRepository
+final class WayOfWritingRepository extends ServiceEntityRepository
 {
-    public function findIncised(): ?WayOfWriting
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, WayOfWriting::class);
+    }
+
+    public function findIncised(): WayOfWriting
     {
         return $this->find(1);
     }

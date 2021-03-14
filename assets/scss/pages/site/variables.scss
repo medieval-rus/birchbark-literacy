@@ -1,7 +1,3 @@
-<?php
-
-declare(strict_types=1);
-
 /*
  * This file is part of «Birchbark Literacy from Medieval Rus» database.
  *
@@ -23,27 +19,9 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Repository\Document;
-
-use App\Entity\Document\Town;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
-
-/**
- * @method Town|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
- * @method Town|null findOneBy(array $criteria, ?array $orderBy = null)
- * @method Town[]    findAll()
- * @method Town[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
- */
-final class TownRepository extends ServiceEntityRepository
-{
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Town::class);
-    }
-
-    public function findOneByAlias(string $alias): ?Town
-    {
-        return $this->findOneBy(['alias' => $alias]);
-    }
-}
+$darkColor: #666633;
+$lightColor: #f5edda;
+$veryLightColor: #fcf8e3;
+$linkColor: #cc6600;
+$whiteColor: #ffffff;
+$pathToAssets: '/bundles/birchbarkdocuments';

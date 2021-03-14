@@ -26,8 +26,8 @@ declare(strict_types=1);
 namespace App\Repository\Document;
 
 use App\Entity\Document\ConditionalDateCell as DateCell;
-use App\Repository\AbstractRepository;
-use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method DateCell|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
@@ -35,8 +35,13 @@ use Doctrine\ORM\NonUniqueResultException;
  * @method DateCell[]    findAll()
  * @method DateCell[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
  */
-final class ConditionalDateCellRepository extends AbstractRepository
+final class ConditionalDateCellRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, DateCell::class);
+    }
+
     /**
      * @return DateCell[]
      */
@@ -61,9 +66,6 @@ final class ConditionalDateCellRepository extends AbstractRepository
             ->getResult();
     }
 
-    /**
-     * @throws NonUniqueResultException
-     */
     public function getMinimalConditionalDate(): int
     {
         $minValues = $this->createQueryBuilder('c')
@@ -84,9 +86,6 @@ final class ConditionalDateCellRepository extends AbstractRepository
         return (int) min($minValues);
     }
 
-    /**
-     * @throws NonUniqueResultException
-     */
     public function getMaximalConditionalDate(): int
     {
         $maxValues = $this->createQueryBuilder('c')

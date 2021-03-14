@@ -29,7 +29,8 @@ use App\Entity\Document\ConditionalDateCell;
 use App\Entity\Document\Document;
 use App\Entity\Document\MaterialElement\Find\ExcavationDependentFindInterface;
 use App\Entity\Document\Town;
-use App\Repository\AbstractRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Document|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
@@ -37,8 +38,13 @@ use App\Repository\AbstractRepository;
  * @method Document[]    findAll()
  * @method Document[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
  */
-final class DocumentRepository extends AbstractRepository
+final class DocumentRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Document::class);
+    }
+
     public function findOneByTownAliasAndNumber(
         string $townAlias,
         string $number,
