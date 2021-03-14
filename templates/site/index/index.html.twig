@@ -1,0 +1,65 @@
+{#
+# This file is part of «Birchbark Literacy from Medieval Rus» database.
+#
+# Copyright (c) Department of Linguistic and Literary Studies of the University of Padova
+#
+# «Birchbark Literacy from Medieval Rus» database is free software:
+# you can redistribute it and/or modify it under the terms of the
+# GNU General Public License as published by the Free Software Foundation, version 3.
+#
+# «Birchbark Literacy from Medieval Rus» database is distributed
+# in the hope  that it will be useful, but WITHOUT ANY WARRANTY; without even
+# the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code. If you have not received
+# a copy of the GNU General Public License along with
+# «Birchbark Literacy from Medieval Rus» database,
+# see <http://www.gnu.org/licenses/>.
+#}
+
+{%- extends 'site/base.html.twig' -%}
+
+{% block page_title %}{% endblock %}
+
+{% block page_content %}
+    {% import _self as self %}
+
+    {{ self.render_favorite_documents(documents) }}
+{% endblock %}
+
+{% macro render_favorite_documents(documents) %}
+    {% import _self as self %}
+
+    <div class="mr-card-columns card-columns">
+        {% for document in documents %}
+            {{ self.render_favorite_document(document) }}
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{% macro render_favorite_document(document) %}
+    {% import _self as self %}
+
+{#    birch_bark_document_show#}
+    <a href="{{ path('index', {'town': documentFormatter.urlEncodedTownAlias(document), 'number': document.number}) }}">
+        <div class="mr-card card">
+            <div class="card-body">
+                <h4 class="card-title">{{ documentFormatter.label(document) }}</h4>
+                <p class="card-text">{{ documentFormatter.description(document) }}</p>
+                <div class="card-text">
+                    <div class="additional-data-container small">
+                        <div class="additional-data additional-data-left">{{ documentFormatter.town(document) }}</div>
+                        <div class="additional-data additional-data-right">{{ documentFormatter.conditionalDate(document) }}</div>
+                    </div>
+                </div>
+            </div>
+            {% set isImageDrawn = false %}
+            {% for media in documentFormatter.images(document) if not isImageDrawn %}
+                <img class="card-img-bottom img-fluid" src="{% path media, 'favoritesPreview' %}" alt="{{ media.description }}">
+                {% set isImageDrawn = true %}
+            {% endfor %}
+        </div>
+    </a>
+{% endmacro %}

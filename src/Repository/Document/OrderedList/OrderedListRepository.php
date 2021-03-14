@@ -25,8 +25,13 @@ declare(strict_types=1);
 
 namespace App\Repository\Document\OrderedList;
 
+use App\Entity\Document\Document;
+use App\Entity\Document\OrderedList\Item;
 use App\Entity\Document\OrderedList\OrderedList;
-use App\Repository\AbstractRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method OrderedList|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
@@ -34,10 +39,35 @@ use App\Repository\AbstractRepository;
  * @method OrderedList[]    findAll()
  * @method OrderedList[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
  */
-final class OrderedListRepository extends AbstractRepository
+final class OrderedListRepository extends ServiceEntityRepository
 {
-    public function findFavoritesList(): ?OrderedList
+    public function __construct(ManagerRegistry $registry)
     {
-        return $this->findOneBy(['name' => 'favorites']);
+        parent::__construct($registry, OrderedList::class);
+    }
+
+    /**
+     * @return Collection|Document[]
+     */
+    public function findFavoritesDocuments(): Collection
+    {
+        $favoritesList = $this->find(1);
+
+        if (null === $favoritesList) {
+            return new ArrayCollection();
+        }
+
+        return $favoritesList
+            ->getItems()
+            ->map(
+                function (Item $item): Document {
+                    return $item->getBirchBarkDocument();
+                }
+            )
+            ->filter(
+                function (Document $document): bool {
+                    return $document->getIsShownOnSite();
+                }
+            );
     }
 }

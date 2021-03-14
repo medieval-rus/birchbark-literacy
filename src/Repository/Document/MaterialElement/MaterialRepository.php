@@ -26,7 +26,8 @@ declare(strict_types=1);
 namespace App\Repository\Document\MaterialElement;
 
 use App\Entity\Document\MaterialElement\Material;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Material|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
@@ -34,9 +35,14 @@ use Doctrine\ORM\EntityRepository;
  * @method Material[]    findAll()
  * @method Material[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
  */
-final class MaterialRepository extends EntityRepository
+final class MaterialRepository extends ServiceEntityRepository
 {
-    public function findBirchBark(): ?Material
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Material::class);
+    }
+
+    public function findBirchBark(): Material
     {
         return $this->find(1);
     }

@@ -21,7 +21,7 @@
 
 {% extends 'site/base.html.twig' %}
 
-{% block page_title %}{{ book.name }}{% endblock %}
+{% block title %}{{ book.name }}{% endblock %}
 
 {% block page_content %}
     {%- import 'site/book/macro__book_helper.html.twig' as book_helper -%}

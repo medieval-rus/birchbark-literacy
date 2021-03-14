@@ -1,7 +1,3 @@
-<?php
-
-declare(strict_types=1);
-
 /*
  * This file is part of «Birchbark Literacy from Medieval Rus» database.
  *
@@ -23,22 +19,46 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Repository;
+@import '../base';
+@import '../variables';
 
-use Doctrine\ORM\EntityRepository;
+.mr-card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+    -webkit-column-gap: 1.25rem;
+    -moz-column-gap: 1.25rem;
+    column-gap: 1.25rem;
+    orphans: 1;
+    widows: 1;
 
-abstract class AbstractRepository extends EntityRepository
-{
-    /**
-     * @param int[] $ids
-     */
-    public function findByIds(array $ids): array
-    {
-        $queryBuilder = $this->createQueryBuilder('e');
+    .mr-card {
+        color: $darkColor;
+        display: inline-block;
+        width: 100%;
 
-        return $queryBuilder
-            ->where($queryBuilder->expr()->in('e.id', $ids))
-            ->getQuery()
-            ->getResult();
+        > .card-body {
+            > .card-title {
+                font-weight: bold;
+            }
+
+            > .card-text {
+                > .additional-data-container {
+                    overflow: hidden;
+
+                    > .additional-data {
+                        display: inline-block;
+
+                        &.additional-data-left {
+                            float: left;
+                        }
+
+                        &.additional-data-right {
+                            float: right;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

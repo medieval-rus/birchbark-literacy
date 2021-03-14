@@ -30,6 +30,9 @@ page:
   footer: © 2021 – Национальный исследовательский университет «Высшая школа экономики»; Институт славяноведения Российской академии наук
 
 controller:
+  index:
+    index:
+      title: Главная
   library:
     book:
       list:
@@ -74,3 +77,10 @@ type:
   bool:
     "true": да
     "false": нет
+
+global:
+  document: Грамота
+  documentNumber:
+    lead1: Свинц. 1
+    lead2: Свинц. 2
+    915i: 915-И

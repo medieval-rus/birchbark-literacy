@@ -16,10 +16,3 @@
 # a copy of the GNU General Public License along with
 # «Birchbark Literacy from Medieval Rus» database,
 # see <http://www.gnu.org/licenses/>.
-
-index:
-  path: /
-  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
-  defaults:
-    route: information__about_site
-    permanent: true
