@@ -25,14 +25,16 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(
+ *     name="bb__material_element__find__estate",
+ *     uniqueConstraints={@ORM\UniqueConstraint(columns={"name", "excavation_id"})}
+ * )
+ * @ORM\Entity
  */
-class WayOfWriting
+class Estate
 {
     /**
      * @var int
@@ -46,16 +48,22 @@ class WayOfWriting
     /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $name;
 
-    public function __toString(): string
-    {
-        return (string) $this->name;
-    }
+    /**
+     * @var Excavation
+     *
+     * @ORM\ManyToOne(
+     *     targetEntity="App\Entity\Document\Excavation",
+     *     cascade={"persist"}
+     * )
+     * @ORM\JoinColumn(name="excavation_id", referencedColumnName="id", nullable=false)
+     */
+    private $excavation;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -67,8 +75,31 @@ class WayOfWriting
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setExcavation(Excavation $excavation): self
+    {
+        $this->excavation = $excavation;
+
+        return $this;
+    }
+
+    public function getExcavation(): Excavation
+    {
+        return $this->excavation;
+    }
+
+    public function getAdminNameWithExcavationAndTown(): string
+    {
+        $nameWithExcavation = $this->getName();
+
+        if (null !== $this->excavation) {
+            $nameWithExcavation .= ' ('.$this->excavation->getName().', '.$this->excavation->getTown()->getName().')';
+        }
+
+        return $nameWithExcavation;
     }
 }

@@ -49,7 +49,12 @@ class Scribe
      */
     private $name;
 
-    public function getId(): int
+    public function __toString(): string
+    {
+        return (string) $this->name;
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -61,7 +66,7 @@ class Scribe
         return $this;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }

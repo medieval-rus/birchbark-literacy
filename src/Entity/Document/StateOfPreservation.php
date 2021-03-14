@@ -49,6 +49,11 @@ class StateOfPreservation
      */
     private $name;
 
+    public function __toString(): string
+    {
+        return (string) $this->name;
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -61,7 +66,7 @@ class StateOfPreservation
         return $this;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }

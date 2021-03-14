@@ -95,6 +95,11 @@ class Town
         $this->documents = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return (string) $this->name;
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -107,7 +112,7 @@ class Town
         return $this;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -119,7 +124,7 @@ class Town
         return $this;
     }
 
-    public function getAbbreviatedName(): string
+    public function getAbbreviatedName(): ?string
     {
         return $this->abbreviatedName;
     }
@@ -131,7 +136,7 @@ class Town
         return $this;
     }
 
-    public function getAlias(): string
+    public function getAlias(): ?string
     {
         return $this->alias;
     }
@@ -143,7 +148,7 @@ class Town
         return $this;
     }
 
-    public function getGoogleMapsPlaceId(): string
+    public function getGoogleMapsPlaceId(): ?string
     {
         return $this->googleMapsPlaceId;
     }
@@ -155,7 +160,7 @@ class Town
         return $this;
     }
 
-    public function getGoogleMapsLatLng(): string
+    public function getGoogleMapsLatLng(): ?string
     {
         return $this->googleMapsLatLng;
     }

@@ -25,14 +25,13 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__content_element__language")
+ * @ORM\Entity
  */
-class WayOfWriting
+class Language
 {
     /**
      * @var int

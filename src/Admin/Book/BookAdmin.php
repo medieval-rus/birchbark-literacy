@@ -45,6 +45,7 @@ final class BookAdmin extends AbstractEntityAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
+            ->addIdentifier('id', null, $this->createLabeledListOptions('id'))
             ->addIdentifier('name', null, $this->createLabeledListOptions('name'))
         ;
     }

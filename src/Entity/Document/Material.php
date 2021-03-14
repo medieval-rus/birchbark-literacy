@@ -25,14 +25,14 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
+use App\Repository\Document\MaterialRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__material_element__material")
+ * @ORM\Entity(repositoryClass=MaterialRepository::class)
  */
-class WayOfWriting
+class Material
 {
     /**
      * @var int

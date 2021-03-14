@@ -21,6 +21,12 @@ menu:
   groups:
     content:
       label: Контент
+    document:
+      label: Грамоты
+    contentAspect:
+      label: Содержательный аспект
+    materialAspect:
+      label: Материальный аспект
     security:
       label: Безопасность
   paragraphs:
@@ -28,6 +34,32 @@ menu:
       label: Страницы
     user:
       label: Пользователи
+    documentList:
+      label: Списки грамот
+    contentCategory:
+      label: Категории по содержимому
+    conventionalDateCell:
+      label: Условные даты
+    genre:
+      label: Жанры
+    wayOfWriting:
+      label: Способы письма
+    language:
+      label: Языки
+    town:
+      label: Города
+    excavation:
+      label: Раскопы
+    material:
+      label: Материалы
+    stateOfPreservation:
+      label: Состояния сохранности
+    storagePlace:
+      label: Места хранения
+    scribe:
+      label: Писцы
+    document:
+      label: Грамоты
 
 list:
   post:
@@ -40,6 +72,65 @@ list:
       username: Имя пользователя (логин)
       fullName: Полное имя
       roles: Роли
+  documentList:
+    fields:
+      id: Внутренний идентификатор
+      name: Название спика
+  contentCategory:
+    fields:
+      id: Внутренний идентификатор
+      name: Название категории
+  conventionalDateCell:
+    fields:
+      id: Внутренний идентификатор
+      initialYear: Начальный год
+      finalYear: Конечный год
+  genre:
+    fields:
+      id: Внутренний идентификатор
+      name: Название жанра
+  wayOfWriting:
+    fields:
+      id: Внутренний идентификатор
+      name: Название способа письма
+  language:
+    fields:
+      id: Внутренний идентификатор
+      name: Название языка
+  town:
+    fields:
+      id: Внутренний идентификатор
+      name: Название города
+      abbreviatedName: Сокращенное название
+      alias: Имя в системе
+  excavation:
+    fields:
+      id: Внутренний идентификатор
+      name: Название раскопа
+      town:
+        name: Город
+  material:
+    fields:
+      id: Внутренний идентификатор
+      name: Название материала
+  stateOfPreservation:
+    fields:
+      id: Внутренний идентификатор
+      name: Название состояния сохранности
+  storagePlace:
+    fields:
+      id: Внутренний идентификатор
+      name: Название места хранения
+  scribe:
+    fields:
+      id: Внутренний идентификатор
+      name: Имя писца
+  document:
+    fields:
+      id: Внутренний идентификатор
+      number: Номер
+      town:
+        name: Город
 
 form:
   post:
@@ -59,13 +150,153 @@ form:
     section:
       common:
         label: Пользователь
+  documentList:
+    fields:
+      name: Название списка
+      description: Описание
+      documents: Грамоты в списке
+  contentCategory:
+    fields:
+      name: Название категории
+    section:
+      name:
+        label: Название
+  conventionalDateCell:
+    fields:
+      initialYear: Начальный год
+      finalYear: Конечный год
+  genre:
+    fields:
+      name: Название жанра
+    section:
+      name:
+        label: Название
+  wayOfWriting:
+    fields:
+      name: Название способа письма
+    section:
+      name:
+        label: Название
+  language:
+    fields:
+      name: Название языка
+    section:
+      name:
+        label: Название
+  town:
+    fields:
+      name: Название города
+      abbreviatedName: Сокращенное название
+      alias: Имя в системе
+      googleMapsPlaceId: Google Maps Place Id
+    section:
+      common:
+        label: Сведения о городе
+  excavation:
+    fields:
+      name: Название раскопа
+      town: Город
+    section:
+      common:
+        label: Сведения о раскопе
+  material:
+    fields:
+      name: Название материала
+    section:
+      name:
+        label: Название
+  stateOfPreservation:
+    fields:
+      name: Название состояния сохранности
+    section:
+      name:
+        label: Название
+  storagePlace:
+    fields:
+      name: Название места хранения
+    section:
+      name:
+        label: Название
+  scribe:
+    fields:
+      name: Имя писца
+    section:
+      name:
+        label: Имя
+  document:
+    tab:
+      basicInformation:
+        label: Основная информация
+    section:
+      basicInformation:
+        label: Основная информация
+      dates:
+        label: Датировка
+    fields:
+      number: Номер
+      town: Город
+      isShownOnSite: Показывать грамоту на сайте
+      scribe: Писец
+      stateOfPreservation: Сохранность
+      wayOfWriting: Способ письма
+      conventionalDate: Условная дата
+      isConventionalDateBiasedBackward: Условная дата смещена назад
+      isConventionalDateBiasedForward: Условная дата смещена вперёд
+      stratigraphicalDate: Стратиграфическая дата
+      nonStratigraphicalDate: Внестратиграфическая дата
+
 
 breadcrumb:
   link_post_list: Страницы
-  link_post_create: Создать страницу
+  link_post_create: Добавить новую страницу
+  link_post_delete: Удалить страницу
   link_user_list: Пользователи
-  link_user_create: Создать пользователя
+  link_user_create: Добавить нового пользователя
+  link_user_delete: Удалить пользователя
+  link_document_list_list: Списки грамот
+  link_document_list_create: Добавить новый список грамот
+  link_document_list_delete: Удалить список грамот
+  link_content_category_list: Категории по содержимому
+  link_content_category_create: Добавить новую категорию по содержимому
+  link_content_category_delete: Удалить категорию по содержимому
+  link_conventional_date_cell_list: Условные даты
+  link_conventional_date_cell_create: Добавить новую условную дату
+  link_conventional_date_cell_delete: Удалить условную дату
+  link_genre_list: Жанры
+  link_genre_create: Добавить новый жанр
+  link_genre_delete: Удалить жанр
+  link_way_of_writing_list: Способы письма
+  link_way_of_writing_create: Добавить новый способ письма
+  link_way_of_writing_delete: Удалить способ письма
+  link_language_list: Языки
+  link_language_create: Добавить новый язык
+  link_language_delete: Удалить язык
+  link_town_list: Города
+  link_town_create: Добавить новый город
+  link_town_delete: Удалить город
+  link_excavation_list: Раскопы
+  link_excavation_create: Добавить новый раскоп
+  link_excavation_delete: Удалить раскоп
+  link_material_list: Материалы
+  link_material_create: Добавить материал
+  link_material_delete: Удалить материал
+  link_state_of_preservation_list: Состояния сохранности
+  link_state_of_preservation_create: Добавить новое состояние сохранности
+  link_state_of_preservation_delete: Удалить состояние сохранности
+  link_storage_place_list: Места хранения
+  link_storage_place_create: Добавить новое место хранения
+  link_storage_place_delete: Удалить место хранения
+  link_scribe_list: Писцы
+  link_scribe_create: Добавить нового писца
+  link_scribe_delete: Удалить писца
+  link_document_list: Берестяные грамоты
+  link_document_create: Добавить новую грамоту
+  link_document_delete: Удалить грамоту
 
 userMenu:
   logout:
     label: Выйти
+
+tabMenu:
+  document:
+    viewOnSite: Посмотреть грамоту на сайте

@@ -25,14 +25,22 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__material_element__find__relation_to_estates")
+ * @ORM\Entity
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="relation_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *     "single"="App\Entity\Document\SingleEstate",
+ *     "unknown"="App\Entity\Document\UnknownEstate",
+ *     "roadway"="App\Entity\Document\RoadwayBetweenEstates",
+ *     "palisade"="App\Entity\Document\PalisadeBetweenEstates",
+ *     "not_related"="App\Entity\Document\NotRelatedToEstate"
+ * })
  */
-class WayOfWriting
+abstract class AbstractRelationToEstates
 {
     /**
      * @var int
@@ -43,32 +51,8 @@ class WayOfWriting
      */
     private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", unique=true)
-     */
-    private $name;
-
-    public function __toString(): string
-    {
-        return (string) $this->name;
-    }
-
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
     }
 }

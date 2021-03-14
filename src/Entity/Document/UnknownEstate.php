@@ -25,50 +25,12 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__material_element__find__relation_to_estates__unknown")
+ * @ORM\Entity
  */
-class WayOfWriting
+class UnknownEstate extends AbstractRelationToEstates
 {
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", unique=true)
-     */
-    private $name;
-
-    public function __toString(): string
-    {
-        return (string) $this->name;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
 }

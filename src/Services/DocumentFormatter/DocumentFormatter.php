@@ -25,7 +25,7 @@ declare(strict_types=1);
 
 namespace App\Services\DocumentFormatter;
 
-use App\Entity\Document\ConditionalDateCell;
+use App\Entity\Document\ConventionalDateCell;
 use App\Entity\Document\Document;
 use App\Entity\MediaBundle\Media;
 use Doctrine\Common\Collections\Collection;
@@ -94,18 +94,18 @@ final class DocumentFormatter implements DocumentFormatterInterface
         return $document->getIsPreliminaryPublication();
     }
 
-    public function getConditionalDate(Document $document): string
+    public function getConventionalDate(Document $document): string
     {
-        if (null === $document->getConditionalDate()) {
+        if (null === $document->getConventionalDate()) {
             return '?';
         }
 
-        return $this->formatConditionalDate($document->getConditionalDate());
+        return $this->formatConventionalDate($document->getConventionalDate());
     }
 
-    public function formatConditionalDate(ConditionalDateCell $conditionalDateCell): string
+    public function formatConventionalDate(ConventionalDateCell $conventionalDateCell): string
     {
-        return $conditionalDateCell->getInitialYear().'‒'.$conditionalDateCell->getFinalYear();
+        return sprintf('%s‒%s', $conventionalDateCell->getInitialYear(), $conventionalDateCell->getFinalYear());
     }
 
     /**

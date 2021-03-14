@@ -23,11 +23,38 @@ sonata_admin:
     blocks:
       - { type: sonata.admin.block.admin_list, position: left }
     groups:
-      information:
+      document:
+        label_catalogue: admin
+        label: menu.groups.document.label
+        items:
+          - admin.document
+          - admin.conventional_date_cell
+          - admin.town
+          - admin.scribe
+        roles: [ ROLE_ADMIN ]
+      contentAspect:
+        label_catalogue: admin
+        label: menu.groups.contentAspect.label
+        items:
+          - admin.content_category
+          - admin.genre
+          - admin.way_of_writing
+          - admin.language
+        roles: [ ROLE_ADMIN ]
+      materialAspect:
+        label_catalogue: admin
+        label: menu.groups.materialAspect.label
+        items:
+          - admin.excavation
+          - admin.material
+          - admin.state_of_preservation
+          - admin.storage_place
+      content:
         label_catalogue: admin
         label: menu.groups.content.label
         items:
           - admin.post
+          - admin.document_list
         roles: [ ROLE_ADMIN ]
       security:
         label_catalogue: admin
@@ -62,6 +89,97 @@ services:
       - null
       - '@Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface'
       - '@Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.document_list:
+    class: App\Admin\Document\DocumentListAdmin
+    arguments: [ null, App\Entity\Document\DocumentList, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.content_category:
+    class: App\Admin\Document\ContentCategoryAdmin
+    arguments: [ null, App\Entity\Document\ContentCategory, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.conventional_date_cell:
+    class: App\Admin\Document\ConventionalDateCellAdmin
+    arguments: [ null, App\Entity\Document\ConventionalDateCell, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.genre:
+    class: App\Admin\Document\GenreAdmin
+    arguments: [ null, App\Entity\Document\Genre, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.way_of_writing:
+    class: App\Admin\Document\WayOfWritingAdmin
+    arguments: [ null, App\Entity\Document\WayOfWriting, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.language:
+    class: App\Admin\Document\LanguageAdmin
+    arguments: [ null, App\Entity\Document\Language, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.town:
+    class: App\Admin\Document\TownAdmin
+    arguments: [ null, App\Entity\Document\Town, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.excavation:
+    class: App\Admin\Document\ExcavationAdmin
+    arguments: [ null, App\Entity\Document\Excavation, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.material:
+    class: App\Admin\Document\MaterialAdmin
+    arguments: [ null, App\Entity\Document\Material, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.state_of_preservation:
+    class: App\Admin\Document\StateOfPreservationAdmin
+    arguments: [ null, App\Entity\Document\StateOfPreservation, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.storage_place:
+    class: App\Admin\Document\StoragePlaceAdmin
+    arguments: [ null, App\Entity\Document\StoragePlace, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.scribe:
+    class: App\Admin\Document\ScribeAdmin
+    arguments: [ null, App\Entity\Document\Scribe, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.document:
+    class: App\Admin\Document\DocumentAdmin
+    arguments: [ null, App\Entity\Document\Document, null ]
     calls:
       - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
     tags:

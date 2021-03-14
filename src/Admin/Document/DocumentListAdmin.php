@@ -23,52 +23,37 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Entity\Document;
+namespace App\Admin\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
-use Doctrine\ORM\Mapping as ORM;
+use App\Admin\AbstractEntityAdmin;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 
-/**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
- */
-class WayOfWriting
+final class DocumentListAdmin extends AbstractEntityAdmin
 {
     /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @var string
      */
-    private $id;
+    protected $baseRouteName = 'document_document_list';
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", unique=true)
      */
-    private $name;
+    protected $baseRoutePattern = 'document/document-list';
 
-    public function __toString(): string
+    protected function configureListFields(ListMapper $listMapper): void
     {
-        return (string) $this->name;
+        $listMapper
+            ->addIdentifier('name', null, $this->createLabeledListOptions('name'))
+        ;
     }
 
-    public function getId(): ?int
+    protected function configureFormFields(FormMapper $formMapper): void
     {
-        return $this->id;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
+        $formMapper
+            ->add('name', null, $this->createLabeledFormOptions('name'))
+            ->add('description', null, $this->createLabeledFormOptions('description'))
+            ->add('documents', null, $this->createLabeledManyToManyFormOptions('documents'))
+        ;
     }
 }

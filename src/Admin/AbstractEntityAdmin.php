@@ -92,4 +92,9 @@ abstract class AbstractEntityAdmin extends AbstractAdmin
     {
         return 'form.'.$this->getEntityKey().'.section.'.$key.'.label';
     }
+
+    protected function getTabLabel(string $key): string
+    {
+        return 'form.'.$this->getEntityKey().'.tab.'.$key.'.label';
+    }
 }

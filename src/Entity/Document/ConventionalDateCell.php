@@ -25,14 +25,14 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Repository\Document\WayOfWritingRepository;
+use App\Repository\Document\ConventionalDateCellRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__way_of_writing")
- * @ORM\Entity(repositoryClass=WayOfWritingRepository::class)
+ * @ORM\Table(name="bb__conditional_date_cell")
+ * @ORM\Entity(repositoryClass=ConventionalDateCellRepository::class)
  */
-class WayOfWriting
+class ConventionalDateCell
 {
     /**
      * @var int
@@ -44,15 +44,22 @@ class WayOfWriting
     private $id;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="integer", unique=true)
      */
-    private $name;
+    private $initialYear;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", unique=true)
+     */
+    private $finalYear;
 
     public function __toString(): string
     {
-        return (string) $this->name;
+        return sprintf('%d–%d', $this->getInitialYear(), $this->getFinalYear());
     }
 
     public function getId(): ?int
@@ -60,15 +67,27 @@ class WayOfWriting
         return $this->id;
     }
 
-    public function setName(string $name): self
+    public function getInitialYear(): ?int
     {
-        $this->name = $name;
+        return $this->initialYear;
+    }
+
+    public function setInitialYear(int $initialYear): self
+    {
+        $this->initialYear = $initialYear;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getFinalYear(): ?int
     {
-        return $this->name;
+        return $this->finalYear;
+    }
+
+    public function setFinalYear(int $finalYear): self
+    {
+        $this->finalYear = $finalYear;
+
+        return $this;
     }
 }
