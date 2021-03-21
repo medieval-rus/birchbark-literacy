@@ -46,7 +46,7 @@ final class DocumentsSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('number', SearchType::class, ['label' => 'form.documentsSearchType.fields.search'])
+            ->add('number', SearchType::class, ['label' => 'global.documentsSearch.search'])
         ;
     }
 
@@ -56,7 +56,6 @@ final class DocumentsSearchType extends AbstractType
             'attr' => [
                 'class' => 'mr-search-form',
             ],
-            // todo change to real search route
             'action' => $this->router->generate('index'),
             'method' => 'GET',
             'csrf_protection' => false,

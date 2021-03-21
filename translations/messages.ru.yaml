@@ -19,12 +19,12 @@
 
 page:
   label: Древнерусские берестяные грамоты
-  middleLine: Сайт разрабатывается за счет гранта Российского научного фонда (проект № 19-18-00352), предоставленного Институту славяноведения РАН.
   menu:
     index: Главная
     aboutSite: О сайте
     aboutSource: Об источнике
     news: Новости
+    dataBase: База данных
     library: Библиотека
     maps: Карты
   footer: © 2021 – Национальный исследовательский университет «Высшая школа экономики»; Институт славяноведения Российской академии наук
@@ -67,20 +67,78 @@ controller:
         password: Пароль
         rememberMe: Запомнить меня
         signIn: Войти
+  document:
+    list:
+      title: База данных
+      searchByParameters: "Поиск по параметрам:"
+      table:
+        column:
+          number: Номер
+          conventionalDate: Условная дата
+          town: Город
+          description: Содержание
+        resultsCount: "Найдено грамот: count"
+      filter:
+        controls:
+          disablePaginator: показать на одной странице
+          submitButton: Искать
+          resetButton: Сбросить
+          searchInFoundButton: Искать в найденном
+        conventionalDate: Условная дата
+        contentCategory: Категория
+        town: Город
+        excavation: Раскоп
+        stateOfPreservation: Состояние сохранности
+    show:
+      fields:
+        town: Город
+        description: Содержание
+        conventionalDate: Условная дата
+        category: Категория
+        excavation: Раскоп
+        stratigraphicalDate: Стратиграфическая дата
+        nonStratigraphicalDate: Внестратиграфическая дата
+        stateOfPreservation: Сохранность
+        dndSection: Статья ДНД
+        literature: Литература
+        ngbVolume: Том НГБ
+        storagePlace: Место хранения
+        originalText: Текст
+        translatedText: Перевод
+      downloadFont: скачать шрифт
+      showOriginalTextWithoutDivisionIntoWords: Скрыть разделение на слова
+      showOriginalTextWithDivisionIntoWords: Показать разделение на слова
+      showTranslatedText: Показать перевод
+      hideTranslatedText: Скрыть перевод
+      ngb12Amendment: см. поправки из XII тома НГБ
 
-form:
-  documentsSearchType:
-    fields:
-      search: Показать грамоту №…
-
-type:
-  bool:
-    "true": да
-    "false": нет
-
+# this global subspace should be removed
 global:
-  document: Грамота
+  document:
+    label: Грамота  №%town%%number%
+    preliminaryPublication: предварительная публикация
   documentNumber:
     lead1: Свинц. 1
     lead2: Свинц. 2
     915i: 915-И
+  documentsSearch:
+    search: Показать грамоту №…
+    submit: Искать
+  birchBarkDocuments: Берестяные грамоты
+  type:
+    bool:
+      "true": да
+      "false": нет
+  relationToEstates:
+    single: усадьба %estate%
+    roadway: мостовая между усадьбами %estates%
+    palisade: частокол между усадьбами %estateOne% и %estateTwo%
+    unknown: усадьба неизвестна
+    notRelated: вне усадеб
+  noTranslatedText: Перевода нет
+  or: или
+  withAProbableBias: с вероятным смещением
+  forward: вперёд
+  backward: назад
+  find:
+    accidental: случайная находка

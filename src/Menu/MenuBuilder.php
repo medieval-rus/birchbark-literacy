@@ -52,7 +52,7 @@ final class MenuBuilder
         $currentRoute = $this->requestStack->getCurrentRequest()->get('_route');
 
         $menu = $this->factory->createItem('root')
-            ->setChildrenAttribute('class', 'nav flex-column mr-nav')
+            ->setChildrenAttribute('class', 'list-unstyled mr-sidebar')
         ;
 
         $menu
@@ -79,6 +79,21 @@ final class MenuBuilder
 
         $menu
             ->addChild('page.menu.news', ['route' => 'information__news'])
+        ;
+
+        $menu
+            ->addChild('page.menu.dataBase', ['route' => 'document__list'])
+            ->setCurrent(
+                \in_array(
+                    $currentRoute,
+                    [
+                        'document__list',
+                        'document__show',
+                        'document__search',
+                    ],
+                    true
+                )
+            )
         ;
 
         $menu
@@ -110,13 +125,6 @@ final class MenuBuilder
                 )
             )
         ;
-
-        foreach ($menu->getChildren() as $child) {
-            $child
-                ->setAttribute('class', 'nav-item mr-nav-item')
-                ->setLinkAttribute('class', 'nav-link mr-nav-link')
-            ;
-        }
 
         return $menu;
     }

@@ -38,6 +38,10 @@ Encore
     })
     .enableSassLoader()
     .addStyleEntry('css/site/index/index', './assets/scss/pages/site/index/index.scss')
+    .addStyleEntry('css/site/document/list', './assets/scss/pages/site/document/list.scss')
+    .addEntry('js/site/document/list', './assets/js/pages/site/document/list.js')
+    .addStyleEntry('css/site/document/show', './assets/scss/pages/site/document/show.scss')
+    .addEntry('js/site/document/show', './assets/js/pages/site/document/show.js')
     .addStyleEntry('css/site/security/login', './assets/scss/pages/site/security/login.scss')
     .addStyleEntry('css/site/content/post', './assets/scss/pages/site/content/post.scss')
     .addStyleEntry('css/site/book/list', './assets/scss/pages/site/book/list.scss')
@@ -50,6 +54,10 @@ Encore
     .copyFiles({
         from: './assets/fonts',
         to: 'fonts/[path][name].[ext]',
+    })
+    .copyFiles({
+        from: './assets/images',
+        to: 'images/[path][name].[ext]',
     })
 ;
 

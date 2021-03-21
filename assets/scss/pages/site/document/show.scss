@@ -1,0 +1,188 @@
+/*
+ * This file is part of «Birchbark Literacy from Medieval Rus» database.
+ *
+ * Copyright (c) Department of Linguistic and Literary Studies of the University of Padova
+ *
+ * «Birchbark Literacy from Medieval Rus» database is free software:
+ * you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, version 3.
+ *
+ * «Birchbark Literacy from Medieval Rus» database is distributed
+ * in the hope  that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code. If you have not received
+ * a copy of the GNU General Public License along with
+ * «Birchbark Literacy from Medieval Rus» database,
+ * see <http://www.gnu.org/licenses/>.
+ */
+
+@import '../base';
+@import 'original-text';
+@import 'preliminary-publication';
+@import '../variables';
+@import '~photoswipe/dist/default-skin/default-skin.css';
+@import '~photoswipe/dist/photoswipe.css';
+
+.gallery {
+  width: 100%;
+  overflow-x: overlay;
+  white-space: nowrap;
+
+  figure {
+    display: inline-block;
+    width: 100%;
+    margin: 0;
+
+    &:not(:last-child) {
+      margin-right: 5px;
+    }
+
+    a {
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    figcaption {
+      display: none;
+    }
+  }
+}
+
+.pswp__button--arrow--left,
+.pswp__button--arrow--right {
+  height: 100% !important;
+  margin-top: 0 !important;
+  top: 0 !important;
+
+  &::before {
+    top: 50% !important;
+  }
+}
+
+.pswp__top-bar {
+  z-index: 1551;
+}
+
+.original-text-container {
+
+  .original-text-wrapper {
+    margin: -.3rem -.3rem 0 -.3rem;
+
+    &:not(:last-child) {
+      margin-bottom:.3rem;
+    }
+
+    .text-area {
+      background-color: $whiteColor;
+      display: inline-block;
+      padding: .3rem;
+      white-space: nowrap;
+      overflow-x: overlay;
+      width: 100%;
+    }
+  }
+
+  .without-spaces {
+    display: block;
+  }
+
+  .with-spaces {
+    display: none;
+  }
+
+  &.display-spaces {
+    .without-spaces {
+      display: none;
+    }
+
+    .with-spaces {
+      display: block;
+    }
+  }
+}
+
+.mr-spoiler-button {
+  display: block;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  cursor: pointer;
+  padding: 3px 3px 3px 6px;
+  height: 30px;
+  border-radius: 5px;
+  text-align: center;
+  line-height: 30px;
+  box-sizing: content-box;
+}
+
+.mr-translated-text-container {
+
+  > details {
+    > summary {
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &::before {
+        content: '\25bc';
+      }
+
+      > .toggler-text {
+        display: none;
+
+        &.show-translated-text {
+          display: inline;
+        }
+      }
+    }
+
+    > .translated-text-wrapper {
+      background-color: $whiteColor;
+      padding: 0.5rem 1rem;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+
+    &[open] {
+      > summary {
+
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+
+        &::before {
+          content: '\25b2';
+        }
+
+        > .toggler-text {
+          &.hide-translated-text {
+            display: inline;
+          }
+
+          &.show-translated-text {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+table.mr-show-table {
+  color: inherit;
+  table-layout: fixed;
+  background-color: $veryLightColor;
+
+  th:nth-child(1), td:nth-child(1) {
+    width: 240px;
+  }
+}

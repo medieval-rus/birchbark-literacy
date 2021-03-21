@@ -34,10 +34,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Vyfony\Bundle\BibliographyBundle\Persistence\Entity\BibliographicRecord;
 
+/**
+ * @Route("/library")
+ */
 final class LibraryController extends AbstractController
 {
     /**
-     * @Route("/library/book/", name="library__book_list")
+     * @Route("/book/", name="library__book_list")
      */
     public function listBooks(EntityManagerInterface $entityManager): Response
     {
@@ -53,7 +56,7 @@ final class LibraryController extends AbstractController
     }
 
     /**
-     * @Route("/library/book/{id}/", name="library__book_show")
+     * @Route("/book/{id}/", name="library__book_show")
      */
     public function showBook(int $id, EntityManagerInterface $entityManager): Response
     {
@@ -69,7 +72,7 @@ final class LibraryController extends AbstractController
     }
 
     /**
-     * @Route("/library/bibliography/", name="library__bibliography_list")
+     * @Route("/bibliography/", name="library__bibliography_list")
      */
     public function listBibliography(EntityManagerInterface $entityManager, PostRepository $postRepository): Response
     {

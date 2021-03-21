@@ -107,35 +107,6 @@ final class DocumentAdmin extends AbstractEntityAdmin
 //                    ])
 //                ->end()
 //            ->end()
-
-//            ->tab('form.tab.photosAndSketches')
-//                ->with('form.group.photos', ['class' => 'col-md-6'])
-//                    ->add('photos', CollectionType::class, [
-//                        'required' => false,
-//                        'label' => 'birchBarkDocument.photos',
-//                        'btn_add' => 'button.add.photo',
-//                        'btn_catalogue' => 'DocumentAdmin',
-//                    ], [
-//                        'edit' => 'inline',
-//                        'inline' => 'table',
-//                        'sortable' => 'position',
-//                        'admin_code' => 'bbd.admin.birch_bark.photo',
-//                    ])
-//                ->end()
-//                ->with('form.group.sketches', ['class' => 'col-md-6'])
-//                    ->add('sketches', CollectionType::class, [
-//                        'required' => false,
-//                        'label' => 'birchBarkDocument.sketches',
-//                        'btn_add' => 'button.add.sketch',
-//                        'btn_catalogue' => 'DocumentAdmin',
-//                    ], [
-//                        'edit' => 'inline',
-//                        'inline' => 'table',
-//                        'sortable' => 'position',
-//                        'admin_code' => 'bbd.admin.birch_bark.sketch',
-//                    ])
-//                ->end()
-//            ->end()
         ;
     }
 
@@ -149,7 +120,7 @@ final class DocumentAdmin extends AbstractEntityAdmin
 
             if ((null !== $document = $this->getSubject()) && (null !== $document->getId())) {
                 $menu->addChild('tabMenu.document.viewOnSite', [
-                    'uri' => $admin->getRouteGenerator()->generate('index', [
+                    'uri' => $admin->getRouteGenerator()->generate('document__show', [
                         'town' => urlencode($document->getTown()->getAlias()),
                         'number' => urlencode($document->getNumber()),
                     ]),

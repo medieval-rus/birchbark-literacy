@@ -148,7 +148,6 @@ class Document
      *     mappedBy="document",
      *     orphanRemoval=true
      * )
-     * @ORM\OrderBy({"name": "ASC"})
      */
     private $materialElements;
 
@@ -228,7 +227,7 @@ class Document
      *     inverseJoinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")}
      * )
      */
-    private $sketches;
+    private $drawings;
 
     public function __construct()
     {
@@ -237,7 +236,7 @@ class Document
         $this->literature = new ArrayCollection();
         $this->amendments = new ArrayCollection();
         $this->photos = new ArrayCollection();
-        $this->sketches = new ArrayCollection();
+        $this->drawings = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -570,16 +569,16 @@ class Document
     }
 
     /**
-     * @param iterable|Media[] $sketches
+     * @param iterable|Media[] $drawings
      *
      * @return Document
      */
-    public function setSketches(iterable $sketches): self
+    public function setDrawings(iterable $drawings): self
     {
-        $this->sketches = new ArrayCollection();
+        $this->drawings = new ArrayCollection();
 
-        foreach ($sketches as $sketch) {
-            $this->addSketch($sketch);
+        foreach ($drawings as $drawing) {
+            $this->addDrawing($drawing);
         }
 
         return $this;
@@ -588,13 +587,13 @@ class Document
     /**
      * @return Collection|Media[]
      */
-    public function getSketches(): Collection
+    public function getDrawings(): Collection
     {
-        return $this->sketches;
+        return $this->drawings;
     }
 
-    public function addSketch(Media $sketch): void
+    public function addDrawing(Media $drawing): void
     {
-        $this->sketches[] = $sketch;
+        $this->drawings[] = $drawing;
     }
 }

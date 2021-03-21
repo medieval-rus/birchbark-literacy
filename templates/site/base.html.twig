@@ -31,29 +31,37 @@
     </head>
 
     <body>
+        <div class="mr-header">
+            <a class="logo-block image-link image-link-left" href="{{ path('index') }}">
+                <img src="/build/images/logo.gif" alt="{{ 'global.birchBarkDocuments'|trans }}" height="224" width="357" border="0">
+            </a>
 
-        <nav class="navbar navbar-dark bg-dark flex-nowrap p-0 mr-header">
-            <a class="navbar-brand col-12 mr-navbar-brand" href="{{ path('index') }}">{{ 'page.label'|trans }}</a>
+            <a class="image-link image-link-relative image-link-right image-link-relative-middle " href="http://www.lrc-lib.ru" target="_blank" rel="nofollow">
+                <img src="/build/images/logo-rpdr.gif" height="128" width="258" border="0">
+            </a>
+        </div>
+
+        <nav class="mr-navbar navbar navbar-expand flex-row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                {{ form_start(documentsSearchForm) }}
+                {{ form_row(documentsSearchForm.number) }}
+                <button type="submit" class="mr-submit-button mr-submit-button-light btn">{{ 'global.documentsSearch.submit'|trans }}</button>
+                {{ form_end(documentsSearchForm) }}
+            </div>
         </nav>
 
-        <div class="container-fluid">
+        <div class="mr-container container-fluid">
             <div class="row">
-                <div class="col-12 mr-middle-line">
-                    {{ 'page.middleLine'|trans }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-2 mr-sidebar">
+                <div class="col-2">
                     {% block left_sidebar_content %}
                         {{ knp_menu_render('main', {'currentClass': 'mr-active'}) }}
                     {% endblock %}
                 </div>
 
                 <main role="main" class="col-8 mr-main">
-                    {% block page_title %}<h1 class="border-bottom">{{ block('title') }}</h1>{% endblock %}
-                    <div class="container pb-4">
-                        {% block page_content %}{% endblock %}
-                    </div>
+                    {% block page_title %}<h1>{{ block('title') }}</h1>{% endblock %}
+                    {% block page_content %}{% endblock %}
                 </main>
 
                 <div class="col-2 sidebar mr-sidebar">
@@ -62,6 +70,8 @@
             </div>
         </div>
 
+        <div class="mr-bottom"></div>
+
         <footer class="mr-footer">
             <div class="container-fluid">
                 <div class="row">
@@ -69,6 +79,12 @@
                     <div class="col-8">
                         <div class="mr-footer-content">
                             {{ 'page.footer'|trans }}
+                        </div>
+                        <div class="mr-author">
+                            Дизайн: А. В. Санников &lt;san@calligraphers.ru&gt;
+                        </div>
+                        <div class="mr-author">
+                            Разработка и техническая поддержка: Антон Дышкант &lt;vyshkant@gmail.com&gt;
                         </div>
                     </div>
                 </div>
