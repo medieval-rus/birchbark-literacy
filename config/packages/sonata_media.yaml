@@ -43,7 +43,7 @@ sonata_media:
       formats:
         favoritesPreview: {width: 327, quality: '%web_images_max_compression_quality%'}
         showPageThumbnail: {width: 1300, quality: '%web_images_max_compression_quality%'}
-    bb__document_sketch: # todo переименовать в drawing при переезде на гитхаб
+    bb__document_sketch:
       download:
         strategy: sonata.media.security.public_strategy
       providers:

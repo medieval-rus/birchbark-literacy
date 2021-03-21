@@ -20,11 +20,11 @@
 #}
 
 {%- macro book_list_table(elements, nameAsLink, nameTitle, downloadTitle) -%}
-    <table class="table table-striped table-sm bb-book-list-table">
+    <table class="table table-striped table-sm mr-book-list-table">
         <thead>
         <tr>
             <th>{{ nameTitle }}</th>
-            <th class="bb-book-list-table-download-pdf">{{ downloadTitle }}</th>
+            <th class="mr-book-list-table-download-pdf">{{ downloadTitle }}</th>
         </tr>
         </thead>
         <tbody>
@@ -39,7 +39,7 @@
                         {{ element.name }}
                     {% endif %}
                 </th>
-                <td class="bb-book-list-table-download-pdf">
+                <td class="mr-book-list-table-download-pdf">
                     {% if element.pdfDocument is not null %}
                         <a href="{{ path('sonata_media_download', {'id': element.pdfDocument|sonata_urlsafeid }) }}">
                             {{ include('site/book/_pdf_icon.html.twig') }}

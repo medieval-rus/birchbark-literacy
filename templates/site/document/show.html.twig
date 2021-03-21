@@ -1,0 +1,236 @@
+{#
+# This file is part of «Birchbark Literacy from Medieval Rus» database.
+#
+# Copyright (c) Department of Linguistic and Literary Studies of the University of Padova
+#
+# «Birchbark Literacy from Medieval Rus» database is free software:
+# you can redistribute it and/or modify it under the terms of the
+# GNU General Public License as published by the Free Software Foundation, version 3.
+#
+# «Birchbark Literacy from Medieval Rus» database is distributed
+# in the hope  that it will be useful, but WITHOUT ANY WARRANTY; without even
+# the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code. If you have not received
+# a copy of the GNU General Public License along with
+# «Birchbark Literacy from Medieval Rus» database,
+# see <http://www.gnu.org/licenses/>.
+#}
+
+{%- extends 'site/base.html.twig' -%}
+
+{% import _self as self %}
+
+{%- block title -%}{{ documentFormatter.label(document) }}{%- endblock -%}
+
+{%- block page_title -%}
+    <h1>
+        {{ documentFormatter.label(document) }}
+        {%- if document.isPreliminaryPublication -%}
+            <span class="preliminary-publication">{{ 'preliminaryPublication'|transWithContext(translationContext) }}</span>
+        {%- endif -%}
+    </h1>
+{%- endblock -%}
+
+{%- block page_content -%}
+    <table class="mr-show-table table table-sm table-bordered">
+        <tbody>
+            {{ self.format_text_row(translationContext, 'town', documentFormatter.town(document)) }}
+            {{ self.format_text_row(translationContext, 'conventionalDate', documentFormatter.conventionalDateWithDescription(document)) }}
+            {{ self.format_text_row(translationContext, 'stratigraphicalDate', document.stratigraphicalDate) }}
+            {{ self.format_text_row(translationContext, 'nonStratigraphicalDate', document.nonStratigraphicalDate) }}
+            {{ self.format_text_row(translationContext, 'stateOfPreservation', document.stateOfPreservation.name) }}
+            {{ self.format_text_row(translationContext, 'excavation', documentFormatter.excavation(document)) }}
+            {{ self.format_text_row(translationContext, 'category', documentFormatter.category(document)) }}
+            {{ self.format_text_row(translationContext, 'description', documentFormatter.description(document)) }}
+            {{ self.format_text_row(translationContext, 'dndSection', self.format_dnd_section_content(translationContext, document.dndSection)) }}
+            {{ self.format_text_row(translationContext, 'ngbVolume', document.ngbVolume) }}
+            {{ self.format_text_row(translationContext, 'literature', documentFormatter.literature(document)) }}
+            {{ self.format_text_row(translationContext, 'storagePlace', documentFormatter.storagePlace(document)) }}
+            {{ self.format_images_row(translationContext, 'photos', document.photos) }}
+            {{ self.format_images_row(translationContext, 'drawings', document.drawings) }}
+            {{ self.format_original_text_row(translationContext, 'originalText', document) }}
+            {{ self.format_text_row(translationContext, 'translatedText', self.format_translated_text_content(translationContext, document)) }}
+        </tbody>
+    </table>
+    {{ include('site/document/_photoswipe_layout.html.twig') }}
+{%- endblock -%}
+
+{%- macro format_text_row(translationContext, labelTranslationKey, content) -%}
+
+    {% import _self as self %}
+
+    {% if content is iterable %}
+        {% set content = content|join(', ') %}
+    {% endif %}
+
+    {% if content is same as (true) %}
+        {% set content = 'global.type.bool.true'|trans %}
+    {% elseif content is same as (false) %}
+        {% set content = 'global.type.bool.false'|trans %}
+    {% endif %}
+
+    {{ self.fill_row(self.translate_field_label(translationContext, labelTranslationKey), content|default('-')) }}
+{%- endmacro -%}
+
+{%- macro format_original_text_row(translationContext, labelTranslationKey, document) -%}
+    {% import _self as self %}
+
+    {{ self.fill_row(self.get_original_text_row_th_content(translationContext, labelTranslationKey, document), self.get_original_text_row_td_content(translationContext, document)) }}
+{%- endmacro -%}
+
+{%- macro translate_field_label(translationContext, labelTranslationKey) -%}
+    {{ ('fields.'~labelTranslationKey)|transWithContext(translationContext) }}
+{%- endmacro -%}
+
+{%- macro fill_row(thContent, tdContend) -%}
+    <tr>
+        <th scope="row">{{ thContent|raw }}</th>
+        <td>{{ tdContend|raw }}</td>
+    </tr>
+{%- endmacro -%}
+
+{%- macro get_original_text_row_th_content(translationContext, labelTranslationKey, document) -%}
+    {% import _self as self %}
+
+    {%- set downloadFontLinkContent -%}
+        <br><a href="/build/fonts/novgorod-unicode-2012/novgorod-unicode-2012.ttf" target="_blank">({{ 'downloadFont'|transWithContext(translationContext) }})</a>
+    {%- endset -%}
+
+    {%- set ngb12amendment = documentFormatter.ngb12amendment(document) -%}
+
+    {%- if ngb12amendment is not null -%}
+        {%- set pathToMedia -%}{%- path ngb12amendment.media, 'reference' -%}{%- endset -%}
+        {%- set ammendmentContent -%}
+            <br><a href="{{ pathToMedia }}" target="_blank">{{ 'ngb12Amendment'|transWithContext(translationContext) }}</a>
+        {%- endset -%}
+    {%- endif -%}
+
+    {{ (self.translate_field_label(translationContext, labelTranslationKey) ~ downloadFontLinkContent ~ ammendmentContent|default(''))|raw }}
+{%- endmacro -%}
+
+{%- macro get_original_text_row_td_content(translationContext, document) -%}
+    {% import _self as self %}
+
+    {{ self.format_original_text_content(translationContext, document) }}
+{%- endmacro -%}
+
+{%- macro format_original_text_content(translationContext, document) -%}
+    {% import _self as self %}
+    <div data-original-text-container class="original-text-container">
+        {{ self.format_original_text_block(documentFormatter.originalTextWithoutDivisionIntoWords(document), 'without-spaces') }}
+        {{ self.format_original_text_block(documentFormatter.originalTextWithDivisionIntoWords(document), 'with-spaces') }}
+        <div data-original-text-switch class="mr-spoiler-button mr-submit-button mr-submit-button-dark">
+            <span class="toggler-text without-spaces">{{ 'showOriginalTextWithDivisionIntoWords'|transWithContext(translationContext) }}</span>
+            <span class="toggler-text with-spaces">{{ 'showOriginalTextWithoutDivisionIntoWords'|transWithContext(translationContext) }}</span>
+        </div>
+    </div>
+{%- endmacro -%}
+
+{%- macro format_original_text_block(contentParts, wrapperClass) -%}
+    {%- for contentPieces in contentParts -%}
+        <div class="original-text-wrapper {{ wrapperClass }}">
+            <div class="text-area original-text">
+                {%- for piece in contentPieces -%}
+                    {%- set piece_text = piece.text|replace({'^': ''})|nl2br -%}
+
+                    {%- if piece is instanceof('\\App\\Services\\Document\\OriginalText\\MarkupParser\\TextPiece\\NormalTextPiece') -%}
+                        {{- piece_text|raw -}}
+                    {%- elseif piece is instanceof('\\App\\Services\\Document\\OriginalText\\MarkupParser\\TextPiece\\LeftSuperscriptedTextPiece') -%}
+                        <sup class="direction-left">{{- piece_text|raw -}}</sup>
+                    {%- elseif piece is instanceof('\\App\\Services\\Document\\OriginalText\\MarkupParser\\TextPiece\\RightSuperscriptedTextPiece') -%}
+                        <sup class="direction-right">{{- piece_text|raw -}}</sup>
+                    {%- elseif piece is instanceof('\\App\\Services\\Document\\OriginalText\\MarkupParser\\TextPiece\\LeftSubscriptedTextPiece') -%}
+                        <sub class="direction-left">{{- piece_text|raw -}}</sub>
+                    {%- elseif piece is instanceof('\\App\\Services\\Document\\OriginalText\\MarkupParser\\TextPiece\\UpSuperscriptedTextPiece') -%}
+                        <sup>{{- piece_text|raw -}}</sup>
+                    {%- elseif piece is instanceof('\\App\\Services\\Document\\OriginalText\\MarkupParser\\TextPiece\\CommentTextPiece') -%}
+                        <span class="comment">{{- piece_text|raw -}}</span>
+                    {%- endif -%}
+                {%- endfor -%}
+            </div>
+        </div>
+    {%- endfor -%}
+{%- endmacro -%}
+
+{%- macro format_translated_text_content(translationContext, document) -%}
+    {% import _self as self %}
+    <div data-translated-text-container class="mr-translated-text-container hidden">
+        <details>
+            <summary class="mr-spoiler-button mr-submit-button mr-submit-button-dark">
+                <span class="toggler-text show-translated-text">{{ 'showTranslatedText'|transWithContext(translationContext) }}</span>
+                <span class="toggler-text hide-translated-text">{{ 'hideTranslatedText'|transWithContext(translationContext) }}</span>
+            </summary>
+            <div class="translated-text-wrapper">
+                {%- for translatedTextPart in documentFormatter.translatedText(document) -%}
+                    <div>
+                        {{ translatedTextPart|nl2br }}
+                    </div>
+                {%- endfor -%}
+            </div>
+        </details>
+    </div>
+{%- endmacro -%}
+
+{%- macro format_dnd_section_content(translationContext, dndSection) -%}
+    {%- if dndSection is not null -%}
+        {%- set sectionName = dndSection.name -%}
+        {%- if dndSection.media is not null -%}
+            {%- set pathToMedia -%}{%- path dndSection.media, 'reference' -%}{%- endset -%}
+            {%- set sectionName -%}<a href="{{ pathToMedia }}" target="_blank">{{ sectionName }}</a>{%- endset -%}
+        {%- endif -%}
+        {{ sectionName|raw }}
+    {%- else -%}
+        {{ 'notDescribedInDnd'|transWithContext(translationContext) }}
+    {%- endif -%}
+{%- endmacro -%}
+
+{%- macro format_images_row(translationContext, name, medias) -%}
+    {% import _self as self %}
+    {%- if medias|length -%}
+        {{ self.fill_not_titled_row(self.format_images_content(name, medias)) }}
+    {%- endif -%}
+{%- endmacro -%}
+
+{%- macro fill_not_titled_row(tdContend) -%}
+    <tr>
+        <td colspan="2">{{ tdContend|raw }}</td>
+    </tr>
+{%- endmacro -%}
+
+{%- macro format_images_content(name, medias) -%}
+    <div
+            class="gallery"
+            data-images-container="{{ name }}"
+            itemscope
+            itemtype="http://schema.org/ImageGallery"
+    >
+        {%- for media in medias -%}
+
+            <figure
+                    itemprop="associatedMedia"
+                    itemscope
+                    itemtype="http://schema.org/ImageObject"
+                    data-download-url="{{ path('sonata_media_download', {'id': media|sonata_urlsafeid }) }}"
+            >
+                <a
+                        href="{%- path media, 'reference' -%}"
+                        itemprop="contentUrl"
+                        data-width="{{ media.width }}"
+                        data-height="{{ media.height }}"
+                >
+                    <img
+                            src="{%- path media, 'showPageThumbnail' -%}"
+                            itemprop="thumbnail"
+                            alt="{{ media.description }}"
+                    />
+                </a>
+                <figcaption itemprop="caption description">{{ media.name }}</figcaption>
+            </figure>
+        {%- endfor -%}
+    </div>
+{%- endmacro -%}
+
+

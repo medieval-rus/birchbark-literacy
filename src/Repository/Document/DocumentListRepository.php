@@ -58,10 +58,6 @@ final class DocumentListRepository extends ServiceEntityRepository
 
         return $favoritesList
             ->getDocuments()
-            ->filter(
-                function (Document $document): bool {
-                    return $document->getIsShownOnSite();
-                }
-            );
+            ->filter(fn (Document $document): bool => $document->getIsShownOnSite());
     }
 }

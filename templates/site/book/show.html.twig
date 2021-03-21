@@ -27,7 +27,7 @@
     {%- import 'site/book/macro__book_helper.html.twig' as book_helper -%}
 
     {% if book.image is not null %}
-        {% thumbnail book.image, 'showPagePreview' with {'class': 'bb-book-show-image'} %}
+        {% thumbnail book.image, 'showPagePreview' with {'class': 'mr-book-show-image'} %}
     {% endif %}
 
     {% if book.description is not null %}
@@ -45,6 +45,6 @@
     {% endif %}
 
     {% if book.parts|length > 0 %}
-        {{ book_helper.book_list_table(book.parts, false, 'table.column.partName'|transWithContext(translationContext), 'table.column.download'|transWithContext(translationContext)) }}
+        {{ book_helper.book_list_table(book.parts|sort((a, b) => a.id <=> b.id), false, 'table.column.partName'|transWithContext(translationContext), 'table.column.download'|transWithContext(translationContext)) }}
     {% endif %}
 {% endblock %}

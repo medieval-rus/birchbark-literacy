@@ -20,110 +20,250 @@
  */
 
 @import '~bootstrap/scss/bootstrap';
+@import './variables';
 
-$headerHeight: 50px;
-$footerHeight: 60px;
+$headerHeight: 226px;
+$footerHeight: 108px;
 
 html {
   position: relative;
   min-height: 100%;
+}
 
-  body {
-    margin-bottom: $footerHeight;
+body {
+  background-color: $lightColor;
+  color: $darkColor;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+  min-width: 992px;
+  margin-bottom: $footerHeight;
+}
+
+a {
+  color: $linkColor;
+
+  &:hover {
+    text-decoration: none;
   }
 
-  a {
-    &:hover {
-      text-decoration: none;
+  &:focus, &:hover {
+    color: $linkColor;
+  }
+
+  &.image-link {
+    display: block;
+
+    img {
+      display: block;
     }
-  }
 
-  .mr-header {
-    height: $headerHeight;
-
-    .mr-navbar-brand {
-      line-height: $headerHeight;
-      padding-top: 0;
-      padding-bottom: 0;
+    &-right {
+      float: right;
     }
-  }
 
-  .mr-middle-line {
-    @extend .bg-info;
-    @extend .text-white;
+    &-left {
+      float: left;
+    }
 
-    $verticalPadding: 6px;
-    text-align: center;
-    padding-top: $verticalPadding;
-    padding-bottom: $verticalPadding;
-    font-weight: 500;
-  }
+    &-relative {
+      position: relative;
 
-  .mr-sidebar {
-    @extend .bg-light;
-
-    position: -webkit-sticky;
-    position: sticky;
-    min-height: calc(100vh - #{$headerHeight} - #{$footerHeight});
-    padding-top: 1.5rem;
-    overflow-x: hidden;
-    overflow-y: auto;
-
-    .mr-nav {
-      .mr-nav-item {
-
-        .mr-nav-link {
-          padding-left: 0;
-          padding-right: 0;
-          color: $body-color;
-        }
-
-        &.mr-active {
-          .mr-nav-link {
-            color: $blue;
-          }
-
-          &:hover {
-            .mr-nav-link {
-              color: $blue;
-            }
-          }
-        }
-
-        &:hover {
-          .mr-nav-link {
-            color: $gray-600;
-          }
-        }
+      &-middle {
+        top: 50%;
+        transform: translateY(-50%);
       }
     }
   }
+}
 
-  .mr-main {
-    padding-top: 1.5rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+.mr-header {
+  height: $headerHeight;
+  background: url('../../../images/header-bg.gif') repeat-x top left;
 
-    .mr-subtitle {
-      font-style: italic;
-      font-size: 0.9rem;
-    }
+  .logo-block {
+    padding-top: 1px;
   }
 
-  .mr-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    min-height: $footerHeight;
-    background-color: #f5f5f5;
+  .mr-navbar-brand {
+    line-height: $headerHeight;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
 
-    .mr-footer-content {
-      @extend .text-muted;
+.mr-navbar {
+  background-color: $darkColor;
+  height: 54px;
 
-      $footerContentVerticalPadding: 10px;
-      line-height: 1.5;
-      padding-top: $footerContentVerticalPadding;
-      padding-bottom: $footerContentVerticalPadding;
+  .mr-search-form {
+    .form-group {
+      display: inline-block;
+      margin-bottom: 0;
+
+      label {
+        color: $veryLightColor;
+        font-weight: bold;
+      }
+
+      .form-control {
+        display: inline-block;
+        width: initial;
+        vertical-align: middle;
+        margin-left: 10px;
+      }
     }
+  }
+}
+
+.mr-middle-line {
+  @extend .bg-info;
+  @extend .text-white;
+
+  $verticalPadding: 6px;
+  text-align: center;
+  padding-top: $verticalPadding;
+  padding-bottom: $verticalPadding;
+  font-weight: 500;
+}
+
+ul.mr-sidebar {
+  margin-top: 10px;
+
+  > li {
+
+    a {
+      color: $darkColor;
+      font-size: 19px;
+
+      &:focus, &:hover {
+        color: $darkColor;
+      }
+    }
+
+    &.mr-active {
+      font-weight: bold;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.mr-container {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.mr-submit-button {
+  font-weight: bold;
+
+  &.mr-submit-button-light {
+    background-color: $veryLightColor;
+    color: $darkColor;
+  }
+
+  &.mr-submit-button-dark {
+    background-color: $darkColor;
+    color: $whiteColor;
+  }
+}
+
+.mr-main {
+  .mr-subtitle {
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+}
+
+.mr-bottom {
+  background: url('../../../images/footer-bg.gif') repeat-x bottom left;
+  height: 150px;
+}
+
+.mr-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: $footerHeight;
+  background-color: $darkColor;
+  color: $lightColor;
+  overflow: hidden;
+
+  .mr-footer-content {
+    $footerContentVerticalPadding: 10px;
+    line-height: 1.5;
+    padding-top: $footerContentVerticalPadding;
+    padding-bottom: $footerContentVerticalPadding;
+  }
+
+  .mr-author {
+    font-size: 80%;
+    font-weight: normal;
+
+    a {
+      color: $lightColor;
+    }
+  }
+}
+
+.mr-hard-title {
+  border-bottom: 2px solid $darkColor;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+}
+
+.pagination {
+  .page-item {
+    .page-link {
+      color: inherit;
+      background-color: transparent;
+      border-color: $darkColor;
+
+      &:hover {
+        color: $darkColor;
+        background-color: $veryLightColor;
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 0.2rem rgba($veryLightColor, 50%);
+      }
+    }
+
+    &.active {
+      .page-link {
+        color: $lightColor;
+        background-color: $darkColor;
+        border-color: $darkColor;
+      }
+    }
+
+    &.disabled {
+      color: inherit;
+      background-color: transparent;
+      border-color: $darkColor;
+    }
+  }
+}
+
+.mr-btn {
+  font-weight: bold;
+
+  &-dark {
+    background-color: $darkColor;
+    border-color: $darkColor;
+    color: $lightColor;
+  }
+
+  &-light {
+    background-color: $lightColor;
+    border-color: $darkColor;
+    color: $darkColor;
+  }
+
+  &-very-light {
+    background-color: $veryLightColor;
+    border-color: $darkColor;
+    color: $darkColor;
   }
 }

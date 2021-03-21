@@ -87,7 +87,6 @@ class Book
      *     mappedBy="book",
      *     orphanRemoval=true
      * )
-     * @ORM\OrderBy({"id": "ASC"})
      */
     private $parts;
 

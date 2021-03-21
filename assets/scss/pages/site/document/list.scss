@@ -1,0 +1,87 @@
+/*
+ * This file is part of «Birchbark Literacy from Medieval Rus» database.
+ *
+ * Copyright (c) Department of Linguistic and Literary Studies of the University of Padova
+ *
+ * «Birchbark Literacy from Medieval Rus» database is free software:
+ * you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, version 3.
+ *
+ * «Birchbark Literacy from Medieval Rus» database is distributed
+ * in the hope  that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code. If you have not received
+ * a copy of the GNU General Public License along with
+ * «Birchbark Literacy from Medieval Rus» database,
+ * see <http://www.gnu.org/licenses/>.
+ */
+
+@import '../base';
+@import 'preliminary-publication';
+@import '../variables';
+@import '~jquery-ui/themes/base/theme.css';
+@import '~jquery-ui/themes/base/slider.css';
+
+.mr-filter-container {
+  form {
+    padding-right: 15px;
+    padding-left: 15px;
+
+    .vyfony-filterable-table-bundle-form-group {
+      @extend .col-6;
+    }
+
+    .vyfony-filterable-table-bundle-button-form-group {
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+  }
+}
+
+table[data-vyfony-filterable-table] {
+  table-layout: fixed;
+  color: inherit;
+  margin-left: 15px;
+  margin-right: 15px;
+
+  th:nth-child(1), td:nth-child(1) {
+    width: 235px;
+  }
+
+  th:nth-child(2), td:nth-child(2) {
+    width: 125px;
+  }
+
+  th:nth-child(3), td:nth-child(3) {
+    width: 120px;
+  }
+
+  thead {
+    th {
+      text-align: center;
+      vertical-align: middle;
+    }
+  }
+
+  tbody {
+    tr {
+      td {
+        .conventional-date-container {
+          .bias-arrow {
+            opacity: 0;
+            user-select: none;
+          }
+
+          &.biased-left .bias-arrow.left-bias-arrow,
+          &.biased-right .bias-arrow.right-bias-arrow {
+            opacity: inherit;
+            user-select: inherit;
+          }
+        }
+      }
+    }
+  }
+}

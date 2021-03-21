@@ -20,3 +20,9 @@
  */
 
 @import '../base';
+@import 'book-table';
+
+.mr-book-show-image {
+  float: right;
+  margin-left: 50px;
+}

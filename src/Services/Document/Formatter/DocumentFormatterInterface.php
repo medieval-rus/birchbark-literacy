@@ -23,12 +23,13 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\DocumentFormatter;
+namespace App\Services\Document\Formatter;
 
-use App\Entity\Document\ConventionalDateCell;
+use App\Entity\Document\Amendment;
 use App\Entity\Document\Document;
+use App\Entity\Document\Excavation;
 use App\Entity\MediaBundle\Media;
-use Doctrine\Common\Collections\Collection;
+use App\Services\Document\OriginalText\MarkupParser\TextPiece\TextPieceInterface;
 
 interface DocumentFormatterInterface
 {
@@ -40,26 +41,42 @@ interface DocumentFormatterInterface
 
     public function getDescription(Document $document): string;
 
-    public function getNumber(Document $document): string;
-
-    public function getIsPreliminaryPublication(Document $document): bool;
-
     public function getConventionalDate(Document $document): string;
 
-    public function formatConventionalDate(ConventionalDateCell $conventionalDateCell): string;
+    public function getConventionalDateWithBiases(Document $document): string;
 
-    /**
-     * @return Collection|Media[]
-     */
-    public function getPhotos(Document $document): Collection;
-
-    /**
-     * @return Collection|Media[]
-     */
-    public function getSketches(Document $document): Collection;
+    public function getConventionalDateWithDescription(Document $document): string;
 
     /**
      * @return array|Media[]
      */
     public function getImages(Document $document): array;
+
+    public function getCategory(Document $document): string;
+
+    public function getLiterature(Document $document): string;
+
+    public function getStoragePlace(Document $document): string;
+
+    public function getNgb12Amendment(Document $document): ?Amendment;
+
+    /**
+     * @return TextPieceInterface[][]
+     */
+    public function getOriginalTextWithoutDivisionIntoWords(Document $document): array;
+
+    /**
+     * @return TextPieceInterface[][]
+     */
+    public function getOriginalTextWithDivisionIntoWords(Document $document): array;
+
+    /**
+     * @return string[]
+     */
+    public function getTranslatedText(Document $document): array;
+
+    public function getExcavation(Document $document): string;
+
+    // todo move to a separate service
+    public function getExcavationWithTown(Excavation $excavation): string;
 }

@@ -48,4 +48,5 @@ return [
     JMS\SerializerBundle\JMSSerializerBundle::class => ['all' => true],
     Sonata\MediaBundle\SonataMediaBundle::class => ['all' => true],
     Vyfony\Bundle\BibliographyBundle\VyfonyBibliographyBundle::class => ['all' => true],
+    Vyfony\Bundle\FilterableTableBundle\VyfonyFilterableTableBundle::class => ['all' => true],
 ];

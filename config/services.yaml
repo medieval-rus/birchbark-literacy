@@ -47,3 +47,11 @@ services:
     arguments: [ '@knp_menu.factory', '@request_stack' ]
     tags:
       - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
+
+  App\Services\Document\OriginalText\MarkupParser\OriginalTextMarkupParser:
+    calls:
+      - [addRuleParser, ['@App\Services\Document\OriginalText\MarkupParser\RuleParser\CommentRuleParser']]
+      - [addRuleParser, ['@App\Services\Document\OriginalText\MarkupParser\RuleParser\UpSuperscriptRuleParser']]
+      - [addRuleParser, ['@App\Services\Document\OriginalText\MarkupParser\RuleParser\RightSuperscriptRuleParser']]
+      - [addRuleParser, ['@App\Services\Document\OriginalText\MarkupParser\RuleParser\LeftSuperscriptRuleParser']]
+      - [addRuleParser, ['@App\Services\Document\OriginalText\MarkupParser\RuleParser\LeftSubscriptRuleParser']]

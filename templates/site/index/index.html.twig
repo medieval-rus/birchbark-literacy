@@ -43,7 +43,7 @@
     {% import _self as self %}
 
 {#    birch_bark_document_show#}
-    <a href="{{ path('index', {'town': documentFormatter.urlEncodedTownAlias(document), 'number': document.number}) }}">
+    <a href="{{ path('document__show', {'town': documentFormatter.urlEncodedTownAlias(document), 'number': document.number}) }}">
         <div class="mr-card card">
             <div class="card-body">
                 <h4 class="card-title">{{ documentFormatter.label(document) }}</h4>
