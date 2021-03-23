@@ -52,14 +52,14 @@ final class DocumentsSearchType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'attr' => [
-                'class' => 'mr-search-form',
-            ],
-            'action' => $this->router->generate('index'),
-            'method' => 'GET',
-            'csrf_protection' => false,
-        ]);
+        $resolver->setDefaults(
+            [
+                'attr' => ['class' => 'mr-search-form'],
+                'action' => $this->router->generate('document__list'),
+                'method' => 'GET',
+                'csrf_protection' => false,
+            ]
+        );
     }
 
     public function getBlockPrefix(): string
