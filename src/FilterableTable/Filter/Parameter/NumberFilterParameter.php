@@ -25,7 +25,7 @@ declare(strict_types=1);
 
 namespace App\FilterableTable\Filter\Parameter;
 
-use App\Repository\Document\ConventionalDateCellRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -33,29 +33,21 @@ use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\Expression
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\FilterParameterInterface;
 use Vyfony\Bundle\FilterableTableBundle\Persistence\QueryBuilder\Alias\AliasFactoryInterface;
 
-final class ConventionalDateFinalYearFilterParameter implements FilterParameterInterface, ExpressionBuilderInterface
+final class NumberFilterParameter implements FilterParameterInterface, ExpressionBuilderInterface
 {
     /**
      * @var AliasFactoryInterface
      */
     private $aliasFactory;
 
-    /**
-     * @var ConventionalDateCellRepository
-     */
-    private $conventionalDateCellRepository;
-
-    public function __construct(
-        AliasFactoryInterface $aliasFactory,
-        ConventionalDateCellRepository $conventionalDateCellRepository
-    ) {
+    public function __construct(AliasFactoryInterface $aliasFactory)
+    {
         $this->aliasFactory = $aliasFactory;
-        $this->conventionalDateCellRepository = $conventionalDateCellRepository;
     }
 
     public function getQueryParameterName(): string
     {
-        return 'conventionalDateFinalYear';
+        return 'number';
     }
 
     public function getType(): string
@@ -66,7 +58,9 @@ final class ConventionalDateFinalYearFilterParameter implements FilterParameterI
     public function getOptions(EntityManager $entityManager): array
     {
         return [
-            'data' => $this->conventionalDateCellRepository->getMaximalConventionalDate(),
+            'attr' => [
+                'data-mr-number-filter' => true,
+            ],
         ];
     }
 
@@ -79,15 +73,41 @@ final class ConventionalDateFinalYearFilterParameter implements FilterParameterI
             return null;
         }
 
-        $conventionalDateFinalYear = (int) $formData;
+        $number = (string) $formData;
 
         $queryBuilder
-            ->innerJoin(
-                $entityAlias.'.conventionalDate',
-                $conventionalDateAlias = $this->aliasFactory->createAlias(static::class, 'conventionalDate')
+            ->setParameter(
+                $equalityParameter = $this->createParameter('number'),
+                $number,
+                Types::STRING
             )
-        ;
+            ->setParameter(
+                $composedLeftParameter = $this->createParameter('number'),
+                $number.'/%',
+                Types::STRING
+            )
+            ->setParameter(
+                $composedRightParameter = $this->createParameter('number'),
+                '%/'.$number,
+                Types::STRING
+            )
+            ->setParameter(
+                $composedMiddleParameter = $this->createParameter('number'),
+                '%/'.$number.'/%',
+                Types::STRING
+            );
 
-        return (string) $queryBuilder->expr()->lte($conventionalDateAlias.'.finalYear', $conventionalDateFinalYear);
+        return (string) $queryBuilder->expr()->orX(
+            $queryBuilder->expr()->eq($entityAlias.'.number', $equalityParameter),
+            $queryBuilder->expr()->like($entityAlias.'.number', $composedLeftParameter),
+            $queryBuilder->expr()->like($entityAlias.'.number', $composedRightParameter),
+            $queryBuilder->expr()->like($entityAlias.'.number', $composedMiddleParameter),
+        );
+    }
+
+    // todo move to AliasFactory
+    private function createParameter(string $parameterName): string
+    {
+        return strtolower(':'.$parameterName.'_'.uniqid());
     }
 }

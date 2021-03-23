@@ -30,6 +30,7 @@ use App\FilterableTable\Filter\Parameter\ContentCategoryFilterParameter;
 use App\FilterableTable\Filter\Parameter\ConventionalDateFinalYearFilterParameter;
 use App\FilterableTable\Filter\Parameter\ConventionalDateInitialYearFilterParameter;
 use App\FilterableTable\Filter\Parameter\ExcavationFilterParameter;
+use App\FilterableTable\Filter\Parameter\NumberFilterParameter;
 use App\FilterableTable\Filter\Parameter\StateOfPreservationFilterParameter;
 use App\FilterableTable\Filter\Parameter\TownFilterParameter;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\AbstractFilterConfigurator;
@@ -70,13 +71,19 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
      */
     private $conventionalDateFinalYearFilterParameter;
 
+    /**
+     * @var NumberFilterParameter
+     */
+    private $numberFilterParameter;
+
     public function __construct(
         TownFilterParameter $townFilterParameter,
         ExcavationFilterParameter $excavationFilterParameter,
         StateOfPreservationFilterParameter $stateOfPreservationFilterParameter,
         ContentCategoryFilterParameter $contentCategoryFilterParameter,
         ConventionalDateInitialYearFilterParameter $conventionalDateInitialYearFilterParameter,
-        ConventionalDateFinalYearFilterParameter $conventionalDateFinalYearFilterParameter
+        ConventionalDateFinalYearFilterParameter $conventionalDateFinalYearFilterParameter,
+        NumberFilterParameter $numberFilterParameter
     ) {
         $this->townFilterParameter = $townFilterParameter;
         $this->excavationFilterParameter = $excavationFilterParameter;
@@ -84,6 +91,7 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
         $this->contentCategoryFilterParameter = $contentCategoryFilterParameter;
         $this->conventionalDateInitialYearFilterParameter = $conventionalDateInitialYearFilterParameter;
         $this->conventionalDateFinalYearFilterParameter = $conventionalDateFinalYearFilterParameter;
+        $this->numberFilterParameter = $numberFilterParameter;
     }
 
     public function createSubmitButtonOptions(): array
@@ -158,6 +166,7 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
     protected function createFilterParameters(): array
     {
         return [
+            $this->numberFilterParameter,
             $this->conventionalDateInitialYearFilterParameter,
             $this->conventionalDateFinalYearFilterParameter,
             $this->townFilterParameter,

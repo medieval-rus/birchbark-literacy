@@ -66,10 +66,6 @@ final class ConventionalDateInitialYearFilterParameter implements FilterParamete
     public function getOptions(EntityManager $entityManager): array
     {
         return [
-            'attr' => [
-                'class' => '',
-                'data-vyfony-filterable-table-filter-parameter' => true,
-            ],
             'data' => $this->conventionalDateCellRepository->getMinimalConventionalDate(),
         ];
     }

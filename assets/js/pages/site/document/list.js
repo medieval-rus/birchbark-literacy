@@ -24,6 +24,8 @@ import 'jquery-ui/ui/widgets/slider';
 
 $(function() {
 
+    $('[data-mr-number-filter]').val('');
+
     const conventionalDateLabelYearsElement = $('#conventional-date-label-years');
     const conventionalDateInitialYearElement = $('#conventionalDateInitialYear');
     const conventionalDateFinalYearElement = $('#conventionalDateFinalYear');
