@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "efb907a201d2dad430fb69608e6e7876",
+    "content-hash": "5938b6e967bc02f5f304dbf598c5846d",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -3752,16 +3752,16 @@
         },
         {
             "name": "sonata-project/exporter",
-            "version": "2.5.2",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/exporter.git",
-                "reference": "1eb43c310cc30b72073cd099992fdd061dbd69b5"
+                "reference": "33e9f0c991dcec6225312a0e4055d03dc2216eb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/exporter/zipball/1eb43c310cc30b72073cd099992fdd061dbd69b5",
-                "reference": "1eb43c310cc30b72073cd099992fdd061dbd69b5",
+                "url": "https://api.github.com/repos/sonata-project/exporter/zipball/33e9f0c991dcec6225312a0e4055d03dc2216eb4",
+                "reference": "33e9f0c991dcec6225312a0e4055d03dc2216eb4",
                 "shasum": ""
             },
             "require": {
@@ -3826,7 +3826,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/exporter/issues",
-                "source": "https://github.com/sonata-project/exporter/tree/2.5.2"
+                "source": "https://github.com/sonata-project/exporter/tree/2.6.0"
             },
             "funding": [
                 {
@@ -3846,7 +3846,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-03-21T20:17:45+00:00"
+            "time": "2021-03-24T13:36:11+00:00"
         },
         {
             "name": "sonata-project/form-extensions",
@@ -9555,16 +9555,16 @@
         },
         {
             "name": "vyfony/filterable-table-bundle",
-            "version": "v0.5.1",
+            "version": "v0.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vyfony/filterable-table-bundle.git",
-                "reference": "c4fefd52ab46ba740d085663be179ef792ccf037"
+                "reference": "863d7bf8f1dd54bafc90118aea5e361b5c30a236"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vyfony/filterable-table-bundle/zipball/c4fefd52ab46ba740d085663be179ef792ccf037",
-                "reference": "c4fefd52ab46ba740d085663be179ef792ccf037",
+                "url": "https://api.github.com/repos/vyfony/filterable-table-bundle/zipball/863d7bf8f1dd54bafc90118aea5e361b5c30a236",
+                "reference": "863d7bf8f1dd54bafc90118aea5e361b5c30a236",
                 "shasum": ""
             },
             "require": {
@@ -9624,9 +9624,9 @@
             ],
             "support": {
                 "issues": "https://github.com/vyfony/filterable-table-bundle/issues",
-                "source": "https://github.com/vyfony/filterable-table-bundle/tree/v0.5.1"
+                "source": "https://github.com/vyfony/filterable-table-bundle/tree/v0.5.4"
             },
-            "time": "2021-03-16T18:11:14+00:00"
+            "time": "2021-03-25T02:17:31+00:00"
         }
     ],
     "packages-dev": [

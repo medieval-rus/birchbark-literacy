@@ -30,7 +30,7 @@ use App\Services\Document\Formatter\DocumentFormatterInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\FilterConfiguratorInterface;
-use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\RouteConfiguration;
+use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Routing\RouteConfiguration;
 use Vyfony\Bundle\FilterableTableBundle\Table\Checkbox\CheckboxHandlerInterface;
 use Vyfony\Bundle\FilterableTableBundle\Table\Configurator\AbstractTableConfigurator;
 use Vyfony\Bundle\FilterableTableBundle\Table\Metadata\Column\ColumnMetadata;
