@@ -58,6 +58,11 @@ class DndSection
      */
     private $media;
 
+    public function __toString(): string
+    {
+        return (string) $this->name;
+    }
+
     public function getId(): int
     {
         return $this->id;

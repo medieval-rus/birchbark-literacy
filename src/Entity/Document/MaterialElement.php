@@ -257,7 +257,7 @@ class MaterialElement
         return $this;
     }
 
-    public function getMaterial(): Material
+    public function getMaterial(): ?Material
     {
         return $this->material;
     }

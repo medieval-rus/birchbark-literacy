@@ -111,6 +111,8 @@ controller:
       showTranslatedText: Показать перевод
       hideTranslatedText: Скрыть перевод
       ngb12Amendment: см. поправки из XII тома НГБ
+      preliminaryPublication: предварительная публикация
+      notDescribedInDnd: не описана в ДНД
 
 # this global subspace should be removed
 global:

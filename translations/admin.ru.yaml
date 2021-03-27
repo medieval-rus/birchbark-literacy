@@ -227,15 +227,28 @@ form:
     tab:
       basicInformation:
         label: Основная информация
+      contentElements:
+        label: Элементы содержания
+      materialElements:
+        label: Материальные элементы
+      sources:
+        label: Источники
     section:
       basicInformation:
         label: Основная информация
       dates:
         label: Датировка
+      sources:
+        label: Источники
+      contentElements:
+        label: Элементы содержания
+      materialElements:
+        label: Материальные элементы
     fields:
       number: Номер
       town: Город
       isShownOnSite: Показывать грамоту на сайте
+      isPreliminaryPublication: Предварительная публикация
       scribe: Писец
       stateOfPreservation: Сохранность
       wayOfWriting: Способ письма
@@ -244,7 +257,39 @@ form:
       isConventionalDateBiasedForward: Условная дата смещена вперёд
       stratigraphicalDate: Стратиграфическая дата
       nonStratigraphicalDate: Внестратиграфическая дата
-
+      literature: Литература
+      dndSection: Статья ДНД
+      ngbVolume: Том НГБ
+      contentElements: Элементы содержания
+      materialElements: Материальные элементы
+  contentElement:
+    section:
+      basicInformation:
+        label: Основная информация
+    fields:
+      category: Категория
+      description: Описание
+      genre: Жанр
+      language: Язык
+      originalText: Текст
+      translatedText: Перевод
+  materialElement:
+    section:
+      basicInformation:
+        label: Основная информация
+      size:
+        label: Размеры
+    fields:
+      name: Название
+      partsCount: Количество элементов
+      comment: Комментарий
+      storagePlace: Место хранения
+      material: Материал
+      length: Длина
+      innerLength: Длина внутреннего слоя
+      width: Ширина
+      innerWidth: Ширина внутреннего слоя
+      diameter: Диаметр
 
 breadcrumb:
   link_post_list: Страницы
