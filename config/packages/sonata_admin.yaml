@@ -184,3 +184,17 @@ services:
       - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
+  admin.content_element:
+    class: App\Admin\Document\ContentElementAdmin
+    arguments: [ null, App\Entity\Document\ContentElement, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.material_element:
+    class: App\Admin\Document\MaterialElementAdmin
+    arguments: [ null, App\Entity\Document\MaterialElement, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }

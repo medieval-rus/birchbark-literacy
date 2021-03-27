@@ -99,6 +99,11 @@ class ContentElement
      */
     private $document;
 
+    public function __toString(): string
+    {
+        return (string) $this->description;
+    }
+
     public function getId(): int
     {
         return $this->id;

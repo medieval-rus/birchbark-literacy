@@ -29,7 +29,7 @@
     <h1>
         {{ documentFormatter.label(document) }}
         {%- if document.isPreliminaryPublication -%}
-            <span class="preliminary-publication">{{ 'preliminaryPublication'|transWithContext(translationContext) }}</span>
+            <span class="mr-preliminary-publication">{{ 'preliminaryPublication'|transWithContext(translationContext) }}</span>
         {%- endif -%}
     </h1>
 {%- endblock -%}

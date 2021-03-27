@@ -30,9 +30,9 @@ use Knp\Menu\ItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelType;
+use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Vyfony\Bundle\BibliographyBundle\Persistence\Entity\BibliographicRecord;
 
 final class DocumentAdmin extends AbstractEntityAdmin
 {
@@ -66,6 +66,11 @@ final class DocumentAdmin extends AbstractEntityAdmin
                         CheckboxType::class,
                         $this->createLabeledFormOptions('isShownOnSite', ['required' => false])
                     )
+                    ->add(
+                        'isPreliminaryPublication',
+                        CheckboxType::class,
+                        $this->createLabeledFormOptions('isPreliminaryPublication', ['required' => false])
+                    )
                     ->add('scribe', null, $this->createLabeledFormOptions('scribe'))
                     ->add('stateOfPreservation', null, $this->createLabeledFormOptions('stateOfPreservation'))
                     ->add('wayOfWriting', null, $this->createLabeledFormOptions('wayOfWriting'))
@@ -86,27 +91,46 @@ final class DocumentAdmin extends AbstractEntityAdmin
                     ->add('nonStratigraphicalDate', null, $this->createLabeledFormOptions('nonStratigraphicalDate'))
                 ->end()
             ->end()
-//            ->tab('form.tab.sources')
-//                ->with('form.group.sources')
-//                    ->add('literature', ModelType::class, [
-//                        'required' => false,
-//                        'class' => Record::class,
-//                        'property' => 'shortName',
-//                        'label' => 'birchBarkDocument.literature',
-//                        'multiple' => true,
-//                    ], [
-//                        'admin_code' => 'bibl.admin.bibliography.record',
-//                    ])
-//                    ->add('dndSection', TextType::class, array(
-//                        'required' => false,
-//                        'label' => 'birchBarkDocument.dndSection'
-//                    ))
-//                    ->add('ngbVolume', TextType::class, [
-//                        'required' => false,
-//                        'label' => 'birchBarkDocument.ngbVolume',
-//                    ])
-//                ->end()
-//            ->end()
+            ->tab($this->getTabLabel('contentElements'))
+                ->with($this->getSectionLabel('contentElements'))
+                    ->add(
+                        'contentElements',
+                        CollectionType::class,
+                        $this->createLabeledFormOptions('contentElements', ['required' => false]),
+                        [
+                            'edit' => 'inline',
+                        ]
+                    )
+                ->end()
+            ->end()
+            ->tab($this->getTabLabel('materialElements'))
+                ->with($this->getSectionLabel('materialElements'))
+                    ->add(
+                        'materialElements',
+                        CollectionType::class,
+                        $this->createLabeledFormOptions('materialElements', ['required' => false]),
+                        [
+                            'edit' => 'inline',
+                        ]
+                    )
+                ->end()
+            ->end()
+            ->tab($this->getTabLabel('sources'))
+                ->with($this->getSectionLabel('sources'))
+                    ->add(
+                        'literature',
+                        null,
+                        $this->createLabeledManyToManyFormOptions(
+                            'literature',
+                            [
+                                'class' => BibliographicRecord::class,
+                            ]
+                        )
+                    )
+                    ->add('dndSection', null, $this->createLabeledFormOptions('dndSection'))
+                    ->add('ngbVolume', null, $this->createLabeledFormOptions('ngbVolume'))
+                ->end()
+            ->end()
         ;
     }
 
