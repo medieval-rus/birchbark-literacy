@@ -77,9 +77,9 @@ final class MenuBuilder
             )
         ;
 
-        $menu
-            ->addChild('page.menu.news', ['route' => 'information__news'])
-        ;
+//         $menu
+//             ->addChild('page.menu.news', ['route' => 'information__news'])
+//         ;
 
         $menu
             ->addChild('page.menu.dataBase', ['route' => 'document__list'])
