@@ -55,6 +55,16 @@
             {{ self.format_text_row(translationContext, 'translatedText', self.format_translated_text_content(translationContext, document)) }}
         </tbody>
     </table>
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="container">
+            <a href="{{ path('document_document_edit', {'id': document.id}) }}"
+               target="_blank"
+               class="h5"
+            >
+                {{- 'admin'|transWithContext(translationContext) -}}
+            </a>
+        </div>
+    {% endif %}
     {{ include('site/document/_photoswipe_layout.html.twig') }}
 {%- endblock -%}
 

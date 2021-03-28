@@ -90,6 +90,7 @@ controller:
         excavation: Раскоп
         stateOfPreservation: Состояние сохранности
     show:
+      admin: Просмотреть грамоту в админке
       fields:
         town: Город
         description: Содержание
