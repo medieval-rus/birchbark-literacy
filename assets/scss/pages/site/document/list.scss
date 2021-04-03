@@ -41,6 +41,11 @@
   }
 }
 
+[data-vyfony-filterable-table-results-count] {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
 table[data-vyfony-filterable-table] {
   table-layout: fixed;
   color: inherit;

@@ -21,12 +21,22 @@
 
 {%- extends 'site/base.html.twig' -%}
 
+{% import '@VyfonyFilterableTable/filterable_table.html.twig' as filterable_table %}
+{% import _self as self %}
+
 {% block page_title %}<h1 class="mr-hard-title">{{ block('title') }}</h1>{% endblock %}
 
 {%- block page_content -%}
+    {% if filterForm.children.number.vars.value is not empty %}
+        {{ self.render_table(translationContext, table) }}
+        {{ self.render_filter(translationContext, filterForm) }}
+    {% else %}
+        {{ self.render_filter(translationContext, filterForm) }}
+        {{ self.render_table(translationContext, table) }}
+    {% endif %}
+{%- endblock -%}
 
-    {% import '@VyfonyFilterableTable/filterable_table.html.twig' as filterable_table %}
-
+{%- macro render_filter(translationContext, filterForm) -%}
     <h4>{{ 'searchByParameters'|transWithContext(translationContext) }}</h4>
 
     <div class="container mr-filter-container">
@@ -41,7 +51,9 @@
 
         {{ filterable_table.render_filter(filterForm) }}
     </div>
+{%- endmacro -%}
 
+{%- macro render_table(translationContext, table) -%}
     <div class="row">
         {{ filterable_table.render_table(table) }}
     </div>
@@ -53,4 +65,4 @@
     <div class="row">
         {{ filterable_table.render_checkbox_handlers(table) }}
     </div>
-{%- endblock -%}
+{%- endmacro -%}
