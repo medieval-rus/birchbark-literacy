@@ -43,7 +43,7 @@
                 <td>
                     {% if element.pdfDocument is not null %}
                         {%- set pathToPdfDocument -%}{%- path element.pdfDocument, 'reference' -%}{%- endset -%}
-                        <a href="{{ pathToPdfDocument }}" target="_blank">
+                        <a href="{{ pathToPdfDocument }}">
                             {{ include('site/book/_pdf_icon.html.twig') }}
                         </a>
                     {% endif %}
