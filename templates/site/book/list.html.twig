@@ -26,5 +26,5 @@
 
     <h5><a href="{{ path('library__bibliography_list') }}">{{ 'favoriteBibliography'|transWithContext(translationContext) }}</a></h5>
 
-    {{ book_helper.book_list_table(books, true, 'table.column.bookName'|transWithContext(translationContext), 'table.column.download'|transWithContext(translationContext)) }}
+    {{ book_helper.book_list_table(books, true, 'table.column.bookName'|transWithContext(translationContext), 'table.column.view'|transWithContext(translationContext), 'table.column.download'|transWithContext(translationContext)) }}
 {% endblock %}

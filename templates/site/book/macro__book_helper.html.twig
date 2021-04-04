@@ -19,12 +19,13 @@
 # see <http://www.gnu.org/licenses/>.
 #}
 
-{%- macro book_list_table(elements, nameAsLink, nameTitle, downloadTitle) -%}
+{%- macro book_list_table(elements, nameAsLink, nameTitle, viewTitle, downloadTitle) -%}
     <table class="table table-striped table-sm mr-book-list-table">
         <thead>
         <tr>
             <th>{{ nameTitle }}</th>
-            <th class="mr-book-list-table-download-pdf">{{ downloadTitle }}</th>
+            <th>{{ viewTitle }}</th>
+            <th>{{ downloadTitle }}</th>
         </tr>
         </thead>
         <tbody>
@@ -39,10 +40,18 @@
                         {{ element.name }}
                     {% endif %}
                 </th>
-                <td class="mr-book-list-table-download-pdf">
+                <td>
+                    {% if element.pdfDocument is not null %}
+                        {%- set pathToPdfDocument -%}{%- path element.pdfDocument, 'reference' -%}{%- endset -%}
+                        <a href="{{ pathToPdfDocument }}" target="_blank">
+                            {{ include('site/book/_pdf_icon.html.twig') }}
+                        </a>
+                    {% endif %}
+                </td>
+                <td>
                     {% if element.pdfDocument is not null %}
                         <a href="{{ path('sonata_media_download', {'id': element.pdfDocument|sonata_urlsafeid }) }}">
-                            {{ include('site/book/_pdf_icon.html.twig') }}
+                            {{ include('site/book/_download_icon.html.twig') }}
                         </a>
                     {% endif %}
                 </td>

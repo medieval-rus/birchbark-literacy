@@ -1,3 +1,4 @@
+{#
 # This file is part of «Birchbark Literacy from Medieval Rus» database.
 #
 # Copyright (c) Department of Linguistic and Literary Studies of the University of Padova
@@ -16,34 +17,19 @@
 # a copy of the GNU General Public License along with
 # «Birchbark Literacy from Medieval Rus» database,
 # see <http://www.gnu.org/licenses/>.
+#}
 
-doctrine:
-  orm:
-    mappings:
-      VyfonyBibliographyBundle:
-        is_bundle: false
-        type: annotation
-        dir: '%kernel.project_dir%/vendor/vyfony/bibliography-bundle/src/Persistence/Entity'
-        prefix: 'Vyfony\Bundle\BibliographyBundle\Persistence\Entity'
-        alias: Vyfony\Bundle\BibliographyBundle
-
-framework:
-  translator:
-    paths:
-      - '%kernel.project_dir%/vendor/vyfony/bibliography-bundle/translations'
-
-twig:
-  paths:
-    '%kernel.project_dir%/vendor/vyfony/bibliography-bundle/templates': VyfonyBibliography
-
-sonata_admin:
-  dashboard:
-    groups:
-      bibliography:
-        label_catalogue: vyfony_bibliography_admin
-        label: menu.groups.bibliography.label
-        items:
-          - vyfony_bibliography.admin.bibliographic_record
-          - vyfony_bibliography.admin.author
-          - vyfony_bibliography.admin.references_list
-        roles: [ ROLE_EDITOR ]
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 24 24"
+     fill="none"
+     stroke="currentColor"
+     stroke-width="2"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     class="feather feather-download"
+     height="24"
+>
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+    <polyline points="7 10 12 15 17 10"></polyline>
+    <line x1="12" y1="15" x2="12" y2="3"></line>
+</svg>

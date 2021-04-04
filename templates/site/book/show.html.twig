@@ -45,6 +45,6 @@
     {% endif %}
 
     {% if book.parts|length > 0 %}
-        {{ book_helper.book_list_table(book.parts|sort((a, b) => a.id <=> b.id), false, 'table.column.partName'|transWithContext(translationContext), 'table.column.download'|transWithContext(translationContext)) }}
+        {{ book_helper.book_list_table(book.parts|sort((a, b) => a.id <=> b.id), false, 'table.column.partName'|transWithContext(translationContext), 'table.column.view'|transWithContext(translationContext), 'table.column.download'|transWithContext(translationContext)) }}
     {% endif %}
 {% endblock %}

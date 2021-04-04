@@ -41,6 +41,7 @@ controller:
         table:
           column:
             bookName: Название
+            view: Просмотр
             download: Скачать
       show:
         title: Библиотека
@@ -48,6 +49,7 @@ controller:
         table:
           column:
             partName: Название
+            view: Просмотр
             download: Скачать
   maps:
     index:
@@ -90,7 +92,8 @@ controller:
         excavation: Раскоп
         stateOfPreservation: Состояние сохранности
     show:
-      admin: Просмотреть грамоту в админке
+      documentAdmin: Редактировать грамоту в админке
+      textAdmin: Редактировать текст грамоты в админке
       fields:
         town: Город
         description: Содержание

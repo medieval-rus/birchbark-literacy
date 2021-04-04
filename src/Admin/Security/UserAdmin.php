@@ -120,8 +120,8 @@ final class UserAdmin extends AbstractEntityAdmin
                         'required' => true,
                         'multiple' => true,
                         'choices' => [
-                            'ROLE_USER' => 'ROLE_USER',
-                            'ROLE_ADMIN' => 'ROLE_ADMIN',
+                            'ROLE_EDITOR' => 'ROLE_EDITOR',
+                            'ROLE_TEXT_EDITOR' => 'ROLE_TEXT_EDITOR',
                             'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
                         ],
                     ]

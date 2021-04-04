@@ -99,6 +99,7 @@ final class DocumentAdmin extends AbstractEntityAdmin
                         $this->createLabeledFormOptions('contentElements', ['required' => false]),
                         [
                             'edit' => 'inline',
+                            'admin_code' => 'admin.content_element',
                         ]
                     )
                 ->end()

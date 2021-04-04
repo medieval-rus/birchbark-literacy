@@ -29,23 +29,24 @@ use App\Admin\AbstractEntityAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-final class BookAdmin extends AbstractEntityAdmin
+final class BookPartAdmin extends AbstractEntityAdmin
 {
     /**
      * @var string
      */
-    protected $baseRouteName = 'book_book';
+    protected $baseRouteName = 'book_book_part';
 
     /**
      * @var string
      */
-    protected $baseRoutePattern = 'book/book';
+    protected $baseRoutePattern = 'book/book-part';
 
     protected function configureListFields(ListMapper $list): void
     {
         $list
             ->addIdentifier('id', null, $this->createLabeledListOptions('id'))
             ->addIdentifier('name', null, $this->createLabeledListOptions('name'))
+            ->addIdentifier('book', null, $this->createLabeledListOptions('book'))
         ;
     }
 
@@ -54,7 +55,7 @@ final class BookAdmin extends AbstractEntityAdmin
         $form
             ->with($this->getSectionLabel('common'))
                 ->add('name', null, $this->createLabeledFormOptions('name'))
-                ->add('description', null, $this->createLabeledFormOptions('description'))
+                ->add('book', null, $this->createLabeledFormOptions('book'))
             ->end()
         ;
     }

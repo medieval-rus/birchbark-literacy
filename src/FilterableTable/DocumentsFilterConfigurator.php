@@ -108,7 +108,7 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
     public function createSubmitButtonOptions(): array
     {
         return [
-            'attr' => ['class' => 'btn mr-btn-dark'],
+            'attr' => ['class' => 'btn mr-btn mr-btn-dark'],
             'label' => 'controller.document.list.filter.controls.submitButton',
         ];
     }
@@ -116,7 +116,7 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
     public function createResetButtonOptions(): array
     {
         return [
-            'attr' => ['class' => 'btn mr-btn-light'],
+            'attr' => ['class' => 'btn mr-btn mr-btn-light'],
             'label' => 'controller.document.list.filter.controls.resetButton',
         ];
     }
@@ -124,7 +124,7 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
     public function createSearchInFoundButtonOptions(): array
     {
         return [
-            'attr' => ['class' => 'btn mr-btn-very-light'],
+            'attr' => ['class' => 'btn mr-btn mr-btn-very-light'],
             'label' => 'controller.document.list.filter.controls.searchInFoundButton',
         ];
     }

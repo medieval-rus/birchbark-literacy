@@ -55,13 +55,23 @@
             {{ self.format_text_row(translationContext, 'translatedText', self.format_translated_text_content(translationContext, document)) }}
         </tbody>
     </table>
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_EDITOR') %}
         <div class="container">
             <a href="{{ path('document_document_edit', {'id': document.id}) }}"
                target="_blank"
                class="h5"
             >
-                {{- 'admin'|transWithContext(translationContext) -}}
+                {{- 'documentAdmin'|transWithContext(translationContext) -}}
+            </a>
+        </div>
+    {% endif %}
+    {% if is_granted('ROLE_TEXT_EDITOR') %}
+        <div class="container">
+            <a href="{{ path('text_document_edit', {'id': document.id}) }}"
+               target="_blank"
+               class="h5"
+            >
+                {{- 'textAdmin'|transWithContext(translationContext) -}}
             </a>
         </div>
     {% endif %}
@@ -132,7 +142,7 @@
     <div data-original-text-container class="original-text-container">
         {{ self.format_original_text_block(documentFormatter.originalTextWithoutDivisionIntoWords(document), 'without-spaces') }}
         {{ self.format_original_text_block(documentFormatter.originalTextWithDivisionIntoWords(document), 'with-spaces') }}
-        <div data-original-text-switch class="mr-spoiler-button mr-submit-button mr-submit-button-dark">
+        <div data-original-text-switch class="btn mr-spoiler-button mr-btn mr-btn-dark">
             <span class="toggler-text without-spaces">{{ 'showOriginalTextWithDivisionIntoWords'|transWithContext(translationContext) }}</span>
             <span class="toggler-text with-spaces">{{ 'showOriginalTextWithoutDivisionIntoWords'|transWithContext(translationContext) }}</span>
         </div>
@@ -169,7 +179,7 @@
     {% import _self as self %}
     <div data-translated-text-container class="mr-translated-text-container hidden">
         <details>
-            <summary class="mr-spoiler-button mr-submit-button mr-submit-button-dark">
+            <summary class="btn mr-spoiler-button mr-btn mr-btn-dark">
                 <span class="toggler-text show-translated-text">{{ 'showTranslatedText'|transWithContext(translationContext) }}</span>
                 <span class="toggler-text hide-translated-text">{{ 'hideTranslatedText'|transWithContext(translationContext) }}</span>
             </summary>

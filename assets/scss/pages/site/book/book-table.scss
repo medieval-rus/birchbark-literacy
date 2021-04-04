@@ -28,15 +28,17 @@ table.mr-book-list-table {
 
   > thead {
     tr {
-      th.mr-book-list-table-download-pdf {
+      th {
         text-align: center;
       }
     }
   }
   > tbody {
     > tr {
-      > td.mr-book-list-table-download-pdf {
+      > td {
         > a {
+          color: $darkColor;
+
           > svg {
             display: block;
             margin: 0 auto;

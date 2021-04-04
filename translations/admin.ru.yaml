@@ -27,8 +27,12 @@ menu:
       label: Содержательный аспект
     materialAspect:
       label: Материальный аспект
+    library:
+      label: Библиотека
     security:
       label: Безопасность
+    text:
+      label: Тексты
   paragraphs:
     post:
       label: Страницы
@@ -60,6 +64,12 @@ menu:
       label: Писцы
     document:
       label: Грамоты
+    book:
+      label: Книги
+    bookPart:
+      label: Разделы книг
+    documentText:
+      label: Тексты грамот
 
 list:
   post:
@@ -128,6 +138,20 @@ list:
   document:
     fields:
       id: Внутренний идентификатор
+      number: Номер
+      town:
+        name: Город
+  book:
+    fields:
+      id: Внутренний идентификатор
+      name: Название
+  bookPart:
+    fields:
+      id: Внутренний идентификатор
+      name: Название
+      book: Книга
+  documentText:
+    fields:
       number: Номер
       town:
         name: Город
@@ -290,6 +314,30 @@ form:
       width: Ширина
       innerWidth: Ширина внутреннего слоя
       diameter: Диаметр
+  book:
+    section:
+      common:
+        label: Книга
+    fields:
+      name: Название
+      description: Описание
+  bookPart:
+    section:
+      common:
+        label: Раздел книги
+    fields:
+      name: Название
+      book: Книга
+  documentText:
+    section:
+      texts:
+        label: Тексты
+    fields:
+      contentElements: Элементы содержания
+  contentElementText:
+    fields:
+      originalText: Текст
+      translatedText: Перевод
 
 breadcrumb:
   link_post_list: Страницы
@@ -337,6 +385,13 @@ breadcrumb:
   link_document_list: Берестяные грамоты
   link_document_create: Добавить новую грамоту
   link_document_delete: Удалить грамоту
+  link_book_list: Книги
+  link_book_create: Добавить новую книгу
+  link_book_delete: Удалить книгу
+  link_book_part_list: Разделы книг
+  link_book_part_create: Добавить новый раздел
+  link_book_part_delete: Удалить раздел
+  link_document_text_list: Тексты грамот
 
 userMenu:
   logout:

@@ -23,39 +23,41 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Admin\Book;
+namespace App\Admin\Text;
 
 use App\Admin\AbstractEntityAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
-final class BookAdmin extends AbstractEntityAdmin
+final class ContentElementTextAdmin extends AbstractEntityAdmin
 {
     /**
      * @var string
      */
-    protected $baseRouteName = 'book_book';
+    protected $baseRouteName = 'text_content_element';
 
     /**
      * @var string
      */
-    protected $baseRoutePattern = 'book/book';
+    protected $baseRoutePattern = 'text/content-element';
 
-    protected function configureListFields(ListMapper $list): void
+    protected function configureFormFields(FormMapper $formMapper): void
     {
-        $list
-            ->addIdentifier('id', null, $this->createLabeledListOptions('id'))
-            ->addIdentifier('name', null, $this->createLabeledListOptions('name'))
+        $formMapper
+            ->with($this->getSectionLabel('texts'))
+                ->add('originalText', null, $this->createLabeledFormOptions('originalText'))
+                ->add('translatedText', null, $this->createLabeledFormOptions('translatedText'))
+            ->end()
         ;
     }
 
-    protected function configureFormFields(FormMapper $form): void
+    protected function configureRoutes(RouteCollection $collection): void
     {
-        $form
-            ->with($this->getSectionLabel('common'))
-                ->add('name', null, $this->createLabeledFormOptions('name'))
-                ->add('description', null, $this->createLabeledFormOptions('description'))
-            ->end()
-        ;
+        $collection->clearExcept(['create', 'edit']);
+    }
+
+    protected function getEntityKey(): string
+    {
+        return 'contentElementText';
     }
 }

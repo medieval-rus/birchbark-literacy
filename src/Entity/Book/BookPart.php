@@ -23,9 +23,8 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Entity\Book\Part;
+namespace App\Entity\Book;
 
-use App\Entity\Book\Book;
 use App\Entity\MediaBundle\Media;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -75,6 +74,11 @@ class BookPart
      */
     private $book;
 
+    public function __toString(): string
+    {
+        return (string) $this->name;
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -111,7 +115,7 @@ class BookPart
         return $this;
     }
 
-    public function getBook(): Book
+    public function getBook(): ?Book
     {
         return $this->book;
     }

@@ -23,6 +23,18 @@ sonata_admin:
     blocks:
       - { type: sonata.admin.block.admin_list, position: left }
     groups:
+      security:
+        label_catalogue: admin
+        label: menu.groups.security.label
+        items:
+          - admin.user
+        roles: [ ROLE_SUPER_ADMIN ]
+      text:
+        label_catalogue: admin
+        label: menu.groups.text.label
+        items:
+          - admin.document_text
+        roles: [ ROLE_TEXT_EDITOR ]
       document:
         label_catalogue: admin
         label: menu.groups.document.label
@@ -31,7 +43,7 @@ sonata_admin:
           - admin.conventional_date_cell
           - admin.town
           - admin.scribe
-        roles: [ ROLE_ADMIN ]
+        roles: [ ROLE_EDITOR ]
       contentAspect:
         label_catalogue: admin
         label: menu.groups.contentAspect.label
@@ -40,7 +52,7 @@ sonata_admin:
           - admin.genre
           - admin.way_of_writing
           - admin.language
-        roles: [ ROLE_ADMIN ]
+        roles: [ ROLE_EDITOR ]
       materialAspect:
         label_catalogue: admin
         label: menu.groups.materialAspect.label
@@ -49,19 +61,21 @@ sonata_admin:
           - admin.material
           - admin.state_of_preservation
           - admin.storage_place
+        roles: [ ROLE_EDITOR ]
       content:
         label_catalogue: admin
         label: menu.groups.content.label
         items:
           - admin.post
           - admin.document_list
-        roles: [ ROLE_ADMIN ]
-      security:
+        roles: [ ROLE_EDITOR ]
+      library:
         label_catalogue: admin
-        label: menu.groups.security.label
+        label: menu.groups.library.label
         items:
-          - admin.user
-        roles: [ ROLE_SUPER_ADMIN ]
+          - admin.book
+          - admin.book_part
+        roles: [ ROLE_EDITOR ]
   options:
     legacy_twig_text_extension: false
     use_icheck: false
@@ -194,6 +208,34 @@ services:
   admin.material_element:
     class: App\Admin\Document\MaterialElementAdmin
     arguments: [ null, App\Entity\Document\MaterialElement, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.book:
+    class: App\Admin\Book\BookAdmin
+    arguments: [ null, App\Entity\Book\Book, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.book_part:
+    class: App\Admin\Book\BookPartAdmin
+    arguments: [ null, App\Entity\Book\BookPart, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.document_text:
+    class: App\Admin\Text\DocumentTextAdmin
+    arguments: [ null, App\Entity\Document\Document, null ]
+    calls:
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.content_element_text:
+    class: App\Admin\Text\ContentElementTextAdmin
+    arguments: [ null, App\Entity\Document\ContentElement, null ]
     calls:
       - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
     tags:

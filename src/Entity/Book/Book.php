@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Book;
 
-use App\Entity\Book\Part\BookPart;
 use App\Entity\MediaBundle\Media;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -82,7 +81,7 @@ class Book
      * @var Collection|BookPart[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Book\Part\BookPart",
+     *     targetEntity="App\Entity\Book\BookPart",
      *     cascade={"persist"},
      *     mappedBy="book",
      *     orphanRemoval=true
@@ -93,6 +92,11 @@ class Book
     public function __construct()
     {
         $this->parts = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->name;
     }
 
     public function getId(): int
