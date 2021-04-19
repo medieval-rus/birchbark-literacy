@@ -49,4 +49,5 @@ return [
     Sonata\MediaBundle\SonataMediaBundle::class => ['all' => true],
     Vyfony\Bundle\BibliographyBundle\VyfonyBibliographyBundle::class => ['all' => true],
     Vyfony\Bundle\FilterableTableBundle\VyfonyFilterableTableBundle::class => ['all' => true],
+    Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle::class => ['all' => true],
 ];

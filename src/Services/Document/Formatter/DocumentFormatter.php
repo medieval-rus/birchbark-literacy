@@ -244,7 +244,9 @@ final class DocumentFormatter implements DocumentFormatterInterface
         foreach ($originalTextParts as $textPieces) {
             foreach ($textPieces as $textPiece) {
                 if ($textPiece instanceof ModifiableTextPieceInterface) {
-                    $textPiece->modify(fn ($text): string => str_replace(['‐'.PHP_EOL, ' '], [PHP_EOL, ''], $text));
+                    $textPiece->modify(
+                        fn (string $text): string => str_replace(['‐'.PHP_EOL, ' '], [PHP_EOL, ''], $text)
+                    );
                 }
             }
         }

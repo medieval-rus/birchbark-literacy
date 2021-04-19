@@ -17,16 +17,7 @@
 # «Birchbark Literacy from Medieval Rus» database,
 # see <http://www.gnu.org/licenses/>.
 
-api:
-  resource: ../../src/Api/
-  type: annotation
-  prefix: /api
-
-controllers:
-  resource: ../../src/Controller/
-  type: annotation
-  prefix: /birchbark
-
-kernel:
-  resource: ../../src/Kernel.php
-  type: annotation
+lexik_jwt_authentication:
+  secret_key: '%env(resolve:JWT_SECRET_KEY)%'
+  public_key: '%env(resolve:JWT_PUBLIC_KEY)%'
+  pass_phrase: '%env(JWT_PASSPHRASE)%'

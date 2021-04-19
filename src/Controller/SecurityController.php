@@ -49,7 +49,6 @@ final class SecurityController extends AbstractController
                 'translationContext' => 'controller.security.login',
                 'assetsContext' => 'security/login',
                 'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
-                'last_username' => $authenticationUtils->getLastUsername(),
                 'error' => $authenticationUtils->getLastAuthenticationError(),
                 'form' => $this
                     ->createForm(
