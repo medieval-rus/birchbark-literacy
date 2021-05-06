@@ -48,7 +48,7 @@ final class ContentElementAdmin extends AbstractEntityAdmin
                 ->add('category', null, $this->createLabeledFormOptions('category'))
                 ->add('genre', null, $this->createLabeledFormOptions('genre'))
                 ->add('language', null, $this->createLabeledFormOptions('language'))
-                ->add('originalText', null, $this->createLabeledFormOptions('originalText'))
+                ->add('originalText', null, $this->createLabeledFormOptions('originalText', ['trim' => false]))
                 ->add('translatedText', null, $this->createLabeledFormOptions('translatedText'))
             ->end()
         ;

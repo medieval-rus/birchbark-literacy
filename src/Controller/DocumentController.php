@@ -69,6 +69,10 @@ final class DocumentController extends AbstractController
             ->getRepository(Document::class)
             ->findOneByTownAliasAndNumber(urldecode($town), $number, true);
 
+        if (null === $document) {
+            throw $this->createNotFoundException();
+        }
+
         return $this->render(
             'site/document/show.html.twig',
             [
