@@ -12,7 +12,7 @@ declare(strict_types=1);
  * GNU General Public License as published by the Free Software Foundation, version 3.
  *
  * «Birchbark Literacy from Medieval Rus» database is distributed
- * in the hope  that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
@@ -33,6 +33,8 @@ use App\Services\Document\OriginalText\MarkupParser\TextPiece\TextPieceInterface
 
 interface DocumentFormatterInterface
 {
+    public function getNumber(Document $document): string;
+
     public function getLabel(Document $document): string;
 
     public function getTown(Document $document): string;
