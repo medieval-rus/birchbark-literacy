@@ -12,7 +12,7 @@ declare(strict_types=1);
  * GNU General Public License as published by the Free Software Foundation, version 3.
  *
  * «Birchbark Literacy from Medieval Rus» database is distributed
- * in the hope  that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
@@ -68,6 +68,10 @@ final class DocumentController extends AbstractController
             ->getDoctrine()
             ->getRepository(Document::class)
             ->findOneByTownAliasAndNumber(urldecode($town), $number, true);
+
+        if (null === $document) {
+            throw $this->createNotFoundException();
+        }
 
         return $this->render(
             'site/document/show.html.twig',

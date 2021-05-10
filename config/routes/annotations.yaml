@@ -7,7 +7,7 @@
 # GNU General Public License as published by the Free Software Foundation, version 3.
 #
 # «Birchbark Literacy from Medieval Rus» database is distributed
-# in the hope  that it will be useful, but WITHOUT ANY WARRANTY; without even
+# in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
 # the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 #
@@ -16,6 +16,11 @@
 # a copy of the GNU General Public License along with
 # «Birchbark Literacy from Medieval Rus» database,
 # see <http://www.gnu.org/licenses/>.
+
+api:
+  resource: ../../src/Api/
+  type: annotation
+  prefix: /api
 
 controllers:
   resource: ../../src/Controller/

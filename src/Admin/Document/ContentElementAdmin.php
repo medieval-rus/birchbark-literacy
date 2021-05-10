@@ -12,7 +12,7 @@ declare(strict_types=1);
  * GNU General Public License as published by the Free Software Foundation, version 3.
  *
  * «Birchbark Literacy from Medieval Rus» database is distributed
- * in the hope  that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
@@ -48,7 +48,7 @@ final class ContentElementAdmin extends AbstractEntityAdmin
                 ->add('category', null, $this->createLabeledFormOptions('category'))
                 ->add('genre', null, $this->createLabeledFormOptions('genre'))
                 ->add('language', null, $this->createLabeledFormOptions('language'))
-                ->add('originalText', null, $this->createLabeledFormOptions('originalText'))
+                ->add('originalText', null, $this->createLabeledFormOptions('originalText', ['trim' => false]))
                 ->add('translatedText', null, $this->createLabeledFormOptions('translatedText'))
             ->end()
         ;

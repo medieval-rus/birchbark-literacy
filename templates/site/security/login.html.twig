@@ -8,7 +8,7 @@
 # GNU General Public License as published by the Free Software Foundation, version 3.
 #
 # «Birchbark Literacy from Medieval Rus» database is distributed
-# in the hope  that it will be useful, but WITHOUT ANY WARRANTY; without even
+# in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
 # the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 #
@@ -34,7 +34,7 @@
         <label for="inputUsername">{{ 'form.username'|transWithContext(translationContext) }}</label>
         <input
                 type="text"
-                value="{{ last_username }}"
+                value="{{ form.username.vars.value }}"
                 name="{{ form.username.vars.full_name }}"
                 id="inputUsername"
                 class="form-control"

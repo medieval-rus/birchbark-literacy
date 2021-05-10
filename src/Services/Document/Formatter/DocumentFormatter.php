@@ -12,7 +12,7 @@ declare(strict_types=1);
  * GNU General Public License as published by the Free Software Foundation, version 3.
  *
  * «Birchbark Literacy from Medieval Rus» database is distributed
- * in the hope  that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
@@ -45,25 +45,22 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class DocumentFormatter implements DocumentFormatterInterface
 {
     private TranslatorInterface $translator;
-    private RouterInterface $router;
     private OriginalTextMarkupParserInterface $originalTextMarkupParser;
 
     public function __construct(
         TranslatorInterface $translator,
-        RouterInterface $router,
         OriginalTextMarkupParserInterface $originalTextMarkupParser
     ) {
         $this->translator = $translator;
-        $this->router = $router;
         $this->originalTextMarkupParser = $originalTextMarkupParser;
     }
 
-    public function getLabel(Document $document): string
+    public function getNumber(Document $document): string
     {
-        $townName = ('novgorod' === $document->getTown()->getAlias() ?
-            '' :
-            ' '.$document->getTown()->getAbbreviatedName().' '
-        );
+        $townName = $this->isDocumentFromNovgorod($document)
+            ? ''
+            : $document->getTown()->getAbbreviatedName().' '
+        ;
 
         $documentNumber = $document->getNumber();
 
@@ -71,9 +68,16 @@ final class DocumentFormatter implements DocumentFormatterInterface
             ? $this->translator->trans('global.documentNumber.'.$documentNumber)
             : $documentNumber;
 
+        return str_replace(' ', ' ', $townName.$formattedDocumentNumber);
+    }
+
+    public function getLabel(Document $document): string
+    {
+        $space = $this->isDocumentFromNovgorod($document) ? '': ' ';
+
         return $this->translator->trans(
             'global.document.label',
-            ['%town%' => $townName, '%number%' => $formattedDocumentNumber]
+            ['%number%' => $space.$this->getNumber($document)]
         );
     }
 
@@ -244,7 +248,9 @@ final class DocumentFormatter implements DocumentFormatterInterface
         foreach ($originalTextParts as $textPieces) {
             foreach ($textPieces as $textPiece) {
                 if ($textPiece instanceof ModifiableTextPieceInterface) {
-                    $textPiece->modify(fn ($text): string => str_replace(['‐'.PHP_EOL, ' '], [PHP_EOL, ''], $text));
+                    $textPiece->modify(
+                        fn (string $text): string => str_replace(['‐'.PHP_EOL, ' '], [PHP_EOL, ''], $text)
+                    );
                 }
             }
         }
@@ -383,5 +389,10 @@ final class DocumentFormatter implements DocumentFormatterInterface
         }
 
         return $originalTextParts;
+    }
+
+    private function isDocumentFromNovgorod(Document $document): bool
+    {
+        return 'novgorod' === $document->getTown()->getAlias();
     }
 }

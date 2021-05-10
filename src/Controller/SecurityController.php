@@ -12,7 +12,7 @@ declare(strict_types=1);
  * GNU General Public License as published by the Free Software Foundation, version 3.
  *
  * «Birchbark Literacy from Medieval Rus» database is distributed
- * in the hope  that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
@@ -49,7 +49,6 @@ final class SecurityController extends AbstractController
                 'translationContext' => 'controller.security.login',
                 'assetsContext' => 'security/login',
                 'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
-                'last_username' => $authenticationUtils->getLastUsername(),
                 'error' => $authenticationUtils->getLastAuthenticationError(),
                 'form' => $this
                     ->createForm(
