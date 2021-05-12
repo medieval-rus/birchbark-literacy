@@ -121,7 +121,7 @@ class MaterialElement
      *     targetEntity="App\Entity\Document\AbstractFind",
      *     cascade={"persist"}
      * )
-     * @ORM\JoinColumn(name="find_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="find_id", referencedColumnName="id", nullable=true)
      */
     private $find;
 
