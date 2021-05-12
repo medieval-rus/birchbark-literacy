@@ -58,6 +58,8 @@ security:
       logout:
         path: security__logout
         target: security__login
+      remember_me:
+        secret: '%env(APP_SECRET)%'
   access_control:
     - { path: ^/admin/security.*, role: [ ROLE_SUPER_ADMIN ] }
     - { path: ^/admin/document.*, role: [ ROLE_EDITOR ] }
