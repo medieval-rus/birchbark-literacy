@@ -39,7 +39,6 @@ use App\Services\Document\OriginalText\MarkupParser\OriginalTextMarkupParserInte
 use App\Services\Document\OriginalText\MarkupParser\TextPiece\ModifiableTextPieceInterface;
 use App\Services\Document\OriginalText\MarkupParser\TextPiece\TextPieceInterface;
 use const PHP_EOL;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class DocumentFormatter implements DocumentFormatterInterface
@@ -68,12 +67,12 @@ final class DocumentFormatter implements DocumentFormatterInterface
             ? $this->translator->trans('global.documentNumber.'.$documentNumber)
             : $documentNumber;
 
-        return str_replace(' ', ' ', $townName.$formattedDocumentNumber);
+        return str_replace(' ', "\u{a0}", $townName.$formattedDocumentNumber);
     }
 
     public function getLabel(Document $document): string
     {
-        $space = $this->isDocumentFromNovgorod($document) ? '': ' ';
+        $space = $this->isDocumentFromNovgorod($document) ? '' : ' ';
 
         return $this->translator->trans(
             'global.document.label',

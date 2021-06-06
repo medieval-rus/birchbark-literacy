@@ -32,7 +32,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Vyfony\Bundle\BibliographyBundle\Persistence\Entity\BibliographicRecord;
 
 final class DocumentAdmin extends AbstractEntityAdmin
 {
@@ -118,16 +117,7 @@ final class DocumentAdmin extends AbstractEntityAdmin
             ->end()
             ->tab($this->getTabLabel('sources'))
                 ->with($this->getSectionLabel('sources'))
-                    ->add(
-                        'literature',
-                        null,
-                        $this->createLabeledManyToManyFormOptions(
-                            'literature',
-                            [
-                                'class' => BibliographicRecord::class,
-                            ]
-                        )
-                    )
+                    ->add('literature', null, $this->createLabeledManyToManyFormOptions('literature'))
                     ->add('dndSection', null, $this->createLabeledFormOptions('dndSection'))
                     ->add('ngbVolume', null, $this->createLabeledFormOptions('ngbVolume'))
                 ->end()

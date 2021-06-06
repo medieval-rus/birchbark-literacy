@@ -124,8 +124,8 @@ global:
     label: Грамота №%number%
     preliminaryPublication: предварительная публикация
   documentNumber:
-    lead1: Свинц. 1
-    lead2: Свинц. 2
+    lead1: " Свинц. 1"
+    lead2: " Свинц. 2"
     915i: 915-И
   documentsSearch:
     search: Показать грамоту №…
