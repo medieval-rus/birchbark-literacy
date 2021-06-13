@@ -37,6 +37,6 @@ final class RightSuperscriptRuleParser extends AbstractRuleParser
 
     protected function getRegex(): string
     {
-        return '/\^\^(.+?)\^\^/u';
+        return '/\^\^(.*)\^\^/u';
     }
 }

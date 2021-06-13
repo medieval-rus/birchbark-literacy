@@ -80,12 +80,21 @@ final class DocumentTextAdmin extends AbstractEntityAdmin
             $admin = $this->isChild() ? $this->getParent() : $this;
 
             if ((null !== $document = $this->getSubject()) && (null !== $document->getId())) {
-                $menu->addChild('tabMenu.document.viewOnSite', [
-                    'uri' => $admin->getRouteGenerator()->generate('document__show', [
-                        'town' => urlencode($document->getTown()->getAlias()),
-                        'number' => urlencode($document->getNumber()),
-                    ]),
-                ]);
+                $menu->addChild(
+                    'tabMenu.document.viewOnSite',
+                    [
+                        'uri' => $admin->getRouteGenerator()->generate(
+                            'document__show',
+                            [
+                                'town' => urlencode($document->getTown()->getAlias()),
+                                'number' => urlencode($document->getNumber()),
+                            ]
+                        ),
+                        'linkAttributes' => [
+                            'target' => '_blank',
+                        ],
+                    ]
+                );
             }
         }
     }

@@ -34,17 +34,16 @@
     sup, sub {
         font-size: 75%;
         display: inline-block;
+        left: -0.1em;
+        margin-right: -0.1em;
 
         &.direction-left, &.direction-right {
             width: 0;
+            margin-right: 0;
         }
 
         &.direction-left {
-            left: -0.5em;
-        }
-
-        &.direction-right {
-            right: -0.25em;
+            left: -0.25em;
         }
     }
 
