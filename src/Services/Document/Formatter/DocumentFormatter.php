@@ -34,7 +34,7 @@ use App\Entity\Document\Excavation;
 use App\Entity\Document\PalisadeBetweenEstates;
 use App\Entity\Document\RoadwayBetweenEstates;
 use App\Entity\Document\SingleEstate;
-use App\Entity\MediaBundle\Media;
+use App\Entity\Media\File;
 use App\Services\Document\OriginalText\MarkupParser\OriginalTextMarkupParserInterface;
 use App\Services\Document\OriginalText\MarkupParser\TextPiece\ModifiableTextPieceInterface;
 use App\Services\Document\OriginalText\MarkupParser\TextPiece\TextPieceInterface;
@@ -168,7 +168,7 @@ final class DocumentFormatter implements DocumentFormatterInterface
     }
 
     /**
-     * @return array|Media[]
+     * @return array|File[]
      */
     public function getImages(Document $document): array
     {

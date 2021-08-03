@@ -23,13 +23,13 @@ import $ from 'jquery';
 import PhotoSwipe from 'photoswipe/dist/photoswipe';
 import PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default';
 
-$(function () {
+$(window).on('load', () => {
 
-    $('[data-original-text-container]').each(function (index, element) {
+    $('[data-original-text-container]').each((index, element) => {
 
         const originalTextContainerElement = $(element);
 
-        originalTextContainerElement.on('click tap', '[data-original-text-switch]', function() {
+        originalTextContainerElement.on('click tap', '[data-original-text-switch]', () => {
             originalTextContainerElement.toggleClass('display-spaces');
         });
     });
@@ -48,35 +48,30 @@ $(function () {
 
                 const figureElement = thumbnailElements[i];
 
-                if (figureElement.nodeType !== Node.ELEMENT_NODE) {
+                if (figureElement.nodeType !== Node.ELEMENT_NODE || figureElement.children.length < 2) {
                     continue;
                 }
 
                 const aElement = figureElement.children[0];
 
+                if (figureElement.children.length === 0) {
+                    continue;
+                }
+
+                const figcaptionElement = figureElement.children[1];
+                const imgElement = aElement.children[0];
+
+                const rectangle = imgElement.getBoundingClientRect();
+
                 const item = {
                     src: aElement.getAttribute('href'),
                     downloadUrl: figureElement.getAttribute('data-download-url'),
+                    title: figcaptionElement.innerHTML,
+                    msrc: imgElement.getAttribute('src'),
+                    w: rectangle.width,
+                    h: rectangle.height,
+                    figureElement: figureElement
                 };
-
-                item.w = aElement.getAttribute('data-width');
-                item.h = aElement.getAttribute('data-height');
-
-                if (figureElement.children.length > 1) {
-
-                    const figcaptionElement = figureElement.children[1];
-
-                    item.title = figcaptionElement.innerHTML;
-                }
-
-                if (aElement.children.length > 0) {
-
-                    const imgElement = aElement.children[0];
-
-                    item.msrc = imgElement.getAttribute('src');
-                }
-
-                item.figureElement = figureElement;
 
                 imageDataCollection.push(item);
             }
@@ -96,7 +91,7 @@ $(function () {
 
             const eventTarget = event.target || event.srcElement;
 
-            const clickedListItem = closest(eventTarget, function (element) {
+            const clickedListItem = closest(eventTarget, (element) => {
                 return (element.tagName && element.tagName.toUpperCase() === 'FIGURE');
             });
 
@@ -173,7 +168,7 @@ $(function () {
 
             const options = {
                 galleryUID: galleryElement.getAttribute('data-pswp-uid'),
-                getThumbBoundsFn: function (index) {
+                getThumbBoundsFn: (index) => {
                     const thumbnailElement = items[index].figureElement.getElementsByTagName('img')[0];
 
                     const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
@@ -189,7 +184,7 @@ $(function () {
                         url: 'https://www.facebook.com/sharer/sharer.php?u={{url}}'
                     },
                 ],
-                getImageURLForShare: function (shareButtonData) {
+                getImageURLForShare: (shareButtonData) => {
                     return gallery.currItem.downloadUrl;
                 },
                 closeOnScroll: false,

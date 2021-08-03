@@ -30,6 +30,7 @@ use Knp\Menu\ItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
@@ -120,6 +121,22 @@ final class DocumentAdmin extends AbstractEntityAdmin
                     ->add('literature', null, $this->createLabeledManyToManyFormOptions('literature'))
                     ->add('dndSection', null, $this->createLabeledFormOptions('dndSection'))
                     ->add('ngbVolume', null, $this->createLabeledFormOptions('ngbVolume'))
+                ->end()
+            ->end()
+            ->tab($this->getTabLabel('media'))
+                ->with($this->getSectionLabel('photos'), ['class' => 'col-md-6'])
+                    ->add(
+                        'photos',
+                        ModelType::class,
+                        $this->createLabeledManyToManyFormOptions('photos', ['btn_add' => false])
+                    )
+                ->end()
+                ->with($this->getSectionLabel('drawings'), ['class' => 'col-md-6'])
+                    ->add(
+                        'drawings',
+                        ModelType::class,
+                        $this->createLabeledManyToManyFormOptions('drawings', ['btn_add' => false])
+                    )
                 ->end()
             ->end()
         ;

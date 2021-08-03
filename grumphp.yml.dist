@@ -57,14 +57,14 @@ grumphp:
     phpcs:
       standard: PSR2
       ignore_patterns:
-        - '/node_modules/*'
         - '/migrations/*'
+        - '/node_modules/*'
         - '/tests/*'
         - '/var/*'
         - '/vendor/*'
       metadata:
         priority: -100
-    phpunitbridge:
+    phpunit:
       always_execute: true
       metadata:
         priority: -110
