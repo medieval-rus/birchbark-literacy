@@ -50,4 +50,5 @@ return [
     Vyfony\Bundle\BibliographyBundle\VyfonyBibliographyBundle::class => ['all' => true],
     Vyfony\Bundle\FilterableTableBundle\VyfonyFilterableTableBundle::class => ['all' => true],
     Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle::class => ['all' => true],
+    Vyfony\Bundle\MysqldumpBundle\VyfonyMysqldumpBundle::class => ['all' => true],
 ];

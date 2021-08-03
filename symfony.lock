@@ -188,12 +188,6 @@
     "laminas/laminas-code": {
         "version": "4.0.0"
     },
-    "laminas/laminas-eventmanager": {
-        "version": "3.3.0"
-    },
-    "laminas/laminas-zendframework-bridge": {
-        "version": "1.2.0"
-    },
     "lcobucci/clock": {
         "version": "2.0.0"
     },
@@ -884,6 +878,9 @@
     },
     "vyfony/filterable-table-bundle": {
         "version": "v0.4.1"
+    },
+    "vyfony/mysqldump-bundle": {
+        "version": "v0.2.0"
     },
     "webmozart/assert": {
         "version": "1.9.1"

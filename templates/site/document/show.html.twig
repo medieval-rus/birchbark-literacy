@@ -220,34 +220,34 @@
     </tr>
 {%- endmacro -%}
 
-{%- macro format_images_content(name, medias) -%}
+{%- macro format_images_content(name, files) -%}
     <div
             class="gallery"
             data-images-container="{{ name }}"
             itemscope
             itemtype="http://schema.org/ImageGallery"
     >
-        {%- for media in medias -%}
+        {%- for file in files -%}
 
             <figure
                     itemprop="associatedMedia"
                     itemscope
                     itemtype="http://schema.org/ImageObject"
-                    data-download-url="{{ path('sonata_media_download', {'id': media|sonata_urlsafeid }) }}"
+                    data-download-url="{{ file.url }}"
             >
                 <a
-                        href="{%- path media, 'reference' -%}"
+                        href="{{ file.url }}"
                         itemprop="contentUrl"
-                        data-width="{{ media.width }}"
-                        data-height="{{ media.height }}"
+{#                        data-width="{{ media.width }}"#}
+{#                        data-height="{{ media.height }}"#}
                 >
                     <img
-                            src="{%- path media, 'showPageThumbnail' -%}"
+                            src="{{ file.url }}"
                             itemprop="thumbnail"
-                            alt="{{ media.description }}"
+                            alt="{{ file.description }}"
                     />
                 </a>
-                <figcaption itemprop="caption description">{{ media.name }}</figcaption>
+                <figcaption itemprop="caption description">{{ file.description }}</figcaption>
             </figure>
         {%- endfor -%}
     </div>

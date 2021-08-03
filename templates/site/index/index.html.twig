@@ -56,8 +56,8 @@
                 </div>
             </div>
             {% set isImageDrawn = false %}
-            {% for media in documentFormatter.images(document) if not isImageDrawn %}
-                <img class="card-img-bottom img-fluid" src="{% path media, 'favoritesPreview' %}" alt="{{ media.description }}">
+            {% for file in documentFormatter.images(document) if not isImageDrawn %}
+                <img class="card-img-bottom img-fluid" src="{{ file.url }}" alt="{{ file.description }}">
                 {% set isImageDrawn = true %}
             {% endfor %}
         </div>

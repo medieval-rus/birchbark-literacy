@@ -28,19 +28,20 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20210606003818 extends AbstractMigration
+final class Version20210801201510 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'New bibliographic record structure.';
+        return 'New data storage.';
     }
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE bibliography__bibliographic_record ADD displayed_value TEXT NULL');
-        $this->addSql('UPDATE bibliography__bibliographic_record SET displayed_value = CONCAT(IF(authors = \'\', \'\', CONCAT(authors, \'. \')), title, \' // \', details)');
-        $this->addSql('ALTER TABLE bibliography__bibliographic_record CHANGE displayed_value displayed_value TEXT NOT NULL');
-        $this->addSql('ALTER TABLE bibliography__bibliographic_record DROP authors');
-        $this->addSql('ALTER TABLE bibliography__bibliographic_record DROP details');
+        $this->addSql('CREATE TABLE media__file (id INT AUTO_INCREMENT NOT NULL, file_name VARCHAR(255) NOT NULL, media_type VARCHAR(255) NOT NULL, url VARCHAR(2048) DEFAULT NULL, description LONGTEXT DEFAULT NULL, binary_content MEDIUMBLOB DEFAULT NULL, hash CHAR(32) NOT NULL, metadata JSON DEFAULT NULL, UNIQUE INDEX UNIQ_CEA382BAD7DF1668 (file_name), UNIQUE INDEX UNIQ_CEA382BAD1B862B8 (hash), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+    }
+
+    public function down(Schema $schema): void
+    {
+        $this->addSql('DROP TABLE media__file');
     }
 }

@@ -35,22 +35,6 @@ sonata_media:
       formats:
         small: { width: 100 , quality: 70}
         big:   { width: 500 , quality: 70}
-    bb__document_photo:
-      download:
-        strategy: sonata.media.security.public_strategy
-      providers:
-        - sonata.media.provider.image
-      formats:
-        favoritesPreview: {width: 327, quality: '%web_images_max_compression_quality%'}
-        showPageThumbnail: {width: 1300, quality: '%web_images_max_compression_quality%'}
-    bb__document_sketch:
-      download:
-        strategy: sonata.media.security.public_strategy
-      providers:
-        - sonata.media.provider.image
-      formats:
-        favoritesPreview: {width: 327, quality: '%web_images_max_compression_quality%'}
-        showPageThumbnail: {width: 1300, quality: '%web_images_max_compression_quality%'}
     bb__dnd_section:
       providers:
         - sonata.media.provider.file

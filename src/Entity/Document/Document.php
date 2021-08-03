@@ -25,7 +25,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
-use App\Entity\MediaBundle\Media;
+use App\Entity\Media\File;
 use App\Repository\Document\DocumentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -206,26 +206,18 @@ class Document
     private $amendments;
 
     /**
-     * @var Collection|Media[]
+     * @var Collection|File[]
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\MediaBundle\Media", cascade={"persist", "remove"})
-     * @ORM\JoinTable(
-     *     name="bb__document_photo",
-     *     joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")}
-     * )
+     * @ORM\ManyToMany(targetEntity="App\Entity\Media\File", cascade={"persist"})
+     * @ORM\JoinTable(name="bb__document_photos")
      */
     private $photos;
 
     /**
-     * @var Collection|Media[]
+     * @var Collection|File[]
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\MediaBundle\Media", cascade={"persist", "remove"})
-     * @ORM\JoinTable(
-     *     name="bb__document_sketch",
-     *     joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")}
-     * )
+     * @ORM\ManyToMany(targetEntity="App\Entity\Media\File", cascade={"persist"})
+     * @ORM\JoinTable(name="bb__document_drawings")
      */
     private $drawings;
 
@@ -540,60 +532,38 @@ class Document
     }
 
     /**
-     * @param iterable|Media[] $photos
-     *
-     * @return Document
-     */
-    public function setPhotos(iterable $photos): self
-    {
-        $this->photos = new ArrayCollection();
-
-        foreach ($photos as $photo) {
-            $this->addPhoto($photo);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Media[]
+     * @return Collection|File[]
      */
     public function getPhotos(): Collection
     {
         return $this->photos;
     }
 
-    public function addPhoto(Media $photo): void
-    {
-        $this->photos[] = $photo;
-    }
-
     /**
-     * @param iterable|Media[] $drawings
-     *
-     * @return Document
+     * @param Collection|File[] $photos
      */
-    public function setDrawings(iterable $drawings): self
+    public function setPhotos(Collection $photos): self
     {
-        $this->drawings = new ArrayCollection();
-
-        foreach ($drawings as $drawing) {
-            $this->addDrawing($drawing);
-        }
+        $this->photos = $photos;
 
         return $this;
     }
 
     /**
-     * @return Collection|Media[]
+     * @return Collection|File[]
      */
     public function getDrawings(): Collection
     {
         return $this->drawings;
     }
 
-    public function addDrawing(Media $drawing): void
+    /**
+     * @param Collection|File[] $drawings
+     */
+    public function setDrawings(Collection $drawings): self
     {
-        $this->drawings[] = $drawing;
+        $this->drawings = $drawings;
+
+        return $this;
     }
 }

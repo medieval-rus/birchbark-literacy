@@ -23,7 +23,7 @@ import $ from 'jquery';
 import { Loader } from "@googlemaps/js-api-loader"
 
 $(document).ready(() => {
-    debugger
+
     const apiKey = $('[data-google-maps-api-key]').attr('data-google-maps-api-key');
 
     const loader = new Loader({
