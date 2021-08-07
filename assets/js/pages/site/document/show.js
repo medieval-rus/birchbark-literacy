@@ -61,15 +61,13 @@ $(window).on('load', () => {
                 const figcaptionElement = figureElement.children[1];
                 const imgElement = aElement.children[0];
 
-                const rectangle = imgElement.getBoundingClientRect();
-
                 const item = {
                     src: aElement.getAttribute('href'),
                     downloadUrl: figureElement.getAttribute('data-download-url'),
                     title: figcaptionElement.innerHTML,
                     msrc: imgElement.getAttribute('src'),
-                    w: rectangle.width,
-                    h: rectangle.height,
+                    w: imgElement.naturalWidth,
+                    h: imgElement.naturalHeight,
                     figureElement: figureElement
                 };
 
