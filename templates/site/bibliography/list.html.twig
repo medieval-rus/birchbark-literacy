@@ -25,12 +25,19 @@
 {%- block page_content -%}
 
     {% import 'site/content/post.html.twig' as post_helper %}
+    {% import _self as self %}
 
     {{ post_helper.render_post_body(post.body) }}
 
-    {% import '@VyfonyBibliography/bibliographic_record.html.twig' as bibliographic_record %}
-
     {% for record in records %}
-        <p>{{ bibliographic_record.render_record(record) }}</p>
+        <p>{{ self.render_record(record) }}</p>
     {% endfor %}
 {%- endblock -%}
+
+{%- macro render_record(bibliographicRecord) -%}
+    <span>
+        <span>{{- bibliographicRecord.shortName -}}</span>
+        {{- ' — ' -}}
+        <span>{{- bibliographicRecord.formalNotation -}}</span>
+    </span>
+{%- endmacro -%}

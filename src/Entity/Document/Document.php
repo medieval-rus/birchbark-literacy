@@ -25,12 +25,12 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
+use App\Entity\Bibliography\BibliographicRecord;
 use App\Entity\Media\File;
 use App\Repository\Document\DocumentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Vyfony\Bundle\BibliographyBundle\Persistence\Entity\BibliographicRecord;
 
 /**
  * @ORM\Table(
@@ -166,7 +166,7 @@ class Document
     /**
      * @var Collection|BibliographicRecord[]
      *
-     * @ORM\ManyToMany(targetEntity="Vyfony\Bundle\BibliographyBundle\Persistence\Entity\BibliographicRecord")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Bibliography\BibliographicRecord")
      * @ORM\JoinTable(
      *     name="bb__document_record",
      *     joinColumns={@ORM\JoinColumn(name="birch_bark_document_id", referencedColumnName="id")},

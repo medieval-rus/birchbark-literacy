@@ -23,38 +23,53 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Admin\Book;
+namespace App\Admin\Bibliography;
 
 use App\Admin\AbstractEntityAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\Form\Type\CollectionType;
 
-final class BookAdmin extends AbstractEntityAdmin
+final class ReferencesListAdmin extends AbstractEntityAdmin
 {
     /**
      * @var string
      */
-    protected $baseRouteName = 'book_book';
+    protected $baseRouteName = 'bibliography_references_list';
 
     /**
      * @var string
      */
-    protected $baseRoutePattern = 'book/book';
+    protected $baseRoutePattern = 'bibliography/references-list';
 
-    protected function configureListFields(ListMapper $list): void
+    protected function configureListFields(ListMapper $listMapper): void
     {
-        $list
-            ->addIdentifier('id', null, $this->createLabeledListOptions('id'))
+        $listMapper
             ->addIdentifier('name', null, $this->createLabeledListOptions('name'))
         ;
     }
 
-    protected function configureFormFields(FormMapper $form): void
+    protected function configureFormFields(FormMapper $formMapper): void
     {
-        $form
-            ->with($this->getSectionLabel('common'))
+        $formMapper
+            ->with($this->getSectionLabel('information'))
                 ->add('name', null, $this->createLabeledFormOptions('name'))
                 ->add('description', null, $this->createLabeledFormOptions('description'))
+                ->add('items', null, $this->createLabeledManyToManyFormOptions('items'))
+                ->add(
+                    'items',
+                    CollectionType::class,
+                    $this->createLabeledFormOptions(
+                        'items',
+                        ['required' => false]
+                    ),
+                    [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                        'sortable' => 'position',
+                        'admin_code' => 'admin.bibliography.references_list.item',
+                    ]
+                )
             ->end()
         ;
     }

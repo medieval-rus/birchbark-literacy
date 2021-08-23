@@ -21,30 +21,57 @@
 
 {% extends 'site/base.html.twig' %}
 
-{% block title %}{{ book.name }}{% endblock %}
+{% block title %}{{ bibliographicRecord.label ?? bibliographicRecord.title }}{% endblock %}
 
 {% block page_content %}
-    {%- import 'site/book/macro__book_helper.html.twig' as book_helper -%}
 
-    {% if book.image is not null %}
-        {% thumbnail book.image, 'showPagePreview' with {'class': 'mr-book-show-image'} %}
+    {% if bibliographicRecord.mainImage is not null %}
+        <img title="{{ bibliographicRecord.mainImage.description }}"
+             alt="{{ bibliographicRecord.mainImage.fileName }}"
+             width="350"
+             class="mr-book-show-image"
+             src="{{ bibliographicRecord.mainImage.url }}"
+        >
     {% endif %}
 
-    {% if book.description is not null %}
+    {% if bibliographicRecord.description is not null %}
         <p>
-            {{ book.description|nl2br }}
+            {{ bibliographicRecord.description|nl2br }}
         </p>
     {% endif %}
 
-    {% if book.pdfDocument is not null %}
+    {% if bibliographicRecord.mainFile is not null %}
         <p>
-            <a href="{{ path('sonata_media_download', {'id': book.pdfDocument|sonata_urlsafeid }) }}">
-                {{ 'downloadInPdf'|transWithContext(translationContext) }}
+            <a href="{{ bibliographicRecord.mainFile.url }}">
+                {{ 'download'|transWithContext(translationContext) }}
             </a>
         </p>
     {% endif %}
 
-    {% if book.parts|length > 0 %}
-        {{ book_helper.book_list_table(book.parts|sort((a, b) => a.id <=> b.id), false, 'table.column.partName'|transWithContext(translationContext), 'table.column.view'|transWithContext(translationContext), 'table.column.download'|transWithContext(translationContext)) }}
+    {% if bibliographicRecord.structuralComponents|length > 0 %}
+        <table class="table table-striped table-sm mr-book-list-table">
+            <thead>
+                <tr>
+                    <th>{{ 'table.column.partName'|transWithContext(translationContext) }}</th>
+                    <th>{{ 'table.column.download'|transWithContext(translationContext) }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for structuralComponent in bibliographicRecord.structuralComponents|filter(component => component.level == 1)|sort((a, b) => a.id <=> b.id) %}
+                <tr>
+                    <th scope="row">
+                        {{ structuralComponent.name }}
+                    </th>
+                    <td>
+                        {% if structuralComponent.file is not null %}
+                            <a href="{{ structuralComponent.file.url }}">
+                                {{ include('site/book/_download_icon.html.twig') }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     {% endif %}
 {% endblock %}

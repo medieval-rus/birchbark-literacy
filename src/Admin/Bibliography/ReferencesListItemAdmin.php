@@ -23,40 +23,33 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Admin\Book;
+namespace App\Admin\Bibliography;
 
 use App\Admin\AbstractEntityAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
-final class BookPartAdmin extends AbstractEntityAdmin
+final class ReferencesListItemAdmin extends AbstractEntityAdmin
 {
     /**
      * @var string
      */
-    protected $baseRouteName = 'book_book_part';
+    protected $baseRouteName = 'bibliography_references_list_item';
 
     /**
      * @var string
      */
-    protected $baseRoutePattern = 'book/book-part';
+    protected $baseRoutePattern = 'bibliography/references-list/item';
 
-    protected function configureListFields(ListMapper $list): void
+    protected function configureFormFields(FormMapper $formMapper): void
     {
-        $list
-            ->addIdentifier('id', null, $this->createLabeledListOptions('id'))
-            ->addIdentifier('name', null, $this->createLabeledListOptions('name'))
-            ->addIdentifier('book', null, $this->createLabeledListOptions('book'))
-        ;
-    }
-
-    protected function configureFormFields(FormMapper $form): void
-    {
-        $form
-            ->with($this->getSectionLabel('common'))
-                ->add('name', null, $this->createLabeledFormOptions('name'))
-                ->add('book', null, $this->createLabeledFormOptions('book'))
-            ->end()
+        $formMapper
+            ->add(
+                'bibliographicRecord.shortName',
+                null,
+                $this->createLabeledFormOptions('bibliographicRecord', ['disabled' => true])
+            )
+            ->add('position', HiddenType::class, $this->createLabeledFormOptions('position'))
         ;
     }
 }

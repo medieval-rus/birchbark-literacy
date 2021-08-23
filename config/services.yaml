@@ -19,12 +19,6 @@
 
 parameters:
   locale: 'ru'
-  web_images_max_size: 10000000
-  web_images_max_compression_quality: 70
-  web_images_max_dimension: 15000
-  web_images_fallback_compression_quality: 65
-  web_images_fallback_dimension: 10000
-  favorite_documents_count: 6
   google_maps_api_key: '%env(resolve:GOOGLE_MAPS_API_KEY)%'
 
 services:
@@ -37,6 +31,10 @@ services:
       $osfFolders:
         photo: '%env(resolve:OSF_PHOTOS_FOLDER_ID)%'
         drawing: '%env(resolve:OSF_DRAWINGS_FOLDER_ID)%'
+        bibliography_image: '%env(resolve:OSF_BIBLIOGRAPHY_IMAGES_FOLDER_ID)%'
+        bibliography_document: '%env(resolve:OSF_BIBLIOGRAPHY_DOCUMENTS_FOLDER_ID)%'
+        bibliography_document_part: '%env(resolve:OSF_BIBLIOGRAPHY_DOCUMENT_PARTS_FOLDER_ID)%'
+        bibliography_file_supplement: '%env(resolve:OSF_BIBLIOGRAPHY_FILE_SUPPLEMENTS_FOLDER_ID)%'
 
   App\:
     resource: '../src/'

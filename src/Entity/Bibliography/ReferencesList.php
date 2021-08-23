@@ -23,75 +23,57 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Entity\Book;
+namespace App\Entity\Bibliography;
 
-use App\Entity\MediaBundle\Media;
+use App\Repository\Bibliography\ReferencesListRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__book")
- * @ORM\Entity
+ * @ORM\Table(name="bibliography__references_list")
+ * @ORM\Entity(repositoryClass=ReferencesListRepository::class)
  */
-class Book
+class ReferencesList
 {
     /**
      * @var int
      *
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
     /**
-     * @var Media|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\MediaBundle\Media", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="id")
-     */
-    private $image;
-
-    /**
-     * @var Media|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\MediaBundle\Media", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\JoinColumn(name="pdf_document_id", referencedColumnName="id")
-     */
-    private $pdfDocument;
-
-    /**
-     * @var Collection|BookPart[]
+     * @var Collection|ReferencesListItem[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Book\BookPart",
+     *     targetEntity="App\Entity\Bibliography\ReferencesListItem",
      *     cascade={"persist"},
-     *     mappedBy="book",
-     *     orphanRemoval=true
+     *     mappedBy="referencesList"
      * )
+     * @ORM\OrderBy({"position": "ASC"})
      */
-    private $parts;
+    private $items;
 
     public function __construct()
     {
-        $this->parts = new ArrayCollection();
+        $this->items = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -99,7 +81,7 @@ class Book
         return (string) $this->name;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -116,7 +98,7 @@ class Book
         return $this->name;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -128,58 +110,35 @@ class Book
         return $this->description;
     }
 
-    public function setImage(?Media $image): self
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    public function getImage(): ?Media
-    {
-        return $this->image;
-    }
-
-    public function setPdfDocument(?Media $pdfDocument): self
-    {
-        $this->pdfDocument = $pdfDocument;
-
-        return $this;
-    }
-
-    public function getPdfDocument(): ?Media
-    {
-        return $this->pdfDocument;
-    }
-
     /**
-     * @param Collection|BookPart[] $parts
-     *
-     * @return Book
+     * @return Collection|ReferencesListItem[]
      */
-    public function setParts(Collection $parts): self
+    public function getItems(): Collection
     {
-        $this->parts = new ArrayCollection();
+        return $this->items;
+    }
 
-        foreach ($parts as $part) {
-            $this->addPart($part);
+    public function addItem(ReferencesListItem $item): self
+    {
+        if (!$this->items->contains($item)) {
+            $this->items[] = $item;
+
+            $item->setReferencesList($this);
         }
 
         return $this;
     }
 
-    /**
-     * @return Collection|BookPart[]
-     */
-    public function getParts(): Collection
+    public function removeItem(ReferencesListItem $item): self
     {
-        return $this->parts;
-    }
+        if ($this->items->contains($item)) {
+            $this->items->removeElement($item);
 
-    public function addPart(BookPart $part): void
-    {
-        $part->setBook($this);
+            if ($item->getReferencesList() === $this) {
+                $item->setReferencesList(null);
+            }
+        }
 
-        $this->parts[] = $part;
+        return $this;
     }
 }

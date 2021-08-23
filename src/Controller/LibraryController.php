@@ -25,14 +25,15 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Book\Book;
+use App\Entity\Bibliography\BibliographicRecord;
+use App\Entity\Bibliography\ReferencesList;
+use App\Entity\Bibliography\ReferencesListItem;
 use App\Form\Document\DocumentsSearchType;
 use App\Repository\Content\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Vyfony\Bundle\BibliographyBundle\Persistence\Entity\BibliographicRecord;
 
 /**
  * @Route("/library")
@@ -44,13 +45,20 @@ final class LibraryController extends AbstractController
      */
     public function listBooks(EntityManagerInterface $entityManager): Response
     {
+        $bibliographicRecords = $entityManager
+            ->getRepository(ReferencesList::class)
+            ->findBooks()
+            ->getItems()
+            ->map(fn (ReferencesListItem $item) => $item->getBibliographicRecord())
+            ->toArray();
+
         return $this->render(
             'site/book/list.html.twig',
             [
                 'translationContext' => 'controller.library.book.list',
                 'assetsContext' => 'book/list',
                 'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
-                'books' => $entityManager->getRepository(Book::class)->findAll(),
+                'bibliographicRecords' => $bibliographicRecords,
             ]
         );
     }
@@ -60,13 +68,19 @@ final class LibraryController extends AbstractController
      */
     public function showBook(int $id, EntityManagerInterface $entityManager): Response
     {
+        $bibliographicRecord = $entityManager->getRepository(BibliographicRecord::class)->findBook($id);
+
+        if (null === $bibliographicRecord) {
+            throw $this->createNotFoundException();
+        }
+
         return $this->render(
             'site/book/show.html.twig',
             [
                 'translationContext' => 'controller.library.book.show',
                 'assetsContext' => 'book/show',
                 'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
-                'book' => $entityManager->getRepository(Book::class)->find($id),
+                'bibliographicRecord' => $bibliographicRecord,
             ]
         );
     }

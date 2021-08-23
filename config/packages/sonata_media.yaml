@@ -41,19 +41,6 @@ sonata_media:
     bb__ngb_12_amendment:
       providers:
         - sonata.media.provider.file
-    bb__book__image:
-      providers:
-        - sonata.media.provider.image
-      formats:
-        showPagePreview: {width: 350, quality: '%web_images_max_compression_quality%'}
-    bb__book__pdf_document:
-      download:
-        strategy: sonata.media.security.public_strategy
-    bb__book_part__pdf_document:
-      download:
-        strategy: sonata.media.security.public_strategy
-      providers:
-        - sonata.media.provider.file
   cdn:
     server:
       path: /uploads/media
