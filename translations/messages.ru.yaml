@@ -41,15 +41,13 @@ controller:
         table:
           column:
             bookName: Название
-            view: Просмотр
             download: Скачать
       show:
         title: Библиотека
-        downloadInPdf: Скачать в формате PDF
+        download: Скачать документ
         table:
           column:
             partName: Название
-            view: Просмотр
             download: Скачать
   maps:
     index:

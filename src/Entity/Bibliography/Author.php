@@ -23,60 +23,53 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Entity\Book;
+namespace App\Entity\Bibliography;
 
-use App\Entity\MediaBundle\Media;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(
- *     name="bb__book_part",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="name__book", columns={"name", "book_id"})}
- * )
+ * @ORM\Table(name="bibliography__author")
  * @ORM\Entity
  */
-class BookPart
+class Author
 {
     /**
      * @var int
      *
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="full_name", type="string", length=255, unique=true)
      */
-    private $name;
+    private $fullName;
 
     /**
-     * @var Media|null
+     * @var Collection|BibliographicRecord[]
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\MediaBundle\Media", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\JoinColumn(name="pdf_document_id", referencedColumnName="id")
-     */
-    private $pdfDocument;
-
-    /**
-     * @var Book
-     *
-     * @ORM\ManyToOne(
-     *     targetEntity="App\Entity\Book\Book",
+     * @ORM\ManyToMany(
+     *     targetEntity="App\Entity\Bibliography\BibliographicRecord",
      *     cascade={"persist"},
-     *     inversedBy="parts"
+     *     mappedBy="authors"
      * )
-     * @ORM\JoinColumn(name="book_id", referencedColumnName="id", nullable=false)
      */
-    private $book;
+    private $bibliographicRecords;
+
+    public function __construct()
+    {
+        $this->bibliographicRecords = new ArrayCollection();
+    }
 
     public function __toString(): string
     {
-        return (string) $this->name;
+        return (string) $this->fullName;
     }
 
     public function getId(): int
@@ -84,39 +77,33 @@ class BookPart
         return $this->id;
     }
 
-    public function setName(string $name): self
+    public function setFullName(string $fullName): self
     {
-        $this->name = $name;
+        $this->fullName = $fullName;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getFullName(): ?string
     {
-        return $this->name;
+        return $this->fullName;
     }
 
-    public function setPdfDocument(?Media $pdfDocument): self
+    /**
+     * @return Collection|BibliographicRecord[]
+     */
+    public function getBibliographicRecords(): Collection
     {
-        $this->pdfDocument = $pdfDocument;
+        return $this->bibliographicRecords;
+    }
+
+    /**
+     * @param Collection|BibliographicRecord[] $bibliographicRecords
+     */
+    public function setBibliographicRecords(Collection $bibliographicRecords): self
+    {
+        $this->bibliographicRecords = $bibliographicRecords;
 
         return $this;
-    }
-
-    public function getPdfDocument(): ?Media
-    {
-        return $this->pdfDocument;
-    }
-
-    public function setBook(Book $book): self
-    {
-        $this->book = $book;
-
-        return $this;
-    }
-
-    public function getBook(): ?Book
-    {
-        return $this->book;
     }
 }

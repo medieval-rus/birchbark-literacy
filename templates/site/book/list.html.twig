@@ -22,9 +22,32 @@
 {% extends 'site/base.html.twig' %}
 
 {% block page_content %}
-    {% import 'site/book/macro__book_helper.html.twig' as book_helper %}
-
     <h5><a href="{{ path('library__bibliography_list') }}">{{ 'favoriteBibliography'|transWithContext(translationContext) }}</a></h5>
 
-    {{ book_helper.book_list_table(books, true, 'table.column.bookName'|transWithContext(translationContext), 'table.column.view'|transWithContext(translationContext), 'table.column.download'|transWithContext(translationContext)) }}
+    <table class="table table-striped table-sm mr-book-list-table">
+        <thead>
+        <tr>
+            <th>{{ 'table.column.bookName'|transWithContext(translationContext) }}</th>
+            <th>{{ 'table.column.download'|transWithContext(translationContext) }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for bibliographicRecord in bibliographicRecords %}
+            <tr>
+                <th scope="row">
+                    <a href="{{ path('library__book_show', {'id': bibliographicRecord.id}) }}">
+                        {{ bibliographicRecord.label }}
+                    </a>
+                </th>
+                <td>
+                    {% if bibliographicRecord.mainFile is not null %}
+                        <a href="{{ bibliographicRecord.mainFile.url }}">
+                            {{ include('site/book/_download_icon.html.twig') }}
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

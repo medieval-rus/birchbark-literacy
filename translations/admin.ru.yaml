@@ -27,14 +27,14 @@ menu:
       label: Содержательный аспект
     materialAspect:
       label: Материальный аспект
-    library:
-      label: Библиотека
     security:
       label: Безопасность
     text:
       label: Тексты
     media:
       label: Медиа
+    bibliography:
+      label: Библиография
   paragraphs:
     post:
       label: Страницы
@@ -74,6 +74,12 @@ menu:
       label: Тексты грамот
     file:
       label: Файлы
+    bibliographicRecord:
+      label: Библиографические записи
+    author:
+      label: Авторы
+    referencesList:
+      label: Списки литературы
 
 list:
   post:
@@ -165,6 +171,17 @@ list:
       fileName: Имя файла
       mediaType: Тип
       description: Описание
+  author:
+    fields:
+      fullName: Полное имя
+  bibliographicRecord:
+    fields:
+      shortName: Краткое название
+      title: Наименование работы
+      year: Год публикации
+  referencesList:
+    fields:
+      name: Название списка
 
 form:
   post:
@@ -364,6 +381,71 @@ form:
       url: Адрес
       description: Описание
       binaryContent: Файл
+  author:
+    section:
+      data:
+        label: Сведения об авторе
+    fields:
+      fullName: Полное имя
+  bibliographicRecord:
+    tab:
+      main:
+        label: Основная информация
+      supplements:
+        label: Материалы
+      media:
+        label: Изображения и файлы
+    section:
+      basicInformation:
+        label: Основная информация
+      details:
+        label: Детали библиографической записи
+      fileSupplements:
+        label: Приложения
+      structuralComponents:
+        label: Структурные компоненты
+      media:
+        label: Изображения и файлы
+    fields:
+      shortName: Краткое название
+      title: Наименование работы
+      year: Год публикации
+      authors: Авторы работы
+      formalNotation: Отображаемое значение (формальная запись)
+      description: Описание работы
+      fileSupplements: Приложения, связанные с грамотами
+      structuralComponents: Части источника
+      mainFile: PDF-документ
+      mainImage: Изображение
+  fileSupplement:
+    section:
+      common:
+        label: Привязка файла к библиографической записи в контексте грамоты
+    fields:
+      document: Грамота
+      file: Файл
+  structuralComponent:
+    section:
+      common:
+        label: Список частей
+    fields:
+      name: Название части
+      file: Файл
+      position: Позиция
+  referencesList:
+    section:
+      information:
+        label: Сведения о списке
+      content:
+        label: Содержимое списка
+    fields:
+      name: Название
+      description: Описание
+      items: Элементы
+  referencesListItem:
+    fields:
+      bibliographicRecord: Библиографическая запись
+      position: Номер по порядку
 
 breadcrumb:
   link_post_list: Страницы
@@ -420,6 +502,15 @@ breadcrumb:
   link_document_text_list: Тексты грамот
   link_file_list: Загруженные файлы
   link_file_create: Загрузить новый файл
+  link_author_list: Авторы
+  link_author_create: Добавить автора
+  link_author_delete: Удалить автора
+  link_bibliographic_record_list: Библиографические записи
+  link_bibliographic_record_create: Добавить запись
+  link_bibliographic_record_delete: Удалить запись
+  link_references_list_list: Списки литературы
+  link_references_list_create: Создать список
+  link_references_list_delete: Удалить список
 
 userMenu:
   logout:

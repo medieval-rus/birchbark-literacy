@@ -47,6 +47,8 @@ final class DataStorageManager implements DataStorageManagerInterface
 
     public function upload(File $file, string $fileName, string $pathToSource, string $mimeType): void
     {
+        krsort($this->osfFolders);
+
         $remoteFolderId = null;
         foreach ($this->osfFolders as $folderKey => $folderId) {
             if (StringHelper::startsWith($fileName, $folderKey.'_')) {
