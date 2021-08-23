@@ -20,6 +20,7 @@
 parameters:
   locale: 'ru'
   google_maps_api_key: '%env(resolve:GOOGLE_MAPS_API_KEY)%'
+  favorite_documents_count: 6
 
 services:
   _defaults:
