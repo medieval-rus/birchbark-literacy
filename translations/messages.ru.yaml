@@ -112,7 +112,6 @@ controller:
       showOriginalTextWithDivisionIntoWords: Показать разделение на слова
       showTranslatedText: Показать перевод
       hideTranslatedText: Скрыть перевод
-      ngb12Amendment: см. поправки из XII тома НГБ
       preliminaryPublication: предварительная публикация
       notDescribedInDnd: не описана в ДНД
 

@@ -25,8 +25,8 @@ declare(strict_types=1);
 
 namespace App\Services\Document\Formatter;
 
+use App\Entity\Bibliography\FileSupplement;
 use App\Entity\Document\AccidentalFind;
-use App\Entity\Document\Amendment;
 use App\Entity\Document\ArchaeologicalFind;
 use App\Entity\Document\ConventionalDateCell;
 use App\Entity\Document\Document;
@@ -194,14 +194,25 @@ final class DocumentFormatter implements DocumentFormatterInterface
 
     public function getLiterature(Document $document): string
     {
-        $literatureIssues = [];
+        $literatureItems = [];
 
-        foreach ($document->getLiterature() as $literature) {
-            $literatureIssues[] = $literature->getShortName();
+        foreach ($document->getLiterature() as $bibliographicRecord) {
+            $fileSupplement = $bibliographicRecord
+                ->getFileSupplements()
+                ->filter(fn (FileSupplement $supplement) => $supplement->getDocument()->getId() === $document->getId())
+                ->first();
+
+            $formattedItem = $bibliographicRecord->getShortName();
+
+            if ($fileSupplement instanceof FileSupplement) {
+                $formattedItem = sprintf('<a href="%s">%s</a>', $fileSupplement->getFile()->getUrl(), $formattedItem);
+            }
+
+            $literatureItems[] = $formattedItem;
         }
 
-        if (\count($literatureIssues) > 0) {
-            return implode(', ', $literatureIssues);
+        if (\count($literatureItems) > 0) {
+            return implode(', ', $literatureItems);
         }
 
         return '-';
@@ -224,17 +235,6 @@ final class DocumentFormatter implements DocumentFormatterInterface
         }
 
         return '-';
-    }
-
-    public function getNgb12Amendment(Document $document): ?Amendment
-    {
-        foreach ($document->getAmendments() as $amendment) {
-            if ('XII' === $amendment->getNgbVolume()) {
-                return $amendment;
-            }
-        }
-
-        return null;
     }
 
     /**
