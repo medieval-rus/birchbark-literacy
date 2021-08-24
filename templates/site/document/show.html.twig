@@ -119,16 +119,7 @@
         <br><a href="/build/fonts/novgorod-unicode-2012/novgorod-unicode-2012.ttf" target="_blank">({{ 'downloadFont'|transWithContext(translationContext) }})</a>
     {%- endset -%}
 
-    {%- set ngb12amendment = documentFormatter.ngb12amendment(document) -%}
-
-    {%- if ngb12amendment is not null -%}
-        {%- set pathToMedia -%}{%- path ngb12amendment.media, 'reference' -%}{%- endset -%}
-        {%- set ammendmentContent -%}
-            <br><a href="{{ pathToMedia }}" target="_blank">{{ 'ngb12Amendment'|transWithContext(translationContext) }}</a>
-        {%- endset -%}
-    {%- endif -%}
-
-    {{ (self.translate_field_label(translationContext, labelTranslationKey) ~ downloadFontLinkContent ~ ammendmentContent|default(''))|raw }}
+    {{ (self.translate_field_label(translationContext, labelTranslationKey) ~ downloadFontLinkContent)|raw }}
 {%- endmacro -%}
 
 {%- macro get_original_text_row_td_content(translationContext, document) -%}

@@ -194,18 +194,6 @@ class Document
     private $ngbVolume;
 
     /**
-     * @var Collection|Amendment[]
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Document\Amendment",
-     *     cascade={"persist"},
-     *     mappedBy="birchBarkDocument",
-     *     orphanRemoval=true
-     * )
-     */
-    private $amendments;
-
-    /**
      * @var Collection|File[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Media\File", cascade={"persist"})
@@ -226,7 +214,6 @@ class Document
         $this->materialElements = new ArrayCollection();
         $this->contentElements = new ArrayCollection();
         $this->literature = new ArrayCollection();
-        $this->amendments = new ArrayCollection();
         $this->photos = new ArrayCollection();
         $this->drawings = new ArrayCollection();
     }
@@ -498,37 +485,6 @@ class Document
     public function getNgbVolume(): ?string
     {
         return $this->ngbVolume;
-    }
-
-    /**
-     * @param Collection|Amendment[] $amendments
-     *
-     * @return Document
-     */
-    public function setAmendments(Collection $amendments): self
-    {
-        $this->amendments = new ArrayCollection();
-
-        foreach ($amendments as $amendment) {
-            $this->addAmendment($amendment);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Amendment[]
-     */
-    public function getAmendments(): Collection
-    {
-        return $this->amendments;
-    }
-
-    public function addAmendment(Amendment $amendment): void
-    {
-        $amendment->setBirchBarkDocument($this);
-
-        $this->amendments[] = $amendment;
     }
 
     /**

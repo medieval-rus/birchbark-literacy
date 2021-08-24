@@ -38,9 +38,6 @@ sonata_media:
     bb__dnd_section:
       providers:
         - sonata.media.provider.file
-    bb__ngb_12_amendment:
-      providers:
-        - sonata.media.provider.file
   cdn:
     server:
       path: /uploads/media

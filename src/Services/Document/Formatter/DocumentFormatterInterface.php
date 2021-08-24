@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace App\Services\Document\Formatter;
 
-use App\Entity\Document\Amendment;
 use App\Entity\Document\Document;
 use App\Entity\Document\Excavation;
 use App\Entity\MediaBundle\Media;
@@ -59,8 +58,6 @@ interface DocumentFormatterInterface
     public function getLiterature(Document $document): string;
 
     public function getStoragePlace(Document $document): string;
-
-    public function getNgb12Amendment(Document $document): ?Amendment;
 
     /**
      * @return TextPieceInterface[][]
