@@ -314,9 +314,9 @@ form:
       isConventionalDateBiasedForward: Условная дата смещена вперёд
       stratigraphicalDate: Стратиграфическая дата
       nonStratigraphicalDate: Внестратиграфическая дата
+      dndVolumes: Издания ДНД
+      ngbVolumes: Тома НГБ
       literature: Литература
-      dndSection: Статья ДНД
-      ngbVolume: Том НГБ
       contentElements: Элементы содержания
       materialElements: Материальные элементы
       photos: Фотографии

@@ -45,8 +45,8 @@
             {{ self.format_text_row(translationContext, 'excavation', documentFormatter.excavation(document)) }}
             {{ self.format_text_row(translationContext, 'category', documentFormatter.category(document)) }}
             {{ self.format_text_row(translationContext, 'description', documentFormatter.description(document)) }}
-            {{ self.format_text_row(translationContext, 'dndSection', self.format_dnd_section_content(translationContext, document.dndSection)) }}
-            {{ self.format_text_row(translationContext, 'ngbVolume', document.ngbVolume) }}
+            {{ self.format_text_row(translationContext, 'dndVolumes', documentFormatter.dnd(document)) }}
+            {{ self.format_text_row(translationContext, 'ngbVolumes', documentFormatter.ngb(document)) }}
             {{ self.format_text_row(translationContext, 'literature', documentFormatter.literature(document)) }}
             {{ self.format_text_row(translationContext, 'storagePlace', documentFormatter.storagePlace(document)) }}
             {{ self.format_images_row(translationContext, 'photos', document.photos) }}
@@ -183,19 +183,6 @@
             </div>
         </details>
     </div>
-{%- endmacro -%}
-
-{%- macro format_dnd_section_content(translationContext, dndSection) -%}
-    {%- if dndSection is not null -%}
-        {%- set sectionName = dndSection.name -%}
-        {%- if dndSection.media is not null -%}
-            {%- set pathToMedia -%}{%- path dndSection.media, 'reference' -%}{%- endset -%}
-            {%- set sectionName -%}<a href="{{ pathToMedia }}" target="_blank">{{ sectionName }}</a>{%- endset -%}
-        {%- endif -%}
-        {{ sectionName|raw }}
-    {%- else -%}
-        {{ 'notDescribedInDnd'|transWithContext(translationContext) }}
-    {%- endif -%}
 {%- endmacro -%}
 
 {%- macro format_images_row(translationContext, name, medias) -%}

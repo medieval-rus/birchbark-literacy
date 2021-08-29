@@ -45,8 +45,6 @@ return [
     Sonata\BlockBundle\SonataBlockBundle::class => ['all' => true],
     Sonata\AdminBundle\SonataAdminBundle::class => ['all' => true],
     Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle::class => ['all' => true],
-    JMS\SerializerBundle\JMSSerializerBundle::class => ['all' => true],
-    Sonata\MediaBundle\SonataMediaBundle::class => ['all' => true],
     Vyfony\Bundle\FilterableTableBundle\VyfonyFilterableTableBundle::class => ['all' => true],
     Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle::class => ['all' => true],
     Vyfony\Bundle\MysqldumpBundle\VyfonyMysqldumpBundle::class => ['all' => true],

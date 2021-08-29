@@ -56,9 +56,11 @@
                 </div>
             </div>
             {% set isImageDrawn = false %}
-            {% for file in documentFormatter.images(document) if not isImageDrawn %}
-                <img class="card-img-bottom img-fluid" src="{{ file.url }}" alt="{{ file.description }}">
-                {% set isImageDrawn = true %}
+            {% for file in documentFormatter.images(document) %}
+                {% if not isImageDrawn %}
+                    <img class="card-img-bottom img-fluid" src="{{ file.url }}" alt="{{ file.description }}">
+                    {% set isImageDrawn = true %}
+                {% endif %}
             {% endfor %}
         </div>
     </a>
