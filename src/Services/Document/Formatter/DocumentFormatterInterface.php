@@ -27,7 +27,7 @@ namespace App\Services\Document\Formatter;
 
 use App\Entity\Document\Document;
 use App\Entity\Document\Excavation;
-use App\Entity\MediaBundle\Media;
+use App\Entity\Media\File;
 use App\Services\Document\OriginalText\MarkupParser\TextPiece\TextPieceInterface;
 
 interface DocumentFormatterInterface
@@ -49,11 +49,15 @@ interface DocumentFormatterInterface
     public function getConventionalDateWithDescription(Document $document): string;
 
     /**
-     * @return array|Media[]
+     * @return array|File[]
      */
     public function getImages(Document $document): array;
 
     public function getCategory(Document $document): string;
+
+    public function getDnd(Document $document): string;
+
+    public function getNgb(Document $document): string;
 
     public function getLiterature(Document $document): string;
 

@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace App\Services\Document\Formatter;
 
+use App\Entity\Bibliography\BibliographicRecord;
 use App\Entity\Bibliography\FileSupplement;
 use App\Entity\Document\AccidentalFind;
 use App\Entity\Document\ArchaeologicalFind;
@@ -38,7 +39,7 @@ use App\Entity\Media\File;
 use App\Services\Document\OriginalText\MarkupParser\OriginalTextMarkupParserInterface;
 use App\Services\Document\OriginalText\MarkupParser\TextPiece\ModifiableTextPieceInterface;
 use App\Services\Document\OriginalText\MarkupParser\TextPiece\TextPieceInterface;
-use const PHP_EOL;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class DocumentFormatter implements DocumentFormatterInterface
@@ -192,30 +193,46 @@ final class DocumentFormatter implements DocumentFormatterInterface
         return '-';
     }
 
+    public function getDnd(Document $document): string
+    {
+        return $this->formatBibliographicRecords(
+            $document,
+            $document->getDndVolumes(),
+            function (BibliographicRecord $bibliographicRecord, ?FileSupplement $fileSupplement) {
+                $label = null;
+
+                if (null !== $fileSupplement) {
+                    $label = $fileSupplement->getFile()->getDescription();
+                }
+
+                if (null === $label) {
+                    $label = $fileSupplement->getBibliographicRecord()->getShortName();
+                }
+
+                return $label;
+            },
+            fn () => $this->translator->trans('global.document.notDescribedInDnd')
+        );
+    }
+
+    public function getNgb(Document $document): string
+    {
+        return $this->formatBibliographicRecords(
+            $document,
+            $document->getNgbVolumes(),
+            fn (BibliographicRecord $bibliographicRecord) => $bibliographicRecord->getShortName(),
+            fn () => '-'
+        );
+    }
+
     public function getLiterature(Document $document): string
     {
-        $literatureItems = [];
-
-        foreach ($document->getLiterature() as $bibliographicRecord) {
-            $fileSupplement = $bibliographicRecord
-                ->getFileSupplements()
-                ->filter(fn (FileSupplement $supplement) => $supplement->getDocument()->getId() === $document->getId())
-                ->first();
-
-            $formattedItem = $bibliographicRecord->getShortName();
-
-            if ($fileSupplement instanceof FileSupplement) {
-                $formattedItem = sprintf('<a href="%s">%s</a>', $fileSupplement->getFile()->getUrl(), $formattedItem);
-            }
-
-            $literatureItems[] = $formattedItem;
-        }
-
-        if (\count($literatureItems) > 0) {
-            return implode(', ', $literatureItems);
-        }
-
-        return '-';
+        return $this->formatBibliographicRecords(
+            $document,
+            $document->getLiterature(),
+            fn (BibliographicRecord $bibliographicRecord) => $bibliographicRecord->getShortName(),
+            fn () => '-'
+        );
     }
 
     public function getStoragePlace(Document $document): string
@@ -248,7 +265,7 @@ final class DocumentFormatter implements DocumentFormatterInterface
             foreach ($textPieces as $textPiece) {
                 if ($textPiece instanceof ModifiableTextPieceInterface) {
                     $textPiece->modify(
-                        fn (string $text): string => str_replace(['‐'.PHP_EOL, ' '], [PHP_EOL, ''], $text)
+                        fn (string $text): string => str_replace(['‐'.\PHP_EOL, ' '], [\PHP_EOL, ''], $text)
                     );
                 }
             }
@@ -374,6 +391,43 @@ final class DocumentFormatter implements DocumentFormatterInterface
     public function formatConventionalDateCell(ConventionalDateCell $conventionalDateCell): string
     {
         return sprintf('%s‒%s', $conventionalDateCell->getInitialYear(), $conventionalDateCell->getFinalYear());
+    }
+
+    /**
+     * @param Collection|BibliographicRecord[] $bibliographicRecords
+     */
+    private function formatBibliographicRecords(
+        Document $document,
+        Collection $bibliographicRecords,
+        callable $labelProvider,
+        callable $zeroRecordsValue
+    ): string {
+        $literatureItems = [];
+
+        foreach ($bibliographicRecords as $bibliographicRecord) {
+            $fileSupplement = $bibliographicRecord
+                ->getFileSupplements()
+                ->filter(fn (FileSupplement $supplement) => $supplement->getDocument()->getId() === $document->getId())
+                ->first();
+
+            if (false === $fileSupplement) {
+                $fileSupplement = null;
+            }
+
+            $formattedItem = $labelProvider($bibliographicRecord, $fileSupplement);
+
+            if ($fileSupplement instanceof FileSupplement) {
+                $formattedItem = sprintf('<a href="%s">%s</a>', $fileSupplement->getFile()->getUrl(), $formattedItem);
+            }
+
+            $literatureItems[] = $formattedItem;
+        }
+
+        if (\count($literatureItems) > 0) {
+            return implode(', ', $literatureItems);
+        }
+
+        return $zeroRecordsValue();
     }
 
     /**

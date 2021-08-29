@@ -101,9 +101,9 @@ controller:
         stratigraphicalDate: Стратиграфическая дата
         nonStratigraphicalDate: Внестратиграфическая дата
         stateOfPreservation: Сохранность
-        dndSection: Статья ДНД
+        dndVolumes: Статья ДНД
+        ngbVolumes: Тома НГБ
         literature: Литература
-        ngbVolume: Том НГБ
         storagePlace: Место хранения
         originalText: Текст
         translatedText: Перевод
@@ -113,13 +113,13 @@ controller:
       showTranslatedText: Показать перевод
       hideTranslatedText: Скрыть перевод
       preliminaryPublication: предварительная публикация
-      notDescribedInDnd: не описана в ДНД
 
 # this global subspace should be removed
 global:
   document:
     label: Грамота №%number%
     preliminaryPublication: предварительная публикация
+    notDescribedInDnd: не описана в ДНД
   documentNumber:
     lead1: " Свинц. 1"
     lead2: " Свинц. 2"

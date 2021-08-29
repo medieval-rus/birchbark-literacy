@@ -168,30 +168,36 @@ class Document
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Bibliography\BibliographicRecord")
      * @ORM\JoinTable(
-     *     name="bb__document_record",
-     *     joinColumns={@ORM\JoinColumn(name="birch_bark_document_id", referencedColumnName="id")},
+     *     name="bb__document_bibliographic_record_dnd",
+     *     joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="bibliographic_record_id", referencedColumnName="id")}
+     * )
+     */
+    private $dndVolumes;
+
+    /**
+     * @var Collection|BibliographicRecord[]
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Bibliography\BibliographicRecord")
+     * @ORM\JoinTable(
+     *     name="bb__document_bibliographic_record_ngb",
+     *     joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="bibliographic_record_id", referencedColumnName="id")}
+     * )
+     */
+    private $ngbVolumes;
+
+    /**
+     * @var Collection|BibliographicRecord[]
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Bibliography\BibliographicRecord")
+     * @ORM\JoinTable(
+     *     name="bb__document_bibliographic_record",
+     *     joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="bibliographic_record_id", referencedColumnName="id")}
      * )
      */
     private $literature;
-
-    /**
-     * @var DndSection|null
-     *
-     * @ORM\ManyToOne(
-     *     targetEntity="App\Entity\Document\DndSection",
-     *     cascade={"persist"}
-     * )
-     * @ORM\JoinColumn(name="dnd_section_id", referencedColumnName="id")
-     */
-    private $dndSection;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $ngbVolume;
 
     /**
      * @var Collection|File[]
@@ -213,6 +219,8 @@ class Document
     {
         $this->materialElements = new ArrayCollection();
         $this->contentElements = new ArrayCollection();
+        $this->dndVolumes = new ArrayCollection();
+        $this->ngbVolumes = new ArrayCollection();
         $this->literature = new ArrayCollection();
         $this->photos = new ArrayCollection();
         $this->drawings = new ArrayCollection();
@@ -435,16 +443,48 @@ class Document
     }
 
     /**
-     * @param Collection|BibliographicRecord[] $literature
+     * @return Collection|BibliographicRecord[]
+     */
+    public function getDndVolumes(): Collection
+    {
+        return $this->dndVolumes;
+    }
+
+    /**
+     * @param Collection|BibliographicRecord[] $dndVolumes
      *
      * @return Document
      */
-    public function setLiterature(Collection $literature): self
+    public function setDndVolumes(Collection $dndVolumes): self
     {
-        $this->literature = new ArrayCollection();
+        $this->dndVolumes = new ArrayCollection();
 
-        foreach ($literature as $literatureItem) {
-            $this->addLiteratureItem($literatureItem);
+        foreach ($dndVolumes as $dndVolume) {
+            $this->dndVolumes[] = $dndVolume;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BibliographicRecord[]
+     */
+    public function getNgbVolumes(): Collection
+    {
+        return $this->ngbVolumes;
+    }
+
+    /**
+     * @param Collection|BibliographicRecord[] $ngbVolumes
+     *
+     * @return Document
+     */
+    public function setNgbVolumes(Collection $ngbVolumes): self
+    {
+        $this->ngbVolumes = new ArrayCollection();
+
+        foreach ($ngbVolumes as $ngbVolume) {
+            $this->ngbVolumes[] = $ngbVolume;
         }
 
         return $this;
@@ -458,33 +498,20 @@ class Document
         return $this->literature;
     }
 
-    public function addLiteratureItem(BibliographicRecord $literatureItem): void
+    /**
+     * @param Collection|BibliographicRecord[] $literature
+     *
+     * @return Document
+     */
+    public function setLiterature(Collection $literature): self
     {
-        $this->literature[] = $literatureItem;
-    }
+        $this->literature = new ArrayCollection();
 
-    public function setDndSection(?DndSection $dndSection): self
-    {
-        $this->dndSection = $dndSection;
+        foreach ($literature as $literatureItem) {
+            $this->literature[] = $literatureItem;
+        }
 
         return $this;
-    }
-
-    public function getDndSection(): ?DndSection
-    {
-        return $this->dndSection;
-    }
-
-    public function setNgbVolume(?string $ngbVolume): self
-    {
-        $this->ngbVolume = $ngbVolume;
-
-        return $this;
-    }
-
-    public function getNgbVolume(): ?string
-    {
-        return $this->ngbVolume;
     }
 
     /**

@@ -23,35 +23,25 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Entity\MediaBundle;
+namespace DoctrineMigrations;
 
-use Doctrine\ORM\Mapping as ORM;
-use Sonata\MediaBundle\Entity\BaseMedia;
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
-/**
- * @ORM\Table(name="media__media")
- * @ORM\Entity
- */
-class Media extends BaseMedia
+final class Version20210829153515 extends AbstractMigration
 {
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
-    private $id;
-
-    public function getId(): ?int
+    public function getDescription(): string
     {
-        return $this->id;
+        return 'Renamed table.';
     }
 
-    public function setId(int $id): self
+    public function up(Schema $schema): void
     {
-        $this->id = $id;
+        $this->addSql('RENAME TABLE bb__document_record TO bb__document_bibliographic_record');
+    }
 
-        return $this;
+    public function down(Schema $schema): void
+    {
+        $this->addSql('RENAME TABLE bb__document_bibliographic_record TO bb__document_record');
     }
 }
