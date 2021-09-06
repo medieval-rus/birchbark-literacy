@@ -29,52 +29,34 @@ use App\Form\Security\AdminLoginForm;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
+final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
+    use TargetPathTrait;
 
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
+    private FormFactoryInterface $formFactory;
 
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $passwordEncoder;
+    private UrlGeneratorInterface $urlGenerator;
 
-    public function __construct(
-        FormFactoryInterface $formFactory,
-        UrlGeneratorInterface $urlGenerator,
-        UserPasswordEncoderInterface $passwordEncoder
-    ) {
+    public function __construct(FormFactoryInterface $formFactory, UrlGeneratorInterface $urlGenerator)
+    {
         $this->formFactory = $formFactory;
         $this->urlGenerator = $urlGenerator;
-        $this->passwordEncoder = $passwordEncoder;
     }
 
-    public function supports(Request $request): bool
-    {
-        $route = $request->attributes->get('_route');
-
-        return
-            'security__login' === $route &&
-            'POST' === $request->getMethod();
-    }
-
-    public function getCredentials(Request $request): array
+    public function authenticate(Request $request): PassportInterface
     {
         $form = $this->formFactory->create(AdminLoginForm::class);
 
@@ -82,37 +64,31 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         $data = $form->getData();
 
-        $request->getSession()->set(
-            Security::LAST_USERNAME,
-            $data['username']
+        $username = $data['username'];
+        $password = $data['password'];
+
+        $request->getSession()->set(Security::LAST_USERNAME, $username);
+
+        return new Passport(
+            new UserBadge($username),
+            new PasswordCredentials($password),
+            [
+                new RememberMeBadge(),
+                new CsrfTokenBadge('authenticate', $request->get('_csrf_token')),
+            ]
         );
-
-        return $data;
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider): UserInterface
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        return $userProvider->loadUserByUsername($credentials['username']);
-    }
+        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+            return new RedirectResponse($targetPath);
+        }
 
-    public function checkCredentials($credentials, UserInterface $user): bool
-    {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
-    }
-
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
-    {
-        $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
-
-        return new RedirectResponse($this->urlGenerator->generate('security__login'));
-    }
-
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
-    {
         return new RedirectResponse($this->urlGenerator->generate('sonata_admin_dashboard'));
     }
 
-    protected function getLoginUrl(): string
+    protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate('security__login');
     }

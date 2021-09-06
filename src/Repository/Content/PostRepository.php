@@ -29,12 +29,6 @@ use App\Entity\Content\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @method Post|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
- * @method Post|null findOneBy(array $criteria, ?array $orderBy = null)
- * @method Post[]    findAll()
- * @method Post[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
- */
 final class PostRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

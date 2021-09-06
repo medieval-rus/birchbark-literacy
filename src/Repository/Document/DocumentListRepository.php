@@ -32,12 +32,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @method DocumentList|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
- * @method DocumentList|null findOneBy(array $criteria, ?array $orderBy = null)
- * @method DocumentList[]    findAll()
- * @method DocumentList[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
- */
 final class DocumentListRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

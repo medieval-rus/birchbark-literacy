@@ -32,12 +32,6 @@ use App\Entity\Document\Town;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @method Document|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
- * @method Document|null findOneBy(array $criteria, ?array $orderBy = null)
- * @method Document[]    findAll()
- * @method Document[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
- */
 final class DocumentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

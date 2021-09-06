@@ -29,7 +29,7 @@
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-        {{ form_row(form._token) }}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
         <label for="inputUsername">{{ 'form.username'|transWithContext(translationContext) }}</label>
         <input

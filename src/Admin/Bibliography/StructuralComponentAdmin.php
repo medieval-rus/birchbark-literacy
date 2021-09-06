@@ -50,7 +50,10 @@ final class StructuralComponentAdmin extends AbstractEntityAdmin
                 ->add(
                     'file',
                     ModelListType::class,
-                    $this->createLabeledFormOptions('file', ['required' => true, 'btn_add' => false, 'btn_delete' => false])
+                    $this->createLabeledFormOptions(
+                        'file',
+                        ['required' => true, 'btn_add' => false, 'btn_delete' => false]
+                    )
                 )
                 ->add('position', HiddenType::class, $this->createLabeledFormOptions('position'))
             ->end()

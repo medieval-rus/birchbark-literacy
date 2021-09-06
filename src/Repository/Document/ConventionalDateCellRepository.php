@@ -29,12 +29,6 @@ use App\Entity\Document\ConventionalDateCell as DateCell;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @method DateCell|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
- * @method DateCell|null findOneBy(array $criteria, ?array $orderBy = null)
- * @method DateCell[]    findAll()
- * @method DateCell[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
- */
 final class ConventionalDateCellRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

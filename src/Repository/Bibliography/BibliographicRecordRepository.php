@@ -31,12 +31,6 @@ use App\Entity\Bibliography\ReferencesListItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @method BibliographicRecord|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
- * @method BibliographicRecord|null findOneBy(array $criteria, ?array $orderBy = null)
- * @method BibliographicRecord[]    findAll()
- * @method BibliographicRecord[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
- */
 final class BibliographicRecordRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

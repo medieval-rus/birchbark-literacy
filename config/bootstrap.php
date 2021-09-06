@@ -36,9 +36,9 @@ if (!class_exists(Dotenv::class)) {
 if (is_array($env = @include dirname(__DIR__).'/.env.local.php') &&
     (!isset($env['APP_ENV']) || ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? $env['APP_ENV']) === $env['APP_ENV'])
 ) {
-    (new Dotenv(false))->populate($env);
+    (new Dotenv())->usePutenv(false)->populate($env);
 } else {
-    (new Dotenv(false))->loadEnv(dirname(__DIR__).'/.env');
+    (new Dotenv())->usePutenv(false)->loadEnv(dirname(__DIR__).'/.env');
 }
 
 $_SERVER += $_ENV;

@@ -26,3 +26,7 @@ twig:
     - 'bootstrap_4_layout.html.twig'
   globals:
     documentFormatter: '@App\Services\Document\Formatter\DocumentFormatterInterface'
+
+when@test:
+  twig:
+    strict_variables: true

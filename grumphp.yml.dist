@@ -51,7 +51,7 @@ grumphp:
       metadata:
         priority: -70
     phpcsfixer2:
-      config: .php_cs.dist
+      config: .php-cs-fixer.dist.php
       metadata:
         priority: -90
     phpcs:

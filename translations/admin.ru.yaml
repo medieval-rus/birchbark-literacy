@@ -66,10 +66,6 @@ menu:
       label: Писцы
     document:
       label: Грамоты
-    book:
-      label: Книги
-    bookPart:
-      label: Разделы книг
     documentText:
       label: Тексты грамот
     file:
@@ -151,15 +147,6 @@ list:
       number: Номер
       town:
         name: Город
-  book:
-    fields:
-      id: Внутренний идентификатор
-      name: Название
-  bookPart:
-    fields:
-      id: Внутренний идентификатор
-      name: Название
-      book: Книга
   documentText:
     fields:
       number: Номер
@@ -349,20 +336,6 @@ form:
       width: Ширина
       innerWidth: Ширина внутреннего слоя
       diameter: Диаметр
-  book:
-    section:
-      common:
-        label: Книга
-    fields:
-      name: Название
-      description: Описание
-  bookPart:
-    section:
-      common:
-        label: Раздел книги
-    fields:
-      name: Название
-      book: Книга
   documentText:
     section:
       texts:
@@ -447,70 +420,63 @@ form:
       bibliographicRecord: Библиографическая запись
       position: Номер по порядку
 
-breadcrumb:
-  link_post_list: Страницы
-  link_post_create: Добавить новую страницу
-  link_post_delete: Удалить страницу
-  link_user_list: Пользователи
-  link_user_create: Добавить нового пользователя
-  link_user_delete: Удалить пользователя
-  link_document_list_list: Списки грамот
-  link_document_list_create: Добавить новый список грамот
-  link_document_list_delete: Удалить список грамот
-  link_content_category_list: Категории по содержимому
-  link_content_category_create: Добавить новую категорию по содержимому
-  link_content_category_delete: Удалить категорию по содержимому
-  link_conventional_date_cell_list: Условные даты
-  link_conventional_date_cell_create: Добавить новую условную дату
-  link_conventional_date_cell_delete: Удалить условную дату
-  link_genre_list: Жанры
-  link_genre_create: Добавить новый жанр
-  link_genre_delete: Удалить жанр
-  link_way_of_writing_list: Способы письма
-  link_way_of_writing_create: Добавить новый способ письма
-  link_way_of_writing_delete: Удалить способ письма
-  link_language_list: Языки
-  link_language_create: Добавить новый язык
-  link_language_delete: Удалить язык
-  link_town_list: Города
-  link_town_create: Добавить новый город
-  link_town_delete: Удалить город
-  link_excavation_list: Раскопы
-  link_excavation_create: Добавить новый раскоп
-  link_excavation_delete: Удалить раскоп
-  link_material_list: Материалы
-  link_material_create: Добавить материал
-  link_material_delete: Удалить материал
-  link_state_of_preservation_list: Состояния сохранности
-  link_state_of_preservation_create: Добавить новое состояние сохранности
-  link_state_of_preservation_delete: Удалить состояние сохранности
-  link_storage_place_list: Места хранения
-  link_storage_place_create: Добавить новое место хранения
-  link_storage_place_delete: Удалить место хранения
-  link_scribe_list: Писцы
-  link_scribe_create: Добавить нового писца
-  link_scribe_delete: Удалить писца
-  link_document_list: Берестяные грамоты
-  link_document_create: Добавить новую грамоту
-  link_document_delete: Удалить грамоту
-  link_book_list: Книги
-  link_book_create: Добавить новую книгу
-  link_book_delete: Удалить книгу
-  link_book_part_list: Разделы книг
-  link_book_part_create: Добавить новый раздел
-  link_book_part_delete: Удалить раздел
-  link_document_text_list: Тексты грамот
-  link_file_list: Загруженные файлы
-  link_file_create: Загрузить новый файл
-  link_author_list: Авторы
-  link_author_create: Добавить автора
-  link_author_delete: Удалить автора
-  link_bibliographic_record_list: Библиографические записи
-  link_bibliographic_record_create: Добавить запись
-  link_bibliographic_record_delete: Удалить запись
-  link_references_list_list: Списки литературы
-  link_references_list_create: Создать список
-  link_references_list_delete: Удалить список
+post_list: Страницы
+post_create: Добавить новую страницу
+post_delete: Удалить страницу
+user_list: Пользователи
+user_create: Добавить нового пользователя
+user_delete: Удалить пользователя
+documentList_list: Списки грамот
+documentList_create: Добавить новый список грамот
+documentList_delete: Удалить список грамот
+contentCategory_list: Категории по содержимому
+contentCategory_create: Добавить новую категорию по содержимому
+contentCategory_delete: Удалить категорию по содержимому
+conventionalDateCell_list: Условные даты
+conventionalDateCell_create: Добавить новую условную дату
+conventionalDateCell_delete: Удалить условную дату
+genre_list: Жанры
+genre_create: Добавить новый жанр
+genre_delete: Удалить жанр
+wayOfWriting_list: Способы письма
+wayOfWriting_create: Добавить новый способ письма
+wayOfWriting_delete: Удалить способ письма
+language_list: Языки
+language_create: Добавить новый язык
+language_delete: Удалить язык
+town_list: Города
+town_create: Добавить новый город
+town_delete: Удалить город
+excavation_list: Раскопы
+excavation_create: Добавить новый раскоп
+excavation_delete: Удалить раскоп
+material_list: Материалы
+material_create: Добавить материал
+material_delete: Удалить материал
+stateOfPreservation_list: Состояния сохранности
+stateOfPreservation_create: Добавить новое состояние сохранности
+stateOfPreservation_delete: Удалить состояние сохранности
+storagePlace_list: Места хранения
+storagePlace_create: Добавить новое место хранения
+storagePlace_delete: Удалить место хранения
+scribe_list: Писцы
+scribe_create: Добавить нового писца
+scribe_delete: Удалить писца
+document_list: Берестяные грамоты
+document_create: Добавить новую грамоту
+document_delete: Удалить грамоту
+documentText_list: Тексты грамот
+file_list: Загруженные файлы
+file_create: Загрузить новый файл
+author_list: Авторы
+author_create: Добавить автора
+author_delete: Удалить автора
+bibliographicRecord_list: Библиографические записи
+bibliographicRecord_create: Добавить запись
+bibliographicRecord_delete: Удалить запись
+referencesList_list: Списки литературы
+referencesList_create: Создать список
+referencesList_delete: Удалить список
 
 userMenu:
   logout:
