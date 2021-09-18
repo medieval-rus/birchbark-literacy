@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace App\Admin\Bibliography;
 
 use App\Admin\AbstractEntityAdmin;
+use App\DataStorage\DataStorageManagerInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 
 final class FileSupplementAdmin extends AbstractEntityAdmin
@@ -40,12 +41,37 @@ final class FileSupplementAdmin extends AbstractEntityAdmin
      */
     protected $baseRoutePattern = 'bibliography/file-supplement';
 
+    /**
+     * @var DataStorageManagerInterface
+     */
+    private $dataStorageManager;
+
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        DataStorageManagerInterface $dataStorageManager
+    ) {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->dataStorageManager = $dataStorageManager;
+    }
+
     protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with($this->getSectionLabel('common'))
                 ->add('document', null, $this->createLabeledFormOptions('document'))
-                ->add('file', null, $this->createLabeledFormOptions('file'))
+                ->add(
+                    'file',
+                    null,
+                    $this->createLabeledFormOptions(
+                        'file',
+                        [
+                            'choice_filter' => $this->dataStorageManager->getFolderFilter('bibliography_file_supplement'),
+                        ]
+                    )
+                )
             ->end()
         ;
     }

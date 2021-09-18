@@ -27,7 +27,6 @@ namespace App\DataStorage;
 
 use App\DataStorage\Connectors\Osf\OsfConnectorInterface;
 use App\Entity\Media\File;
-use App\Helper\StringHelper;
 use RuntimeException;
 use Throwable;
 
@@ -50,9 +49,9 @@ final class DataStorageManager implements DataStorageManagerInterface
         krsort($this->osfFolders);
 
         $remoteFolderId = null;
-        foreach ($this->osfFolders as $folderKey => $folderId) {
-            if (StringHelper::startsWith($fileName, $folderKey.'_')) {
-                $remoteFolderId = $folderId;
+        foreach ($this->osfFolders as $folderData) {
+            if ($this->fileNameMatchesFolder($fileName, $folderData)) {
+                $remoteFolderId = $folderData['id'];
                 break;
             }
         }
@@ -60,9 +59,15 @@ final class DataStorageManager implements DataStorageManagerInterface
         if (null === $remoteFolderId) {
             throw new RuntimeException(
                 sprintf(
-                    'Unexpected file name "%s". Allowed prefixes are: %s',
+                    'Unexpected file name "%s". Known patterns are: %s',
                     $fileName,
-                    implode(', ', array_map(fn ($key) => sprintf('"%s"', $key), array_keys($this->osfFolders)))
+                    implode(
+                        ', ',
+                        array_map(
+                            fn ($folderData) => sprintf('"%s"', $folderData['pattern']),
+                            $this->osfFolders
+                        )
+                    )
                 )
             );
         }
@@ -81,5 +86,38 @@ final class DataStorageManager implements DataStorageManagerInterface
         $file->setUrl($url);
         $file->setHash($hash);
         $file->setOsfFileId((string) $id);
+    }
+
+    public function getFolderFilter(string $folderKey): callable
+    {
+        if (!\array_key_exists($folderKey, $this->osfFolders)) {
+            throw new RuntimeException(
+                sprintf(
+                    'Unknown folder key "%s". Known folder keys are: %s',
+                    $folderKey,
+                    implode(', ', array_map(fn ($key) => sprintf('"%s"', $folderKey), array_keys($this->osfFolders)))
+                )
+            );
+        }
+
+        return function (?File $file) use ($folderKey): bool {
+            return null === $file || $this->fileNameMatchesFolder($file->getFileName(), $this->osfFolders[$folderKey]);
+        };
+    }
+
+    public function isFileNameValid(string $fileName): bool
+    {
+        foreach ($this->osfFolders as $folderData) {
+            if ($this->fileNameMatchesFolder($fileName, $folderData)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function fileNameMatchesFolder(string $fileName, array $folderData): bool
+    {
+        return 1 === preg_match($folderData['pattern'], $fileName);
     }
 }

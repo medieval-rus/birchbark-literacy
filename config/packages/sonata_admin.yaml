@@ -200,7 +200,11 @@ services:
       - { name: sonata.admin, manager_type: orm }
   admin.document:
     class: App\Admin\Document\DocumentAdmin
-    arguments: [ null, App\Entity\Document\Document, null ]
+    arguments:
+      - null
+      - App\Entity\Document\Document
+      - null
+      - '@App\DataStorage\DataStorageManagerInterface'
     calls:
       - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
@@ -247,7 +251,11 @@ services:
       - { name: sonata.admin, manager_type: orm }
   admin.bibliography.bibliographic_record:
     class: App\Admin\Bibliography\BibliographicRecordAdmin
-    arguments: [null, App\Entity\Bibliography\BibliographicRecord, null]
+    arguments:
+      - null
+      - App\Entity\Bibliography\BibliographicRecord
+      - null
+      - '@App\DataStorage\DataStorageManagerInterface'
     calls:
       - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
@@ -261,14 +269,22 @@ services:
       - { name: sonata.admin, manager_type: orm }
   admin.bibliography.file_supplement:
     class: App\Admin\Bibliography\FileSupplementAdmin
-    arguments: [null, App\Entity\Bibliography\FileSupplement, null]
+    arguments:
+      - null
+      - App\Entity\Bibliography\FileSupplement
+      - null
+      - '@App\DataStorage\DataStorageManagerInterface'
     calls:
       - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.bibliography.structural_component:
     class: App\Admin\Bibliography\StructuralComponentAdmin
-    arguments: [null, App\Entity\Bibliography\StructuralComponent, null]
+    arguments:
+      - null
+      - App\Entity\Bibliography\StructuralComponent
+      - null
+      - '@App\DataStorage\DataStorageManagerInterface'
     calls:
       - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:

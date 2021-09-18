@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace App\Admin\Bibliography;
 
 use App\Admin\AbstractEntityAdmin;
+use App\DataStorage\DataStorageManagerInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\CollectionType;
@@ -41,6 +42,22 @@ final class BibliographicRecordAdmin extends AbstractEntityAdmin
      * @var string
      */
     protected $baseRoutePattern = 'bibliography/bibliographic-record';
+
+    /**
+     * @var DataStorageManagerInterface
+     */
+    private $dataStorageManager;
+
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        DataStorageManagerInterface $dataStorageManager
+    ) {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->dataStorageManager = $dataStorageManager;
+    }
 
     protected function configureListFields(ListMapper $listMapper): void
     {
@@ -68,8 +85,26 @@ final class BibliographicRecordAdmin extends AbstractEntityAdmin
             ->end()
             ->tab($this->getTabLabel('media'))
                 ->with($this->getSectionLabel('media'))
-                    ->add('mainFile', null, $this->createLabeledFormOptions('mainFile'))
-                    ->add('mainImage', null, $this->createLabeledFormOptions('mainImage'))
+                    ->add(
+                        'mainFile',
+                        null,
+                        $this->createLabeledFormOptions(
+                            'mainFile',
+                            [
+                                'choice_filter' => $this->dataStorageManager->getFolderFilter('bibliography_document'),
+                            ]
+                        )
+                    )
+                    ->add(
+                        'mainImage',
+                        null,
+                        $this->createLabeledFormOptions(
+                            'mainImage',
+                            [
+                                'choice_filter' => $this->dataStorageManager->getFolderFilter('bibliography_image'),
+                            ]
+                        )
+                    )
                 ->end()
             ->end()
             ->tab($this->getTabLabel('supplements'))
