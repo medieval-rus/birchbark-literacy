@@ -30,4 +30,8 @@ use App\Entity\Media\File;
 interface DataStorageManagerInterface
 {
     public function upload(File $file, string $fileName, string $pathToSource, string $mimeType): void;
+
+    public function getFolderFilter(string $folderKey): callable;
+
+    public function isFileNameValid(string $fileName): bool;
 }

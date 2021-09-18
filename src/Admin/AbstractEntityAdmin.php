@@ -30,16 +30,13 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 
 abstract class AbstractEntityAdmin extends AbstractAdmin
 {
-    protected $translationDomain = 'admin';
-
-    public function getClassnameLabel()
+    protected function configure(): void
     {
-        return $this->getEntityKey();
-    }
+        $entityKey = $this->getEntityKey();
 
-    public function getLabel(): string
-    {
-        return 'menu.paragraphs.'.$this->getEntityKey().'.label';
+        $this->classnameLabel = $entityKey;
+        $this->setLabel('menu.paragraphs.'.$entityKey.'.label');
+        $this->setTranslationDomain('admin');
     }
 
     protected function getEntityKey(): string

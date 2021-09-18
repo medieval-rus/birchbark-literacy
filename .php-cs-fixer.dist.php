@@ -44,7 +44,7 @@ a copy of the GNU General Public License along with
 see <http://www.gnu.org/licenses/>.
 HEADER;
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRules([
         '@PHP56Migration' => true,
         '@PHP56Migration:risky' => true,

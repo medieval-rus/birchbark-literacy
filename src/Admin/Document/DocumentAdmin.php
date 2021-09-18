@@ -26,11 +26,11 @@ declare(strict_types=1);
 namespace App\Admin\Document;
 
 use App\Admin\AbstractEntityAdmin;
+use App\DataStorage\DataStorageManagerInterface;
 use Knp\Menu\ItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
@@ -45,6 +45,22 @@ final class DocumentAdmin extends AbstractEntityAdmin
      * @var string
      */
     protected $baseRoutePattern = 'document/document';
+
+    /**
+     * @var DataStorageManagerInterface
+     */
+    private $dataStorageManager;
+
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        DataStorageManagerInterface $dataStorageManager
+    ) {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->dataStorageManager = $dataStorageManager;
+    }
 
     protected function configureListFields(ListMapper $listMapper): void
     {
@@ -127,15 +143,25 @@ final class DocumentAdmin extends AbstractEntityAdmin
                 ->with($this->getSectionLabel('photos'), ['class' => 'col-md-6'])
                     ->add(
                         'photos',
-                        ModelType::class,
-                        $this->createLabeledManyToManyFormOptions('photos', ['btn_add' => false])
+                        null,
+                        $this->createLabeledManyToManyFormOptions(
+                            'photos',
+                            [
+                                'choice_filter' => $this->dataStorageManager->getFolderFilter('photo'),
+                            ]
+                        )
                     )
                 ->end()
                 ->with($this->getSectionLabel('drawings'), ['class' => 'col-md-6'])
                     ->add(
                         'drawings',
-                        ModelType::class,
-                        $this->createLabeledManyToManyFormOptions('drawings', ['btn_add' => false])
+                        null,
+                        $this->createLabeledManyToManyFormOptions(
+                            'drawings',
+                            [
+                                'choice_filter' => $this->dataStorageManager->getFolderFilter('drawing'),
+                            ]
+                        )
                     )
                 ->end()
             ->end()

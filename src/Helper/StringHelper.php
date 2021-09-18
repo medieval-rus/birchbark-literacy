@@ -72,9 +72,4 @@ abstract class StringHelper
     {
         return strpos($source, $search) === \strlen($source) - \strlen($search);
     }
-
-    public static function isLowercased(string $source): bool
-    {
-        return mb_strtolower($source) === $source;
-    }
 }

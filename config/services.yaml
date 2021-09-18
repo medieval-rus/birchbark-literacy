@@ -30,12 +30,24 @@ services:
       $osfEndpoint: '%env(resolve:OSF_ENDPOINT)%'
       $osfAccessToken: '%env(resolve:OSF_ACCESS_TOKEN)%'
       $osfFolders:
-        photo: '%env(resolve:OSF_PHOTOS_FOLDER_ID)%'
-        drawing: '%env(resolve:OSF_DRAWINGS_FOLDER_ID)%'
-        bibliography_image: '%env(resolve:OSF_BIBLIOGRAPHY_IMAGES_FOLDER_ID)%'
-        bibliography_document: '%env(resolve:OSF_BIBLIOGRAPHY_DOCUMENTS_FOLDER_ID)%'
-        bibliography_document_part: '%env(resolve:OSF_BIBLIOGRAPHY_DOCUMENT_PARTS_FOLDER_ID)%'
-        bibliography_file_supplement: '%env(resolve:OSF_BIBLIOGRAPHY_FILE_SUPPLEMENTS_FOLDER_ID)%'
+        photo:
+          id: '%env(resolve:OSF_PHOTOS_FOLDER_ID)%'
+          pattern: '/^photo_([a-z-]+)_([0-9]{4}[a-z]*(?:-[0-9]{4}[a-z]*)*|[a-z]+\d*)_(\d+)( \(.+\))?\.([a-z0-9]+)$/u'
+        drawing:
+          id: '%env(resolve:OSF_DRAWINGS_FOLDER_ID)%'
+          pattern: '/^drawing_([a-z-]+)_([0-9]{4}[a-z]*(?:-[0-9]{4}[a-z]*)*|[a-z]+\d*)_(\d+)( \(.+\))?\.([a-z0-9]+)$/u'
+        bibliography_image:
+          id: '%env(resolve:OSF_BIBLIOGRAPHY_IMAGES_FOLDER_ID)%'
+          pattern: '/^bibliography_image_([a-z0-9-]+)\.([a-z0-9]+)$/u'
+        bibliography_document:
+          id: '%env(resolve:OSF_BIBLIOGRAPHY_DOCUMENTS_FOLDER_ID)%'
+          pattern: '/^bibliography_document_([a-z0-9-]+)( \(.+\))?\.([a-z0-9]+)$/u'
+        bibliography_document_part:
+          id: '%env(resolve:OSF_BIBLIOGRAPHY_DOCUMENT_PARTS_FOLDER_ID)%'
+          pattern: '/^bibliography_document_part_([a-zA-Z0-9-]+)\.([a-z0-9]+)$/u'
+        bibliography_file_supplement:
+          id: '%env(resolve:OSF_BIBLIOGRAPHY_FILE_SUPPLEMENTS_FOLDER_ID)%'
+          pattern: '/^bibliography_file_supplement_([a-z0-9-]+)_([a-z0-9-_]+)\.([a-z0-9]+)$/u'
 
   App\:
     resource: '../src/'

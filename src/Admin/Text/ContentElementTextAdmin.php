@@ -27,7 +27,7 @@ namespace App\Admin\Text;
 
 use App\Admin\AbstractEntityAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
 final class ContentElementTextAdmin extends AbstractEntityAdmin
 {
@@ -51,7 +51,7 @@ final class ContentElementTextAdmin extends AbstractEntityAdmin
         ;
     }
 
-    protected function configureRoutes(RouteCollection $collection): void
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept(['create', 'edit']);
     }

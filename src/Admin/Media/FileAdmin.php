@@ -28,12 +28,11 @@ namespace App\Admin\Media;
 use App\Admin\AbstractEntityAdmin;
 use App\DataStorage\DataStorageManagerInterface;
 use App\Entity\Media\File;
-use App\Helper\StringHelper;
 use App\Repository\Media\FileRepository;
 use RuntimeException;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -116,7 +115,7 @@ final class FileAdmin extends AbstractEntityAdmin
         }
     }
 
-    protected function configureRoutes(RouteCollection $collection): void
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('delete');
     }
@@ -157,7 +156,7 @@ final class FileAdmin extends AbstractEntityAdmin
                                 function (UploadedFile $uploadedFile, ExecutionContext $context): void {
                                     $fileName = $uploadedFile->getClientOriginalName();
 
-                                    if (!self::isFileNameValid($fileName)) {
+                                    if (!$this->dataStorageManager->isFileNameValid($fileName)) {
                                         $context
                                             ->buildViolation(sprintf('Uploaded file name "%s" is invalid.', $fileName))
                                             ->addViolation();
@@ -239,22 +238,5 @@ final class FileAdmin extends AbstractEntityAdmin
         }
 
         return null !== $file->getId();
-    }
-
-    private static function isFileNameValid(string $fileName): bool
-    {
-        if (!StringHelper::isLowercased($fileName)) {
-            return false;
-        }
-
-        preg_match(
-            '/^(photo|drawing)_([a-z-]+)_([0-9]{4}[a-z]*(?:-[0-9]{4}[a-z]*)*|[a-z]+\d*)_(\d+)( .+)?\.([a-z0-9]+)$/u',
-            $fileName,
-            $matches
-        );
-
-        $expectedMatchesCount = 7;
-
-        return $expectedMatchesCount === \count($matches);
     }
 }

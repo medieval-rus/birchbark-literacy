@@ -85,7 +85,6 @@ sonata_admin:
         roles: [ ROLE_EDITOR ]
 
   options:
-    legacy_twig_text_extension: false
     use_icheck: false
   templates:
     user_block: 'admin/user_block.html.twig'
@@ -100,7 +99,7 @@ services:
     class: App\Admin\Content\PostAdmin
     arguments: [null, App\Entity\Content\Post, null]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.user:
@@ -112,126 +111,130 @@ services:
       - '@Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface'
       - '@Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.document_list:
     class: App\Admin\Document\DocumentListAdmin
     arguments: [ null, App\Entity\Document\DocumentList, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.content_category:
     class: App\Admin\Document\ContentCategoryAdmin
     arguments: [ null, App\Entity\Document\ContentCategory, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.conventional_date_cell:
     class: App\Admin\Document\ConventionalDateCellAdmin
     arguments: [ null, App\Entity\Document\ConventionalDateCell, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.genre:
     class: App\Admin\Document\GenreAdmin
     arguments: [ null, App\Entity\Document\Genre, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.way_of_writing:
     class: App\Admin\Document\WayOfWritingAdmin
     arguments: [ null, App\Entity\Document\WayOfWriting, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.language:
     class: App\Admin\Document\LanguageAdmin
     arguments: [ null, App\Entity\Document\Language, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.town:
     class: App\Admin\Document\TownAdmin
     arguments: [ null, App\Entity\Document\Town, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.excavation:
     class: App\Admin\Document\ExcavationAdmin
     arguments: [ null, App\Entity\Document\Excavation, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.material:
     class: App\Admin\Document\MaterialAdmin
     arguments: [ null, App\Entity\Document\Material, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.state_of_preservation:
     class: App\Admin\Document\StateOfPreservationAdmin
     arguments: [ null, App\Entity\Document\StateOfPreservation, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.storage_place:
     class: App\Admin\Document\StoragePlaceAdmin
     arguments: [ null, App\Entity\Document\StoragePlace, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.scribe:
     class: App\Admin\Document\ScribeAdmin
     arguments: [ null, App\Entity\Document\Scribe, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.document:
     class: App\Admin\Document\DocumentAdmin
-    arguments: [ null, App\Entity\Document\Document, null ]
+    arguments:
+      - null
+      - App\Entity\Document\Document
+      - null
+      - '@App\DataStorage\DataStorageManagerInterface'
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm, default: true }
   admin.content_element:
     class: App\Admin\Document\ContentElementAdmin
     arguments: [ null, App\Entity\Document\ContentElement, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.material_element:
     class: App\Admin\Document\MaterialElementAdmin
     arguments: [ null, App\Entity\Document\MaterialElement, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.document_text:
     class: App\Admin\Text\DocumentTextAdmin
     arguments: [ null, App\Entity\Document\Document, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.content_element_text:
     class: App\Admin\Text\ContentElementTextAdmin
     arguments: [ null, App\Entity\Document\ContentElement, null ]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.media.file:
@@ -243,48 +246,60 @@ services:
       - '@App\Repository\Media\FileRepository'
       - '@App\DataStorage\DataStorageManagerInterface'
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.bibliography.bibliographic_record:
     class: App\Admin\Bibliography\BibliographicRecordAdmin
-    arguments: [null, App\Entity\Bibliography\BibliographicRecord, null]
+    arguments:
+      - null
+      - App\Entity\Bibliography\BibliographicRecord
+      - null
+      - '@App\DataStorage\DataStorageManagerInterface'
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.bibliography.author:
     class: App\Admin\Bibliography\AuthorAdmin
     arguments: [null, App\Entity\Bibliography\Author, null]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.bibliography.file_supplement:
     class: App\Admin\Bibliography\FileSupplementAdmin
-    arguments: [null, App\Entity\Bibliography\FileSupplement, null]
+    arguments:
+      - null
+      - App\Entity\Bibliography\FileSupplement
+      - null
+      - '@App\DataStorage\DataStorageManagerInterface'
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.bibliography.structural_component:
     class: App\Admin\Bibliography\StructuralComponentAdmin
-    arguments: [null, App\Entity\Bibliography\StructuralComponent, null]
+    arguments:
+      - null
+      - App\Entity\Bibliography\StructuralComponent
+      - null
+      - '@App\DataStorage\DataStorageManagerInterface'
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.bibliography.references_list:
     class: App\Admin\Bibliography\ReferencesListAdmin
     arguments: [null, App\Entity\Bibliography\ReferencesList, null]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }
   admin.bibliography.references_list.item:
     class: App\Admin\Bibliography\ReferencesListItemAdmin
     arguments: [null, App\Entity\Bibliography\ReferencesListItem, null]
     calls:
-      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.underscore' ] ]
+      - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
       - { name: sonata.admin, manager_type: orm }

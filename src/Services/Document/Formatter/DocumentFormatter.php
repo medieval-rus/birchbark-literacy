@@ -206,7 +206,7 @@ final class DocumentFormatter implements DocumentFormatterInterface
                 }
 
                 if (null === $label) {
-                    $label = $fileSupplement->getBibliographicRecord()->getShortName();
+                    $label = $bibliographicRecord->getShortName();
                 }
 
                 return $label;

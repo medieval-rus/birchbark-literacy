@@ -29,12 +29,6 @@ use App\Entity\Bibliography\ReferencesList;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @method ReferencesList|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
- * @method ReferencesList|null findOneBy(array $criteria, ?array $orderBy = null)
- * @method ReferencesList[]    findAll()
- * @method ReferencesList[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
- */
 final class ReferencesListRepository extends ServiceEntityRepository
 {
     public const BOOKS_REFERENCES_LIST_ID = 1;

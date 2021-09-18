@@ -91,6 +91,11 @@ class User implements UserInterface
         return $this->id;
     }
 
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
+    }
+
     public function getUsername(): ?string
     {
         return (string) $this->username;

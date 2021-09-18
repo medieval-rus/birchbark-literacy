@@ -29,12 +29,6 @@ use App\Entity\Document\WayOfWriting;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @method WayOfWriting|null find(int $id, ?int $lockMode = null, ?int $lockVersion = null)
- * @method WayOfWriting|null findOneBy(array $criteria, ?array $orderBy = null)
- * @method WayOfWriting[]    findAll()
- * @method WayOfWriting[]    findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
- */
 final class WayOfWritingRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
