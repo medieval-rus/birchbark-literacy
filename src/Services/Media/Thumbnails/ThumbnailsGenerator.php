@@ -181,8 +181,14 @@ final class ThumbnailsGenerator implements ThumbnailsGeneratorInterface
 
         $imagick = new Imagick($file->getUrl());
 
-        $thumbnailWidth = $policy['width'];
-        $thumbnailHeight = (int) ($policy['width'] / $imagick->getImageWidth() * $imagick->getImageHeight());
+        if ($imagick->getImageWidth() > $imagick->getImageHeight()) {
+            $thumbnailWidth = $policy['max-dimension'];
+            $thumbnailHeight = (int) ($policy['max-dimension'] / $imagick->getImageWidth() * $imagick->getImageHeight());
+        }
+        else {
+            $thumbnailHeight = $policy['max-dimension'];
+            $thumbnailWidth = (int) ($policy['max-dimension'] / $imagick->getImageHeight() * $imagick->getImageWidth());
+        }
 
         $imagick->setImageFormat($policy['extension']);
         $imagick->setImageCompression(Imagick::COMPRESSION_JPEG);

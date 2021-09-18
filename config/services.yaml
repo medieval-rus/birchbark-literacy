@@ -55,7 +55,7 @@ services:
             type: jpeg
             extension: jpeg
             quality: 70
-            width: 1200
+            max-dimension: 1200
           - media-types: ['image/gif']
             type: raw
         large:
@@ -63,7 +63,7 @@ services:
             type: jpeg
             extension: jpeg
             quality: 70
-            width: 6000
+            max-dimension: 6000
           - media-types: ['image/gif']
             type: raw
 
