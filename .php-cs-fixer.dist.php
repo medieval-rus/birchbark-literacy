@@ -89,4 +89,4 @@ return (new PhpCsFixer\Config())
                 ]
             )
     )
-    ;
+;
