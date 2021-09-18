@@ -48,6 +48,24 @@ services:
         bibliography_file_supplement:
           id: '%env(resolve:OSF_BIBLIOGRAPHY_FILE_SUPPLEMENTS_FOLDER_ID)%'
           pattern: '/^bibliography_file_supplement_([a-z0-9-]+)_([a-z0-9-_]+)\.([a-z0-9]+)$/u'
+      $thumbnailsDirectory: '%env(resolve:THUMBNAILS_DIRECTORY)%'
+      $thumbnailPresets:
+        default:
+          - media-types: ['image/jpeg', 'image/png', 'image/bmp']
+            type: jpeg
+            extension: jpeg
+            quality: 70
+            width: 1200
+          - media-types: ['image/gif']
+            type: raw
+        large:
+          - media-types: ['image/jpeg', 'image/png', 'image/bmp']
+            type: jpeg
+            extension: jpeg
+            quality: 70
+            width: 6000
+          - media-types: ['image/gif']
+            type: raw
 
   App\:
     resource: '../src/'

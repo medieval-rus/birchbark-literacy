@@ -34,6 +34,11 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
+    public function getThumbsDir(): string
+    {
+        return $this->getProjectDir().'/public/thumbs';
+    }
+
     protected function configureContainer(ContainerConfigurator $container): void
     {
         $container->import('../config/{packages}/*.yaml');
@@ -49,5 +54,15 @@ class Kernel extends BaseKernel
         $routes->import('../config/{routes}/*.yaml');
 
         $routes->import('../config/routes.yaml');
+    }
+
+    protected function getKernelParameters(): array
+    {
+        return array_merge(
+            parent::getKernelParameters(),
+            [
+                'kernel.thumbs_dir' => realpath($this->getThumbsDir()) ?: $this->getThumbsDir(),
+            ]
+        );
     }
 }

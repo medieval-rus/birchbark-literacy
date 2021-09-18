@@ -148,6 +148,7 @@ final class DocumentAdmin extends AbstractEntityAdmin
                             'photos',
                             [
                                 'choice_filter' => $this->dataStorageManager->getFolderFilter('photo'),
+                                'query_builder' => $this->dataStorageManager->getQueryBuilder(),
                             ]
                         )
                     )
@@ -160,6 +161,7 @@ final class DocumentAdmin extends AbstractEntityAdmin
                             'drawings',
                             [
                                 'choice_filter' => $this->dataStorageManager->getFolderFilter('drawing'),
+                                'query_builder' => $this->dataStorageManager->getQueryBuilder(),
                             ]
                         )
                     )

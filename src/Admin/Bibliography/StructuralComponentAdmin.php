@@ -70,6 +70,7 @@ final class StructuralComponentAdmin extends AbstractEntityAdmin
                         'file',
                         [
                             'choice_filter' => $this->dataStorageManager->getFolderFilter('bibliography_document_part'),
+                            'query_builder' => $this->dataStorageManager->getQueryBuilder(),
                         ]
                     )
                 )

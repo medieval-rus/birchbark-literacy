@@ -26,6 +26,7 @@ twig:
     - 'bootstrap_4_layout.html.twig'
   globals:
     documentFormatter: '@App\Services\Document\Formatter\DocumentFormatterInterface'
+    thumbnailsGenerator: '@App\Services\Media\Thumbnails\ThumbnailsGenerator'
 
 when@test:
   twig:

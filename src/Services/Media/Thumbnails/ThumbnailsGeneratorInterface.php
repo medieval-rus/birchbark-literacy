@@ -23,17 +23,13 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\DataStorage;
+namespace App\Services\Media\Thumbnails;
 
 use App\Entity\Media\File;
 
-interface DataStorageManagerInterface
+interface ThumbnailsGeneratorInterface
 {
-    public function upload(File $file, string $fileName, string $pathToSource, string $mimeType): void;
+    public function getThumbnailUrlWithFallback(File $file, string $presetKey = 'default'): string;
 
-    public function isFileNameValid(string $fileName): bool;
-
-    public function getFolderFilter(string $folderKey): callable;
-
-    public function getQueryBuilder(): callable;
+    public function generateAll(File $file): void;
 }

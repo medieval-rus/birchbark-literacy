@@ -27,6 +27,7 @@ namespace App\DataStorage;
 
 use App\DataStorage\Connectors\Osf\OsfConnectorInterface;
 use App\Entity\Media\File;
+use Doctrine\ORM\EntityRepository;
 use RuntimeException;
 use Throwable;
 
@@ -88,23 +89,6 @@ final class DataStorageManager implements DataStorageManagerInterface
         $file->setOsfFileId((string) $id);
     }
 
-    public function getFolderFilter(string $folderKey): callable
-    {
-        if (!\array_key_exists($folderKey, $this->osfFolders)) {
-            throw new RuntimeException(
-                sprintf(
-                    'Unknown folder key "%s". Known folder keys are: %s',
-                    $folderKey,
-                    implode(', ', array_map(fn ($key) => sprintf('"%s"', $folderKey), array_keys($this->osfFolders)))
-                )
-            );
-        }
-
-        return function (?File $file) use ($folderKey): bool {
-            return null === $file || $this->fileNameMatchesFolder($file->getFileName(), $this->osfFolders[$folderKey]);
-        };
-    }
-
     public function isFileNameValid(string $fileName): bool
     {
         foreach ($this->osfFolders as $folderData) {
@@ -114,6 +98,32 @@ final class DataStorageManager implements DataStorageManagerInterface
         }
 
         return false;
+    }
+
+    public function getFolderFilter(string $folderKey): callable
+    {
+        if (!\array_key_exists($folderKey, $this->osfFolders)) {
+            throw new RuntimeException(
+                sprintf(
+                    'Unknown folder key "%s". Known folder keys are: %s',
+                    $folderKey,
+                    implode(', ', array_map(fn ($key) => sprintf('"%s"', $key), array_keys($this->osfFolders)))
+                )
+            );
+        }
+
+        return function (?File $file) use ($folderKey): bool {
+            return null === $file || $this->fileNameMatchesFolder($file->getFileName(), $this->osfFolders[$folderKey]);
+        };
+    }
+
+    public function getQueryBuilder(): callable
+    {
+        return function (EntityRepository $entityRepository) {
+            return $entityRepository
+                ->createQueryBuilder('f')
+                ->orderBy('f.id', 'DESC');
+        };
     }
 
     private function fileNameMatchesFolder(string $fileName, array $folderData): bool

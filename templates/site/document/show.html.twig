@@ -185,10 +185,10 @@
     </div>
 {%- endmacro -%}
 
-{%- macro format_images_row(translationContext, name, medias) -%}
+{%- macro format_images_row(translationContext, name, files) -%}
     {% import _self as self %}
-    {%- if medias|length -%}
-        {{ self.fill_not_titled_row(self.format_images_content(name, medias)) }}
+    {%- if files|length -%}
+        {{ self.fill_not_titled_row(self.format_images_content(name, files)) }}
     {%- endif -%}
 {%- endmacro -%}
 
@@ -214,13 +214,11 @@
                     data-download-url="{{ file.url }}"
             >
                 <a
-                        href="{{ file.url }}"
+                        href="{{ thumbnailsGenerator.thumbnailUrlWithFallback(file, 'large') }}"
                         itemprop="contentUrl"
-{#                        data-width="{{ media.width }}"#}
-{#                        data-height="{{ media.height }}"#}
                 >
                     <img
-                            src="{{ file.url }}"
+                            src="{{ thumbnailsGenerator.thumbnailUrlWithFallback(file, 'large') }}"
                             itemprop="thumbnail"
                             alt="{{ file.description }}"
                     />

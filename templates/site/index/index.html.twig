@@ -42,7 +42,6 @@
 {% macro render_favorite_document(document) %}
     {% import _self as self %}
 
-{#    birch_bark_document_show#}
     <a href="{{ path('document__show', {'town': documentFormatter.urlEncodedTownAlias(document), 'number': document.number}) }}">
         <div class="mr-card card">
             <div class="card-body">
@@ -58,7 +57,7 @@
             {% set isImageDrawn = false %}
             {% for file in documentFormatter.images(document) %}
                 {% if not isImageDrawn %}
-                    <img class="card-img-bottom img-fluid" src="{{ file.url }}" alt="{{ file.description }}">
+                    <img class="card-img-bottom img-fluid" src="{{ thumbnailsGenerator.thumbnailUrlWithFallback(file) }}" alt="{{ file.description }}">
                     {% set isImageDrawn = true %}
                 {% endif %}
             {% endfor %}
