@@ -68,7 +68,12 @@ final class FileSupplementAdmin extends AbstractEntityAdmin
                     $this->createLabeledFormOptions(
                         'file',
                         [
-                            'choice_filter' => $this->dataStorageManager->getFolderFilter('bibliography_file_supplement'),
+                            'choice_filter' => $this
+                                ->dataStorageManager
+                                ->getFolderFilter('bibliography_file_supplement'),
+                            'query_builder' => $this
+                                ->dataStorageManager
+                                ->getQueryBuilder(),
                         ]
                     )
                 )

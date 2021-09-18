@@ -92,6 +92,7 @@ final class BibliographicRecordAdmin extends AbstractEntityAdmin
                             'mainFile',
                             [
                                 'choice_filter' => $this->dataStorageManager->getFolderFilter('bibliography_document'),
+                                'query_builder' => $this->dataStorageManager->getQueryBuilder(),
                             ]
                         )
                     )
@@ -102,6 +103,7 @@ final class BibliographicRecordAdmin extends AbstractEntityAdmin
                             'mainImage',
                             [
                                 'choice_filter' => $this->dataStorageManager->getFolderFilter('bibliography_image'),
+                                'query_builder' => $this->dataStorageManager->getQueryBuilder(),
                             ]
                         )
                     )

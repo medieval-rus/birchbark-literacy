@@ -29,6 +29,7 @@ use App\Admin\AbstractEntityAdmin;
 use App\DataStorage\DataStorageManagerInterface;
 use App\Entity\Media\File;
 use App\Repository\Media\FileRepository;
+use App\Services\Media\Thumbnails\ThumbnailsGeneratorInterface;
 use RuntimeException;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -62,23 +63,30 @@ final class FileAdmin extends AbstractEntityAdmin
      */
     private $dataStorageManager;
 
+    /**
+     * @var ThumbnailsGeneratorInterface
+     */
+    private $thumbnailsGenerator;
+
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
         FileRepository $fileRepository,
-        DataStorageManagerInterface $dataStorageManager
+        DataStorageManagerInterface $dataStorageManager,
+        ThumbnailsGeneratorInterface $thumbnailsGenerator
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->fileRepository = $fileRepository;
         $this->dataStorageManager = $dataStorageManager;
+        $this->thumbnailsGenerator = $thumbnailsGenerator;
     }
 
     /**
      * @param File $object
      */
-    public function prePersist($object): void
+    public function prePersist(object $object): void
     {
         $object->setBinaryContent(null);
 
@@ -94,6 +102,14 @@ final class FileAdmin extends AbstractEntityAdmin
             $uploadedFile->getRealPath(),
             $uploadedFile->getMimeType()
         );
+    }
+
+    /**
+     * @param File $object
+     */
+    protected function postPersist(object $object): void
+    {
+        $this->thumbnailsGenerator->generateAll($object);
     }
 
     protected function configureListFields(ListMapper $listMapper): void

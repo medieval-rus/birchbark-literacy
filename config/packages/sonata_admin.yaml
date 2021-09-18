@@ -244,6 +244,7 @@ services:
       - null
       - '@App\Repository\Media\FileRepository'
       - '@App\DataStorage\DataStorageManagerInterface'
+      - '@App\Services\Media\Thumbnails\ThumbnailsGeneratorInterface'
     calls:
       - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:
