@@ -32,8 +32,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 final class UserAdmin extends AbstractEntityAdmin
 {
@@ -48,26 +48,19 @@ final class UserAdmin extends AbstractEntityAdmin
     protected $baseRoutePattern = 'security/user';
 
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
-    private $passwordEncoder;
-
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $authorizationChecker;
+    private $passwordHasher;
 
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        UserPasswordEncoderInterface $passwordEncoder,
-        AuthorizationCheckerInterface $authorizationChecker
+        UserPasswordHasherInterface $passwordHasher
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->passwordEncoder = $passwordEncoder;
-        $this->authorizationChecker = $authorizationChecker;
+        $this->passwordHasher = $passwordHasher;
     }
 
     /**
@@ -141,7 +134,7 @@ final class UserAdmin extends AbstractEntityAdmin
     {
         if (null !== $user->getPlainPassword()) {
             $user->setPassword(
-                $this->passwordEncoder->encodePassword($user, $user->getPlainPassword())
+                $this->passwordHasher->hashPassword($user, $user->getPlainPassword())
             );
         }
     }
