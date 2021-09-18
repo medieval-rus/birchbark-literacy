@@ -82,16 +82,6 @@ final class ThumbnailsGenerator implements ThumbnailsGeneratorInterface
 
     private function getThumbnailUrl(File $file, string $presetKey = 'default'): ?string
     {
-        $this
-            ->logger
-            ->info(
-                sprintf(
-                    '[ThumbnailsGenerator] <generateThumbnail> $file->getFileName() = "%s" $presetKey = "%s"',
-                    $file->getFileName(),
-                    $presetKey
-                )
-            );
-
         $this->validatePresetKey($presetKey);
 
         $policy = $this->getPolicy($file, $presetKey);
