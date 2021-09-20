@@ -67,16 +67,16 @@ final class ThumbnailsGenerator implements ThumbnailsGeneratorInterface
 
             if (is_file($pathToThumbnail)) {
                 return $this->getUrlOfThumbnail($thumbnailFileName);
-            } else {
-                $this->logger->warning(
-                    sprintf(
-                        'Thumbnail for file "%s" and preset key "%s" does not exit (expected thumbnail file: "%s")',
-                        $file->getFileName(),
-                        $presetKey,
-                        $pathToThumbnail
-                    )
-                );
             }
+
+            $this->logger->warning(
+                sprintf(
+                    'Thumbnail for file "%s" and preset key "%s" does not exit (expected thumbnail file: "%s")',
+                    $file->getFileName(),
+                    $presetKey,
+                    $pathToThumbnail
+                )
+            );
         } else {
             $this->logger->warning(
                 sprintf(
