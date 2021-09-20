@@ -69,7 +69,6 @@ final class GenerateThumbnailsCommand extends Command
         $files = $this->doctrine->getRepository(File::class)->findAll();
 
         foreach ($files as $file) {
-            $io->writeln(sprintf('Generating thumbnails for file "%s"', $file->getFileName()));
             $this->thumbnailsGenerator->generateAll($file);
         }
 
