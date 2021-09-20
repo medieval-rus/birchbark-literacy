@@ -31,14 +31,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 final class StoragePlaceAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'document_storage_place';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'document/storage-place';
 
     protected function configureListFields(ListMapper $listMapper): void

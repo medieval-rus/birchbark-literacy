@@ -31,14 +31,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 final class TownAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'document_town';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'document/town';
 
     protected function configureListFields(ListMapper $listMapper): void

@@ -31,14 +31,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 final class PostAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'content_post';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'content/post';
 
     protected function configureListFields(ListMapper $list): void

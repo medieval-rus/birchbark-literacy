@@ -31,14 +31,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 final class StateOfPreservationAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'document_state_of_preservation';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'document/state-of-preservation';
 
     protected function configureListFields(ListMapper $listMapper): void

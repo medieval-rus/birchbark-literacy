@@ -31,14 +31,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 final class DocumentListAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'document_document_list';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'document/document-list';
 
     protected function configureListFields(ListMapper $listMapper): void

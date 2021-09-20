@@ -31,14 +31,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 final class ConventionalDateCellAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'document_conventional_date_cell';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'document/conventional-date-cell';
 
     protected function configureListFields(ListMapper $listMapper): void

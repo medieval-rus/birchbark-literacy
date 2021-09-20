@@ -31,14 +31,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 final class GenreAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'document_genre';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'document/genre';
 
     protected function configureListFields(ListMapper $listMapper): void

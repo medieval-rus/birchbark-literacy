@@ -54,17 +54,38 @@ final class ThumbnailsGenerator implements ThumbnailsGeneratorInterface
         $this->logger = $logger;
     }
 
-    public function getThumbnailUrlWithFallback(File $file, string $presetKey = 'default'): string
+    public function getThumbnail(File $file, string $presetKey = 'default'): string
     {
         $this->validatePresetKey($presetKey);
 
-        $thumbnailUrl = $this->getThumbnailUrl($file, $presetKey);
+        $policy = $this->getPolicy($file, $presetKey);
 
-        if (null !== $thumbnailUrl) {
-            return $thumbnailUrl;
+        if (null !== $policy) {
+            $thumbnailFileName = $this->getThumbnailFileName($file, $presetKey, $policy);
+
+            $pathToThumbnail = $this->getPathToThumbnail($thumbnailFileName);
+
+            if (is_file($pathToThumbnail)) {
+                return $this->getUrlOfThumbnail($thumbnailFileName);
+            } else {
+                $this->logger->warning(
+                    sprintf(
+                        'Thumbnail for file "%s" and preset key "%s" does not exit (expected thumbnail file: "%s")',
+                        $file->getFileName(),
+                        $presetKey,
+                        $pathToThumbnail
+                    )
+                );
+            }
+        } else {
+            $this->logger->warning(
+                sprintf(
+                    'No policy found to handle thumbnails for file "%s" and preset key "%s"',
+                    $file->getFileName(),
+                    $presetKey
+                )
+            );
         }
-
-        $this->logger->error(sprintf('Unable to generate thumbnail for file %s', $file->getFileName()));
 
         return $file->getUrl();
     }
@@ -76,38 +97,28 @@ final class ThumbnailsGenerator implements ThumbnailsGeneratorInterface
             ->info(sprintf('[ThumbnailsGenerator] <generateAll> $file->getFileName() = "%s"', $file->getFileName()));
 
         foreach ($this->thumbnailPresets as $presetKey => $preset) {
-            $this->getThumbnailUrl($file, $presetKey);
+            $this->generateThumbnail($file, $presetKey);
         }
     }
 
-    private function getThumbnailUrl(File $file, string $presetKey = 'default'): ?string
+    private function generateThumbnail(File $file, string $presetKey = 'default'): void
     {
         $this->validatePresetKey($presetKey);
 
         $policy = $this->getPolicy($file, $presetKey);
 
         if (null === $policy) {
-            return null;
+            return;
         }
 
-        switch ($policy['type']) {
-            case 'jpeg':
-                $thumbnailFileName = $file->getFileName().'_thumb-'.$presetKey.'.'.$policy['extension'];
-                break;
+        $thumbnailFileName = $this->getThumbnailFileName($file, $presetKey, $policy);
 
-            case 'raw':
-                $thumbnailFileName = $file->getFileName();
-                break;
+        $pathToThumbnail = $this->getPathToThumbnail($thumbnailFileName);
 
-            default:
-                throw $this->unknownPolicyException($policy['type']);
-        }
-
-        $pathToThumbnail = $this->thumbnailsDirectory.\DIRECTORY_SEPARATOR.$thumbnailFileName;
-        $thumbnailUrl = '/thumbs/'.$thumbnailFileName;
-
-        if (!file_exists($pathToThumbnail)) {
+        if (!is_file($pathToThumbnail)) {
             try {
+                $startTime = microtime(true);
+
                 switch ($policy['type']) {
                     case 'jpeg':
                         $this->handleJpeg($file, $pathToThumbnail, $policy);
@@ -120,6 +131,17 @@ final class ThumbnailsGenerator implements ThumbnailsGeneratorInterface
                     default:
                         throw $this->unknownPolicyException($policy['type']);
                 }
+
+                $endTime = microtime(true);
+
+                $this->logger->info(
+                    sprintf(
+                        'Generated thumbnail for file "%s" and preset "%s" in %d seconds',
+                        $file->getFileName(),
+                        $presetKey,
+                        $endTime - $startTime
+                    )
+                );
             } catch (Throwable $throwable) {
                 $this->logger->error(
                     sprintf(
@@ -130,16 +152,10 @@ final class ThumbnailsGenerator implements ThumbnailsGeneratorInterface
                 );
             }
 
-            if (!file_exists($pathToThumbnail)) {
+            if (!is_file($pathToThumbnail)) {
                 $this->logger->error(sprintf('Thumbnail for file "%s" has not been generated', $file->getFileName()));
-
-                return null;
             }
-
-            return $thumbnailUrl;
         }
-
-        return $thumbnailUrl;
     }
 
     private function validatePresetKey(string $presetKey): void
@@ -177,28 +193,31 @@ final class ThumbnailsGenerator implements ThumbnailsGeneratorInterface
 
     private function handleJpeg(File $file, string $pathToThumbnail, array $policy): void
     {
-        $this->ensureDirectoryExists();
+        try {
+            $this->ensureDirectoryExists();
 
-        $imagick = new Imagick($file->getUrl());
+            $imagick = new Imagick($file->getUrl());
 
-        if ($imagick->getImageWidth() > $imagick->getImageHeight()) {
-            $thumbnailWidth = $policy['max-dimension'];
-            $thumbnailHeight = (int) ($policy['max-dimension'] / $imagick->getImageWidth() * $imagick->getImageHeight());
+            if ($imagick->getImageWidth() > $imagick->getImageHeight()) {
+                $thumbnailWidth = $policy['max-dimension'];
+                $thumbnailHeight = (int) ($thumbnailWidth / $imagick->getImageWidth() * $imagick->getImageHeight());
+            } else {
+                $thumbnailHeight = $policy['max-dimension'];
+                $thumbnailWidth = (int) ($thumbnailHeight / $imagick->getImageHeight() * $imagick->getImageWidth());
+            }
+
+            $imagick->setImageFormat($policy['extension']);
+            $imagick->setImageCompression(Imagick::COMPRESSION_JPEG);
+            $imagick->setImageCompressionQuality($policy['quality']);
+            $imagick->thumbnailImage($thumbnailWidth, $thumbnailHeight);
+
+            $imagick->writeImage($pathToThumbnail);
+        } finally {
+            if (isset($imagick)) {
+                $imagick->clear();
+                $imagick->destroy();
+            }
         }
-        else {
-            $thumbnailHeight = $policy['max-dimension'];
-            $thumbnailWidth = (int) ($policy['max-dimension'] / $imagick->getImageHeight() * $imagick->getImageWidth());
-        }
-
-        $imagick->setImageFormat($policy['extension']);
-        $imagick->setImageCompression(Imagick::COMPRESSION_JPEG);
-        $imagick->setImageCompressionQuality($policy['quality']);
-        $imagick->thumbnailImage($thumbnailWidth, $thumbnailHeight);
-
-        $imagick->writeImage($pathToThumbnail);
-
-        $imagick->clear();
-        $imagick->destroy();
     }
 
     private function handleRaw(File $file, string $pathToThumbnail): void
@@ -211,5 +230,27 @@ final class ThumbnailsGenerator implements ThumbnailsGeneratorInterface
     private function unknownPolicyException(string $policyType): RuntimeException
     {
         return new RuntimeException(sprintf('Unknown policy type "%s".', $policyType));
+    }
+
+    private function getThumbnailFileName(File $file, string $presetKey, array $policy): string
+    {
+        switch ($policy['type']) {
+            case 'jpeg':
+                return $file->getFileName().'_thumb-'.$presetKey.'.'.$policy['extension'];
+            case 'raw':
+                return $file->getFileName();
+            default:
+                throw $this->unknownPolicyException($policy['type']);
+        }
+    }
+
+    private function getUrlOfThumbnail(string $thumbnailFileName): string
+    {
+        return '/thumbs/'.$thumbnailFileName;
+    }
+
+    private function getPathToThumbnail(string $thumbnailFileName): string
+    {
+        return $this->thumbnailsDirectory.\DIRECTORY_SEPARATOR.$thumbnailFileName;
     }
 }

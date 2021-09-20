@@ -30,14 +30,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 final class MaterialElementAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'document_material_element';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'document/material-element';
 
     protected function configureFormFields(FormMapper $formMapper): void

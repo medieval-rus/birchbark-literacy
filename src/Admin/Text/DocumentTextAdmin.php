@@ -35,14 +35,8 @@ use Sonata\Form\Type\CollectionType;
 
 final class DocumentTextAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'text_document';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'text/document';
 
     protected function configureListFields(ListMapper $listMapper): void
@@ -71,10 +65,7 @@ final class DocumentTextAdmin extends AbstractEntityAdmin
         ;
     }
 
-    /**
-     * @param string $action
-     */
-    protected function configureTabMenu(ItemInterface $menu, $action, AdminInterface $childAdmin = null): void
+    protected function configureTabMenu(ItemInterface $menu, string $action, AdminInterface $childAdmin = null): void
     {
         if ('edit' === $action || null !== $childAdmin) {
             $admin = $this->isChild() ? $this->getParent() : $this;

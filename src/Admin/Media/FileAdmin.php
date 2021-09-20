@@ -34,8 +34,10 @@ use RuntimeException;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -43,30 +45,17 @@ use Symfony\Component\Validator\Context\ExecutionContext;
 
 final class FileAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'media_file';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'media/file';
 
-    /**
-     * @var FileRepository
-     */
-    private $fileRepository;
+    private FileRepository $fileRepository;
 
-    /**
-     * @var DataStorageManagerInterface
-     */
-    private $dataStorageManager;
+    private DataStorageManagerInterface $dataStorageManager;
 
-    /**
-     * @var ThumbnailsGeneratorInterface
-     */
-    private $thumbnailsGenerator;
+    private ThumbnailsGeneratorInterface $thumbnailsGenerator;
+
+    private EventDispatcherInterface $dispatcher;
 
     public function __construct(
         string $code,
@@ -74,13 +63,15 @@ final class FileAdmin extends AbstractEntityAdmin
         string $baseControllerName,
         FileRepository $fileRepository,
         DataStorageManagerInterface $dataStorageManager,
-        ThumbnailsGeneratorInterface $thumbnailsGenerator
+        ThumbnailsGeneratorInterface $thumbnailsGenerator,
+        EventDispatcherInterface $dispatcher
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->fileRepository = $fileRepository;
         $this->dataStorageManager = $dataStorageManager;
         $this->thumbnailsGenerator = $thumbnailsGenerator;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -109,7 +100,9 @@ final class FileAdmin extends AbstractEntityAdmin
      */
     protected function postPersist(object $object): void
     {
-        $this->thumbnailsGenerator->generateAll($object);
+        $this->dispatcher->addListener(KernelEvents::TERMINATE, function () use ($object): void {
+            $this->thumbnailsGenerator->generateAll($object);
+        });
     }
 
     protected function configureListFields(ListMapper $listMapper): void

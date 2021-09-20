@@ -31,14 +31,8 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 final class ReferencesListItemAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'bibliography_references_list_item';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'bibliography/references-list/item';
 
     protected function configureFormFields(FormMapper $formMapper): void

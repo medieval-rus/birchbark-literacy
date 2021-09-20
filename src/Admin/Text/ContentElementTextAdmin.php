@@ -31,14 +31,8 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
 final class ContentElementTextAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'text_content_element';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'text/content-element';
 
     protected function configureFormFields(FormMapper $formMapper): void

@@ -31,20 +31,11 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 final class FileSupplementAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'bibliography_file_supplement';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'bibliography/file-supplement';
 
-    /**
-     * @var DataStorageManagerInterface
-     */
-    private $dataStorageManager;
+    private DataStorageManagerInterface $dataStorageManager;
 
     public function __construct(
         string $code,

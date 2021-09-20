@@ -31,14 +31,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 final class ScribeAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'document_scribe';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'document/scribe';
 
     protected function configureListFields(ListMapper $listMapper): void

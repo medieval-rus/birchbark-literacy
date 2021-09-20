@@ -33,20 +33,11 @@ use Sonata\Form\Type\CollectionType;
 
 final class BibliographicRecordAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'bibliography_record';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'bibliography/bibliographic-record';
 
-    /**
-     * @var DataStorageManagerInterface
-     */
-    private $dataStorageManager;
+    private DataStorageManagerInterface $dataStorageManager;
 
     public function __construct(
         string $code,

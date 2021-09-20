@@ -32,20 +32,11 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 final class StructuralComponentAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'bibliography_structural_component';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'bibliography/structural-component';
 
-    /**
-     * @var DataStorageManagerInterface
-     */
-    private $dataStorageManager;
+    private DataStorageManagerInterface $dataStorageManager;
 
     public function __construct(
         string $code,

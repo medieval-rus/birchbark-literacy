@@ -36,20 +36,11 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UserAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'security_user';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'security/user';
 
-    /**
-     * @var UserPasswordHasherInterface
-     */
-    private $passwordHasher;
+    private UserPasswordHasherInterface $passwordHasher;
 
     public function __construct(
         string $code,
@@ -65,7 +56,7 @@ final class UserAdmin extends AbstractEntityAdmin
     /**
      * @param User $object
      */
-    public function prePersist($object): void
+    public function prePersist(object $object): void
     {
         $this->encodePassword($object);
     }
@@ -73,7 +64,7 @@ final class UserAdmin extends AbstractEntityAdmin
     /**
      * @param User $object
      */
-    public function preUpdate($object): void
+    public function preUpdate(object $object): void
     {
         $this->encodePassword($object);
     }

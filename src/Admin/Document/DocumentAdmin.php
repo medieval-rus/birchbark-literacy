@@ -36,20 +36,11 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 final class DocumentAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'document_document';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'document/document';
 
-    /**
-     * @var DataStorageManagerInterface
-     */
-    private $dataStorageManager;
+    private DataStorageManagerInterface $dataStorageManager;
 
     public function __construct(
         string $code,
@@ -170,10 +161,7 @@ final class DocumentAdmin extends AbstractEntityAdmin
         ;
     }
 
-    /**
-     * @param string $action
-     */
-    protected function configureTabMenu(ItemInterface $menu, $action, AdminInterface $childAdmin = null): void
+    protected function configureTabMenu(ItemInterface $menu, string $action, AdminInterface $childAdmin = null): void
     {
         if ('edit' === $action || null !== $childAdmin) {
             $admin = $this->isChild() ? $this->getParent() : $this;

@@ -245,6 +245,7 @@ services:
       - '@App\Repository\Media\FileRepository'
       - '@App\DataStorage\DataStorageManagerInterface'
       - '@App\Services\Media\Thumbnails\ThumbnailsGeneratorInterface'
+      - '@event_dispatcher'
     calls:
       - [ setLabelTranslatorStrategy, [ '@sonata.admin.label.strategy.noop' ] ]
     tags:

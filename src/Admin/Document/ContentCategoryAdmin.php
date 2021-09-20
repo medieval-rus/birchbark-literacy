@@ -31,14 +31,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 final class ContentCategoryAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'document_content_category';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'document/content-category';
 
     protected function configureListFields(ListMapper $listMapper): void

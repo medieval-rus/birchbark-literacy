@@ -30,7 +30,7 @@
              alt="{{ bibliographicRecord.mainImage.fileName }}"
              width="350"
              class="mr-book-show-image"
-             src="{{ bibliographicRecord.mainImage.url }}"
+             src="{{ thumbnailsGenerator.thumbnail(bibliographicRecord.mainImage) }}"
         >
     {% endif %}
 

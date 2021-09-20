@@ -29,7 +29,7 @@ use App\Entity\Media\File;
 
 interface ThumbnailsGeneratorInterface
 {
-    public function getThumbnailUrlWithFallback(File $file, string $presetKey = 'default'): string;
+    public function getThumbnail(File $file, string $presetKey = 'default'): string;
 
     public function generateAll(File $file): void;
 }

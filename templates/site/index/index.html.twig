@@ -57,7 +57,7 @@
             {% set isImageDrawn = false %}
             {% for file in documentFormatter.images(document) %}
                 {% if not isImageDrawn %}
-                    <img class="card-img-bottom img-fluid" src="{{ thumbnailsGenerator.thumbnailUrlWithFallback(file) }}" alt="{{ file.description }}">
+                    <img class="card-img-bottom img-fluid" src="{{ thumbnailsGenerator.thumbnail(file) }}" alt="{{ file.description }}">
                     {% set isImageDrawn = true %}
                 {% endif %}
             {% endfor %}

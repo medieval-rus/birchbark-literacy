@@ -31,14 +31,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 final class WayOfWritingAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'document_way_of_writing';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'document/way-of-writing';
 
     protected function configureListFields(ListMapper $listMapper): void

@@ -31,14 +31,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 final class LanguageAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'document_language';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'document/language';
 
     protected function configureListFields(ListMapper $listMapper): void

@@ -31,14 +31,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 final class ExcavationAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var string
-     */
     protected $baseRouteName = 'document_excavation';
 
-    /**
-     * @var string
-     */
     protected $baseRoutePattern = 'document/excavation';
 
     protected function configureListFields(ListMapper $listMapper): void
