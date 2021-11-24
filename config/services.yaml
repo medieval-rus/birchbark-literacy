@@ -48,7 +48,7 @@ services:
         bibliography_file_supplement:
           id: '%env(OSF_BIBLIOGRAPHY_FILE_SUPPLEMENTS_FOLDER_ID)%'
           pattern: '/^bibliography_file_supplement_([a-z0-9-]+)_([a-z0-9-_]+)\.([a-z0-9]+)$/u'
-      $thumbnailsDirectory: '%env(THUMBNAILS_DIRECTORY)%'
+      $thumbnailsDirectory: '%kernel.project_dir%/%env(THUMBNAILS_DIRECTORY)%'
       $thumbnailPresets:
         default:
           - media-types: ['image/jpeg', 'image/png', 'image/bmp']
