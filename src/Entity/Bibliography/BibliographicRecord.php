@@ -40,9 +40,9 @@ class BibliographicRecord
     /**
      * @var int
      *
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -70,14 +70,14 @@ class BibliographicRecord
     /**
      * @var string
      *
-     * @ORM\Column(name="label", type="text", nullable=true, length=65535)
+     * @ORM\Column(name="label", type="text", length=65535, nullable=true)
      */
     private $label;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="description", type="text", nullable=true, length=65535)
+     * @ORM\Column(name="description", type="text", length=65535, nullable=true)
      */
     private $description;
 

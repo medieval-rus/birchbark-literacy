@@ -45,7 +45,7 @@ final class AuthorAdmin extends AbstractEntityAdmin
     protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
-            ->with('form.author.section.data.label')
+            ->with($this->getSectionLabel('data'))
                 ->add('fullName', null, $this->createLabeledFormOptions('fullName'))
             ->end()
         ;

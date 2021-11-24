@@ -35,20 +35,20 @@ final class PostAdmin extends AbstractEntityAdmin
 
     protected $baseRoutePattern = 'content/post';
 
-    protected function configureListFields(ListMapper $list): void
+    protected function configureListFields(ListMapper $listMapper): void
     {
-        $list
+        $listMapper
             ->addIdentifier('id', null, $this->createLabeledListOptions('id'))
             ->add('title', null, $this->createLabeledListOptions('title'))
         ;
     }
 
-    protected function configureFormFields(FormMapper $form): void
+    protected function configureFormFields(FormMapper $formMapper): void
     {
-        $form
+        $formMapper
             ->with($this->getSectionLabel('common'))
-                ->add('title', null, $this->createLabeledFormOptions('title', ['required' => true]))
-                ->add('body', null, $this->createLabeledFormOptions('body', ['required' => true]))
+                ->add('title', null, $this->createLabeledFormOptions('title'))
+                ->add('body', null, $this->createLabeledFormOptions('body'))
             ->end()
         ;
     }

@@ -32,7 +32,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     name="bb__material_element__find__stratum",
  *     uniqueConstraints={@ORM\UniqueConstraint(columns={"name", "excavation_id"})}
  * )
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class Stratum
 {
@@ -41,14 +41,14 @@ class Stratum
      *
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      */
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
@@ -66,14 +66,14 @@ class Stratum
     /**
      * @var string|null
      *
-     * @ORM\Column(type="decimal", precision=65, scale=2, nullable=true)
+     * @ORM\Column(name="initial_depth", type="decimal", precision=65, scale=2, nullable=true)
      */
     private $initialDepth;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="decimal", precision=65, scale=2, nullable=true)
+     * @ORM\Column(name="final_depth", type="decimal", precision=65, scale=2, nullable=true)
      */
     private $finalDepth;
 

@@ -46,14 +46,14 @@ class Document
      *
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="number", type="string", length=255)
      */
     private $number;
 
@@ -68,14 +68,14 @@ class Document
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default": false})
+     * @ORM\Column(name="is_shown_on_site", type="boolean", options={"default": false})
      */
     private $isShownOnSite = false;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default": true})
+     * @ORM\Column(name="is_preliminary_publication", type="boolean", options={"default": true})
      */
     private $isPreliminaryPublication = true;
 
@@ -106,28 +106,28 @@ class Document
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default": false})
+     * @ORM\Column(name="is_conventional_date_biased_backward", type="boolean", options={"default": false})
      */
     private $isConventionalDateBiasedBackward = false;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default": false})
+     * @ORM\Column(name="is_conventional_date_biased_forward", type="boolean", options={"default": false})
      */
     private $isConventionalDateBiasedForward = false;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="stratigraphical_date", type="string", length=255, nullable=true)
      */
     private $stratigraphicalDate;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="non_stratigraphical_date", type="string", length=255, nullable=true)
      */
     private $nonStratigraphicalDate;
 

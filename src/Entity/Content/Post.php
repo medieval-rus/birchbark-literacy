@@ -34,23 +34,23 @@ use Doctrine\ORM\Mapping as ORM;
 class Post
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(name="id", type="integer")
      */
     private $id;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="title", type="text", length=65535)
      */
     private $title;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="body", type="text", length=65535, nullable=true)
      */
     private $body;
 
@@ -81,7 +81,7 @@ class Post
         return $this->body;
     }
 
-    public function setBody(string $body): self
+    public function setBody(?string $body): self
     {
         $this->body = $body;
 

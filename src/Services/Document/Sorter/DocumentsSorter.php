@@ -26,21 +26,10 @@ declare(strict_types=1);
 namespace App\Services\Document\Sorter;
 
 use App\Entity\Document\Document;
-use App\Services\Document\Sorter\SortEngine\DocumentsSortEngineInterface;
 use RuntimeException;
 
 final class DocumentsSorter implements DocumentsSorterInterface
 {
-    /**
-     * @var DocumentsSortEngineInterface
-     */
-    private $sortEngine;
-
-    public function __construct(DocumentsSortEngineInterface $sortEngine)
-    {
-        $this->sortEngine = $sortEngine;
-    }
-
     /**
      * @param Document[] $documents
      *
@@ -48,20 +37,61 @@ final class DocumentsSorter implements DocumentsSorterInterface
      */
     public function sort(array $documents): array
     {
-        if (!usort($documents, [$this, 'sortCallback'])) {
-            throw new RuntimeException('Cannot sort birch bark documents');
+        if (!usort($documents, [$this, 'compare'])) {
+            throw new RuntimeException('Cannot sort birchbark documents');
         }
 
         return $documents;
     }
 
-    private function sortCallback(Document $a, Document $b): int
+    private function compare(Document $a, Document $b): int
     {
-        return $this->sortEngine->getPosition(
-            $a->getTown()->getName(),
-            $a->getNumber(),
-            $b->getTown()->getName(),
-            $b->getNumber()
-        );
+        $townNameOfDocumentA = $a->getTown()->getName();
+        $numberOfDocumentA = $a->getNumber();
+        $townNameOfDocumentB = $b->getTown()->getName();
+        $numberOfDocumentB = $b->getNumber();
+
+        if ($townNameOfDocumentA === $townNameOfDocumentB) {
+            $intNumberOfDocumentA = (int) $numberOfDocumentA;
+            $intNumberOfDocumentB = (int) $numberOfDocumentB;
+
+            if (0 === $intNumberOfDocumentA && 0 === $intNumberOfDocumentB) {
+                preg_match('/\d+/', $numberOfDocumentA, $matches);
+                $intNumberOfDocumentA = $matches[0];
+
+                preg_match('/\d+/', $numberOfDocumentB, $matches);
+                $intNumberOfDocumentB = $matches[0];
+
+                if ($intNumberOfDocumentA === $intNumberOfDocumentB) {
+                    return 0;
+                }
+
+                return $intNumberOfDocumentA > $intNumberOfDocumentB ? 1 : -1;
+            }
+
+            if (0 === $intNumberOfDocumentA) {
+                return 1;
+            }
+
+            if (0 === $intNumberOfDocumentB) {
+                return -1;
+            }
+
+            if ($intNumberOfDocumentA === $intNumberOfDocumentB) {
+                return 0;
+            }
+
+            return $intNumberOfDocumentA > $intNumberOfDocumentB ? 1 : -1;
+        }
+
+        if ('Новгород' === $townNameOfDocumentA) {
+            return -1;
+        }
+
+        if ('Новгород' === $townNameOfDocumentB) {
+            return 1;
+        }
+
+        return strcmp($townNameOfDocumentA, $townNameOfDocumentB);
     }
 }

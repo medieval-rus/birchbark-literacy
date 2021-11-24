@@ -60,4 +60,9 @@ final class PostRepository extends ServiceEntityRepository
     {
         return $this->find(5);
     }
+
+    public function findIndex(): Post
+    {
+        return $this->find(6);
+    }
 }

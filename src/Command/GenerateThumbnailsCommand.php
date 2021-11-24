@@ -42,18 +42,14 @@ final class GenerateThumbnailsCommand extends Command
 
     private ThumbnailsGeneratorInterface $thumbnailsGenerator;
 
-    private array $thumbnailPresets;
-
     public function __construct(
         EntityManagerInterface $doctrine,
-        ThumbnailsGeneratorInterface $thumbnailsGenerator,
-        array $thumbnailPresets
+        ThumbnailsGeneratorInterface $thumbnailsGenerator
     ) {
         parent::__construct();
 
         $this->doctrine = $doctrine;
         $this->thumbnailsGenerator = $thumbnailsGenerator;
-        $this->thumbnailPresets = $thumbnailPresets;
     }
 
     protected function configure(): void

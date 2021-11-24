@@ -22,7 +22,7 @@
 {% extends 'site/base.html.twig' %}
 
 {% block page_content %}
-    <h5><a href="{{ path('library__bibliography_list') }}">{{ 'favoriteBibliography'|transWithContext(translationContext) }}</a></h5>
+    <h5><a href="{{ path('bibliographic_record__list') }}">{{ 'favoriteBibliography'|transWithContext(translationContext) }}</a></h5>
 
     <table class="table table-striped table-sm mr-book-list-table">
         <thead>

@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="bb__material_element__find__archaeological")
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class ArchaeologicalFind extends AbstractFind implements ExcavationDependentFindInterface
 {
@@ -69,49 +69,49 @@ class ArchaeologicalFind extends AbstractFind implements ExcavationDependentFind
     /**
      * @var string|null
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(name="initial_tier", type="integer", nullable=true)
      */
     private $initialTier;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(name="final_tier", type="integer", nullable=true)
      */
     private $finalTier;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="comment_on_tiers", type="string", length=255, nullable=true)
      */
     private $commentOnTiers;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="decimal", precision=65, scale=2, nullable=true)
+     * @ORM\Column(name="initial_depth", type="decimal", precision=65, scale=2, nullable=true)
      */
     private $initialDepth;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="decimal", precision=65, scale=2, nullable=true)
+     * @ORM\Column(name="final_depth", type="decimal", precision=65, scale=2, nullable=true)
      */
     private $finalDepth;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="comment_on_depths", type="string", length=255, nullable=true)
      */
     private $commentOnDepths;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(name="year", type="integer", nullable=true)
      */
     private $year;
 

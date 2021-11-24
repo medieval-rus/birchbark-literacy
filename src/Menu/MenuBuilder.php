@@ -104,7 +104,7 @@ final class MenuBuilder
                     [
                         'library__book_list',
                         'library__book_show',
-                        'library__bibliography_list',
+                        'bibliographic_record__list',
                     ],
                     true
                 )

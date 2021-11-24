@@ -80,7 +80,6 @@ controller:
         resultsCount: "Найдено грамот: count"
       filter:
         controls:
-          disablePaginator: показать на одной странице
           submitButton: Искать
           resetButton: Сбросить
           searchInFoundButton: Искать в найденном

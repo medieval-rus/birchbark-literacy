@@ -29,21 +29,21 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="bb__material_element__find__accidental")
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class AccidentalFind extends AbstractFind
 {
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text", length=65535, nullable=true)
+     * @ORM\Column(name="comment", type="text", length=65535, nullable=true)
      */
     private $comment;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(name="year", type="integer", nullable=true)
      */
     private $year;
 

@@ -32,10 +32,7 @@ use Twig\TwigTest;
 
 final class AppTwigExtension extends AbstractExtension
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
     public function __construct(TranslatorInterface $translator)
     {

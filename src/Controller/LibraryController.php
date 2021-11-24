@@ -29,7 +29,6 @@ use App\Entity\Bibliography\BibliographicRecord;
 use App\Entity\Bibliography\ReferencesList;
 use App\Entity\Bibliography\ReferencesListItem;
 use App\Form\Document\DocumentsSearchType;
-use App\Repository\Content\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -81,25 +80,6 @@ final class LibraryController extends AbstractController
                 'assetsContext' => 'book/show',
                 'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'bibliographicRecord' => $bibliographicRecord,
-            ]
-        );
-    }
-
-    /**
-     * @Route("/bibliography/", name="library__bibliography_list")
-     */
-    public function listBibliography(EntityManagerInterface $entityManager, PostRepository $postRepository): Response
-    {
-        return $this->render(
-            'site/bibliography/list.html.twig',
-            [
-                'translationContext' => 'controller.library.bibliography.list',
-                'assetsContext' => 'bibliography/list',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
-                'records' => $entityManager
-                    ->getRepository(BibliographicRecord::class)
-                    ->findBy([], ['shortName' => 'ASC']),
-                'post' => $postRepository->findFavoriteBibliographyDescription(),
             ]
         );
     }

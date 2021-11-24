@@ -25,7 +25,9 @@ declare(strict_types=1);
 
 namespace App\Api\V1;
 
+use App\Services\Rnc\RncMetadataExporterInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -35,10 +37,22 @@ use Symfony\Component\Routing\Annotation\Route;
 final class PublicController extends AbstractController
 {
     /**
-     * @Route("/test/", name="api__public__test", methods={"GET"})
+     * @Route("/rnc-metadata/", name="api__public__rnc_metadata", methods={"GET"})
      */
-    public function test(): Response
+    public function rncMetadata(RncMetadataExporterInterface $metadataExporter, Request $request): Response
     {
-        return $this->json(['this' => 'is a test', 'magicNumber' => 17]);
+        $response = new Response();
+
+        $metadata = $metadataExporter->getMetadata($request->getSchemeAndHttpHost(), true);
+
+        if (0 === \count($metadata)) {
+            return $response;
+        }
+
+        array_unshift($metadata, array_keys($metadata[0]));
+
+        $response->setContent(implode("\r\n", array_map(fn (array $row): string => implode(';', $row), $metadata)));
+
+        return $response;
     }
 }

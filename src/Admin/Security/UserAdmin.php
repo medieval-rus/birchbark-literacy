@@ -69,9 +69,9 @@ final class UserAdmin extends AbstractEntityAdmin
         $this->encodePassword($object);
     }
 
-    protected function configureListFields(ListMapper $list): void
+    protected function configureListFields(ListMapper $listMapper): void
     {
-        $list
+        $listMapper
             ->addIdentifier('id', null, $this->createLabeledListOptions('id'))
             ->add('username', null, $this->createLabeledListOptions('username'))
             ->add('fullName', null, $this->createLabeledListOptions('fullName'))
@@ -79,19 +79,19 @@ final class UserAdmin extends AbstractEntityAdmin
         ;
     }
 
-    protected function configureFormFields(FormMapper $form): void
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $isEditForm = $this->isEditForm();
 
-        $form->with($this->getSectionLabel('common'));
+        $formMapper->with($this->getSectionLabel('common'));
 
         if ($isEditForm) {
-            $form
+            $formMapper
                 ->add('id', null, $this->createLabeledFormOptions('id', ['required' => true, 'disabled' => true]))
             ;
         }
 
-        $form
+        $formMapper
             ->add('username', null, $this->createLabeledFormOptions('username', ['required' => true]))
             ->add('fullName', null, $this->createLabeledFormOptions('fullName', ['required' => true]))
             ->add(
@@ -103,6 +103,7 @@ final class UserAdmin extends AbstractEntityAdmin
                         'required' => true,
                         'multiple' => true,
                         'choices' => [
+                            'ROLE_USER' => 'ROLE_USER',
                             'ROLE_EDITOR' => 'ROLE_EDITOR',
                             'ROLE_TEXT_EDITOR' => 'ROLE_TEXT_EDITOR',
                             'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
@@ -117,7 +118,7 @@ final class UserAdmin extends AbstractEntityAdmin
             )
         ;
 
-        $form->end();
+        $formMapper->end();
     }
 
     private function encodePassword(User $user): void

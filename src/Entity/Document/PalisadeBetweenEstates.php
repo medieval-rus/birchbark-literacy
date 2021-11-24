@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="bb__material_element__find__relation_to_estates__palisade")
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class PalisadeBetweenEstates extends AbstractRelationToEstates
 {

@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="bb__material_element__find__relation_to_strata__unknown")
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class UnknownStratum extends AbstractRelationToStrata
 {

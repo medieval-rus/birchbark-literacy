@@ -32,7 +32,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     name="bb__material_element__find__estate",
  *     uniqueConstraints={@ORM\UniqueConstraint(columns={"name", "excavation_id"})}
  * )
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class Estate
 {
@@ -41,14 +41,14 @@ class Estate
      *
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 

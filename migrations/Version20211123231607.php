@@ -23,14 +23,25 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Document\Sorter\SortEngine;
+namespace DoctrineMigrations;
 
-interface DocumentsSortEngineInterface
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+final class Version20211123231607 extends AbstractMigration
 {
-    public function getPosition(
-        string $townNameOfDocumentA,
-        string $numberOfDocumentA,
-        string $townNameOfDocumentB,
-        string $numberOfDocumentB
-    ): int;
+    public function getDescription(): string
+    {
+        return 'Nullable post body.';
+    }
+
+    public function up(Schema $schema): void
+    {
+        $this->addSql('ALTER TABLE post CHANGE body body TEXT DEFAULT NULL');
+    }
+
+    public function down(Schema $schema): void
+    {
+        $this->addSql('ALTER TABLE post CHANGE body body LONGTEXT CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`');
+    }
 }

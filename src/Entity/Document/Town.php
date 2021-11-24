@@ -41,35 +41,35 @@ class Town
      *
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(name="abbreviated_name", type="string", length=255, unique=true)
      */
     private $abbreviatedName;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(name="alias", type="string", length=255, unique=true)
      */
     private $alias;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(name="google_maps_place_id", type="string", length=255, unique=true)
      */
     private $googleMapsPlaceId;
 
@@ -79,7 +79,7 @@ class Town
     /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(name="google_maps_lat_lng", type="string", length=255, unique=true)
      */
     private $googleMapsLatLng;
 

@@ -158,14 +158,14 @@ list:
       fileName: Имя файла
       mediaType: Тип
       description: Описание
-  author:
-    fields:
-      fullName: Полное имя
   bibliographicRecord:
     fields:
       shortName: Краткое название
       title: Наименование работы
       year: Год публикации
+  author:
+    fields:
+      fullName: Полное имя
   referencesList:
     fields:
       name: Название списка
@@ -354,12 +354,6 @@ form:
       url: Адрес
       description: Описание
       binaryContent: Файл
-  author:
-    section:
-      data:
-        label: Сведения об авторе
-    fields:
-      fullName: Полное имя
   bibliographicRecord:
     tab:
       main:
@@ -388,8 +382,28 @@ form:
       description: Описание работы
       fileSupplements: Приложения, связанные с грамотами
       structuralComponents: Части источника
-      mainFile: PDF-документ
+      mainFile: PDF/DJVU-документ (работа целиком)
       mainImage: Изображение
+  author:
+    section:
+      data:
+        label: Сведения об авторе
+    fields:
+      fullName: Полное имя
+  referencesList:
+    section:
+      information:
+        label: Сведения о списке
+      content:
+        label: Содержимое списка
+    fields:
+      name: Название
+      description: Описание
+      items: Элементы
+  referencesListItem:
+    fields:
+      bibliographicRecord: Библиографическая запись
+      position: Номер по порядку
   fileSupplement:
     section:
       common:
@@ -405,20 +419,6 @@ form:
       name: Название части
       file: Файл
       position: Позиция
-  referencesList:
-    section:
-      information:
-        label: Сведения о списке
-      content:
-        label: Содержимое списка
-    fields:
-      name: Название
-      description: Описание
-      items: Элементы
-  referencesListItem:
-    fields:
-      bibliographicRecord: Библиографическая запись
-      position: Номер по порядку
 
 post_list: Страницы
 post_create: Добавить новую страницу
@@ -468,12 +468,12 @@ document_delete: Удалить грамоту
 documentText_list: Тексты грамот
 file_list: Загруженные файлы
 file_create: Загрузить новый файл
-author_list: Авторы
-author_create: Добавить автора
-author_delete: Удалить автора
 bibliographicRecord_list: Библиографические записи
 bibliographicRecord_create: Добавить запись
 bibliographicRecord_delete: Удалить запись
+author_list: Авторы
+author_create: Добавить автора
+author_delete: Удалить автора
 referencesList_list: Списки литературы
 referencesList_create: Создать список
 referencesList_delete: Удалить список

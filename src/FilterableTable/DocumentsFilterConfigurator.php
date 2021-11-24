@@ -141,22 +141,12 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
         ];
     }
 
-    public function getDisablePaginationLabel(): string
-    {
-        return 'controller.document.list.filter.controls.disablePaginator';
-    }
-
     /**
      * @param Document $entity
      */
     public function getEntityId($entity): int
     {
         return (int) $entity->getId();
-    }
-
-    public function getPageSize(): int
-    {
-        return 20;
     }
 
     /**

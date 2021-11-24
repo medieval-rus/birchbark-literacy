@@ -39,21 +39,21 @@ class ConventionalDateCell
      *
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      */
     private $id;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="integer", unique=true)
+     * @ORM\Column(name="initial_year", type="integer", unique=true)
      */
     private $initialYear;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="integer", unique=true)
+     * @ORM\Column(name="final_year", type="integer", unique=true)
      */
     private $finalYear;
 

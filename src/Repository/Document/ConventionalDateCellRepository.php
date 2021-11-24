@@ -36,30 +36,6 @@ final class ConventionalDateCellRepository extends ServiceEntityRepository
         parent::__construct($registry, DateCell::class);
     }
 
-    /**
-     * @return DateCell[]
-     */
-    public function findByFilters(int $initialYear, int $finalYear): array
-    {
-        $queryBuilder = $this->createQueryBuilder('c');
-
-        $predicates = $queryBuilder->expr()->andX(
-            $queryBuilder->expr()->orX(
-                $queryBuilder->expr()->gte('c.initialYear', $initialYear),
-                $queryBuilder->expr()->gte('c.finalYear', $initialYear)
-            ),
-            $queryBuilder->expr()->orX(
-                $queryBuilder->expr()->lte('c.initialYear', $finalYear),
-                $queryBuilder->expr()->lte('c.finalYear', $finalYear)
-            )
-        );
-
-        return $queryBuilder
-            ->where($predicates)
-            ->getQuery()
-            ->getResult();
-    }
-
     public function getMinimalConventionalDate(): int
     {
         $minValues = $this->createQueryBuilder('c')

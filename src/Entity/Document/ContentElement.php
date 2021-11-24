@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="bb__content_element__content_element")
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class ContentElement
 {
@@ -38,14 +38,14 @@ class ContentElement
      *
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      */
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     private $description;
 
@@ -76,14 +76,14 @@ class ContentElement
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text", length=65535, nullable=true)
+     * @ORM\Column(name="original_text", type="text", length=65535, nullable=true)
      */
     private $originalText;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text", length=65535, nullable=true)
+     * @ORM\Column(name="translated_text", type="text", length=65535, nullable=true)
      */
     private $translatedText;
 

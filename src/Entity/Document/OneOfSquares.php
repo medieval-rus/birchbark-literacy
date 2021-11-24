@@ -31,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="bb__material_element__find__relation_to_squares__one_of")
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class OneOfSquares extends AbstractRelationToSquares
 {

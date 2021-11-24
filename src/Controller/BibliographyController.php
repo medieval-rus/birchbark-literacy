@@ -25,40 +25,34 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Bibliography\BibliographicRecord;
 use App\Form\Document\DocumentsSearchType;
 use App\Repository\Content\PostRepository;
-use App\Repository\Document\DocumentListRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class IndexController extends AbstractController
+/**
+ * @Route("/bibliography")
+ */
+final class BibliographyController extends AbstractController
 {
     /**
-     * @Route("/", name="index")
+     * @Route("/", name="bibliographic_record__list")
      */
-    public function indexAction(
-        PostRepository $postRepository,
-        DocumentListRepository $documentListRepository
-    ): Response {
-        $favoriteDocuments = $documentListRepository->findFavoritesDocuments()->toArray();
-
-        shuffle($favoriteDocuments);
-
-        $favoriteDocuments = \array_slice(
-            $favoriteDocuments,
-            0,
-            $this->getParameter('favorite_documents_count')
-        );
-
+    public function list(EntityManagerInterface $entityManager, PostRepository $postRepository): Response
+    {
         return $this->render(
-            'site/index/index.html.twig',
+            'site/bibliography/list.html.twig',
             [
-                'translationContext' => 'controller.index.index',
-                'assetsContext' => 'index/index',
+                'translationContext' => 'controller.library.bibliography.list',
+                'assetsContext' => 'bibliography/list',
                 'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
-                'documents' => $favoriteDocuments,
-                'post' => $postRepository->findIndex(),
+                'records' => $entityManager
+                    ->getRepository(BibliographicRecord::class)
+                    ->findBy([], ['shortName' => 'ASC']),
+                'post' => $postRepository->findFavoriteBibliographyDescription(),
             ]
         );
     }

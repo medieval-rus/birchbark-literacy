@@ -25,18 +25,24 @@ declare(strict_types=1);
 
 namespace App\Repository\Document;
 
-use App\Entity\Document\ConventionalDateCell;
 use App\Entity\Document\Document;
-use App\Entity\Document\ExcavationDependentFindInterface;
-use App\Entity\Document\Town;
+use App\Services\Document\Sorter\DocumentsSorterInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 final class DocumentRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    private TownRepository $townRepository;
+    private DocumentsSorterInterface $documentsSorter;
+
+    public function __construct(
+        ManagerRegistry $registry,
+        TownRepository $townRepository,
+        DocumentsSorterInterface $documentsSorter
+    ) {
         parent::__construct($registry, Document::class);
+        $this->townRepository = $townRepository;
+        $this->documentsSorter = $documentsSorter;
     }
 
     public function findOneByTownAliasAndNumber(
@@ -45,7 +51,7 @@ final class DocumentRepository extends ServiceEntityRepository
         bool $onlyShownOnSite = false
     ): ?Document {
         $criteria = [
-            'town' => $this->getEntityManager()->getRepository(Town::class)->findOneByAlias($townAlias),
+            'town' => $this->townRepository->findOneByAlias($townAlias),
             'number' => $number,
         ];
 
@@ -59,100 +65,16 @@ final class DocumentRepository extends ServiceEntityRepository
     /**
      * @return Document[]
      */
-    public function findByFilters(
-        int $conventionalDateInitialYear,
-        int $conventionalDateFinalYear,
-        array $townIds,
-        array $stateOfPreservationIds,
-        array $excavationIds,
-        array $categoryIds
-    ): array {
-        $queryBuilder = $this->createQueryBuilder('d');
-
-        $whereArguments = [];
-
-        $totalCellsCount = $this->getEntityManager()->getRepository(ConventionalDateCell::class)->count([]);
-
-        $conventionalDateCells = $this->getEntityManager()->getRepository(ConventionalDateCell::class)->findByFilters(
-            $conventionalDateInitialYear,
-            $conventionalDateFinalYear
-        );
-
-        $conventionalDateCellIds = [];
-
-        if ($totalCellsCount !== \count($conventionalDateCells)) {
-            foreach ($conventionalDateCells as $conventionalDateCell) {
-                $conventionalDateCellIds[] = $conventionalDateCell->getId();
-            }
-        }
-
-        if (\count($conventionalDateCellIds) > 0) {
-            $whereArguments[] = $queryBuilder->expr()->in('d.conventionalDate', $conventionalDateCellIds);
-        }
-
-        if (\count($townIds) > 0) {
-            $whereArguments[] = $queryBuilder->expr()->in('d.town', $townIds);
-        }
-
-        if (\count($stateOfPreservationIds) > 0) {
-            $whereArguments[] = $queryBuilder->expr()->in('d.stateOfPreservation', $stateOfPreservationIds);
-        }
-
-        $whereArguments[] = $queryBuilder->expr()->eq('d.isShownOnSite', true);
-
-        $documentsOfQuery = $queryBuilder
-            ->where(\call_user_func_array([$queryBuilder->expr(), 'andX'], $whereArguments))
-            ->getQuery()
-            ->getResult();
-
-        $documentsWithExcavations = [];
-
-        if (\count($excavationIds) > 0) {
-            foreach ($documentsOfQuery as $document) {
-                foreach ($document->getMaterialElements() as $materialElement) {
-                    $find = $materialElement->getFind();
-
-                    if ($find instanceof ExcavationDependentFindInterface) {
-                        if (null !== $find->getExcavation()
-                            && \in_array((string) $find->getExcavation()->getId(), $excavationIds, true)
-                        ) {
-                            $documentsWithExcavations[] = $document;
-                            break;
-                        }
-                    }
-                }
-            }
-        } else {
-            $documentsWithExcavations = $documentsOfQuery;
-        }
-
-        $documentsWithCategories = [];
-
-        if (\count($categoryIds) > 0) {
-            foreach ($documentsWithExcavations as $document) {
-                foreach ($document->getContentElements() as $contentElement) {
-                    if (null !== $contentElement->getCategory()
-                        && \in_array((string) $contentElement->getCategory()->getId(), $categoryIds, true)
-                    ) {
-                        $documentsWithCategories[] = $document;
-                        break;
-                    }
-                }
-            }
-        } else {
-            $documentsWithCategories = $documentsWithExcavations;
-        }
-
-        return $documentsWithCategories;
-    }
-
-    /**
-     * @return Document[]
-     */
-    public function findShown(): array
+    public function findAllInConventionalOrder(bool $onlyShownOnSite = false): array
     {
-        return $this->findBy([
-            'isShownOnSite' => true,
-        ]);
+        $criteria = [];
+
+        if ($onlyShownOnSite) {
+            $criteria['isShownOnSite'] = true;
+        }
+
+        $documents = $this->findBy($criteria);
+
+        return $this->documentsSorter->sort($documents);
     }
 }

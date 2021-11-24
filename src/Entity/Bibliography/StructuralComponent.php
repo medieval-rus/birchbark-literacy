@@ -38,16 +38,16 @@ use Doctrine\ORM\Mapping as ORM;
  *         )
  *     }
  * )
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class StructuralComponent
 {
     /**
      * @var int
      *
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -80,7 +80,7 @@ class StructuralComponent
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 

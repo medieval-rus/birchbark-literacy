@@ -19,7 +19,7 @@
 
 parameters:
   locale: 'ru'
-  google_maps_api_key: '%env(resolve:GOOGLE_MAPS_API_KEY)%'
+  google_maps_api_key: '%env(GOOGLE_MAPS_API_KEY)%'
   favorite_documents_count: 6
 
 services:
@@ -27,28 +27,28 @@ services:
     autowire: true
     autoconfigure: true
     bind:
-      $osfEndpoint: '%env(resolve:OSF_ENDPOINT)%'
-      $osfAccessToken: '%env(resolve:OSF_ACCESS_TOKEN)%'
+      $osfEndpoint: '%env(OSF_ENDPOINT)%'
+      $osfAccessToken: '%env(OSF_ACCESS_TOKEN)%'
       $osfFolders:
         photo:
-          id: '%env(resolve:OSF_PHOTOS_FOLDER_ID)%'
+          id: '%env(OSF_PHOTOS_FOLDER_ID)%'
           pattern: '/^photo_([a-z-]+)_([0-9]{4}[a-z]*(?:-[0-9]{4}[a-z]*)*|[a-z]+\d*)_(\d+)( \(.+\))?\.([a-z0-9]+)$/u'
         drawing:
-          id: '%env(resolve:OSF_DRAWINGS_FOLDER_ID)%'
+          id: '%env(OSF_DRAWINGS_FOLDER_ID)%'
           pattern: '/^drawing_([a-z-]+)_([0-9]{4}[a-z]*(?:-[0-9]{4}[a-z]*)*|[a-z]+\d*)_(\d+)( \(.+\))?\.([a-z0-9]+)$/u'
         bibliography_image:
-          id: '%env(resolve:OSF_BIBLIOGRAPHY_IMAGES_FOLDER_ID)%'
+          id: '%env(OSF_BIBLIOGRAPHY_IMAGES_FOLDER_ID)%'
           pattern: '/^bibliography_image_([a-z0-9-]+)\.([a-z0-9]+)$/u'
         bibliography_document:
-          id: '%env(resolve:OSF_BIBLIOGRAPHY_DOCUMENTS_FOLDER_ID)%'
+          id: '%env(OSF_BIBLIOGRAPHY_DOCUMENTS_FOLDER_ID)%'
           pattern: '/^bibliography_document_([a-z0-9-]+)( \(.+\))?\.([a-z0-9]+)$/u'
         bibliography_document_part:
-          id: '%env(resolve:OSF_BIBLIOGRAPHY_DOCUMENT_PARTS_FOLDER_ID)%'
+          id: '%env(OSF_BIBLIOGRAPHY_DOCUMENT_PARTS_FOLDER_ID)%'
           pattern: '/^bibliography_document_part_([a-zA-Z0-9-]+)\.([a-z0-9]+)$/u'
         bibliography_file_supplement:
-          id: '%env(resolve:OSF_BIBLIOGRAPHY_FILE_SUPPLEMENTS_FOLDER_ID)%'
+          id: '%env(OSF_BIBLIOGRAPHY_FILE_SUPPLEMENTS_FOLDER_ID)%'
           pattern: '/^bibliography_file_supplement_([a-z0-9-]+)_([a-z0-9-_]+)\.([a-z0-9]+)$/u'
-      $thumbnailsDirectory: '%env(resolve:THUMBNAILS_DIRECTORY)%'
+      $thumbnailsDirectory: '%env(THUMBNAILS_DIRECTORY)%'
       $thumbnailPresets:
         default:
           - media-types: ['image/jpeg', 'image/png', 'image/bmp']
@@ -83,7 +83,7 @@ services:
     tags: ['controller.service_arguments']
 
   App\Menu\MenuBuilder:
-    arguments: [ '@knp_menu.factory', '@request_stack' ]
+    arguments: ['@knp_menu.factory', '@request_stack']
     tags:
       - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
 

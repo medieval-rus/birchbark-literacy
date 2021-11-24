@@ -74,7 +74,7 @@ abstract class AbstractEntityAdmin extends AbstractAdmin
         );
     }
 
-    protected function createLabeledManyToManyFormOptions(string $fieldName, array $options = [])
+    protected function createLabeledManyToManyFormOptions(string $fieldName, array $options = []): array
     {
         return $this->createLabeledFormOptions(
             $fieldName,

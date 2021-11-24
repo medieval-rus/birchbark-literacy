@@ -22,13 +22,10 @@ security:
   password_hashers:
     App\Entity\Security\User: auto
   role_hierarchy:
-    ROLE_ADMIN: [ ROLE_USER, ROLE_SONATA_ADMIN ]
-    ROLE_EDITOR: [ ROLE_ADMIN ]
-    ROLE_TEXT_EDITOR: [ ROLE_ADMIN ]
-    ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_EDITOR, ROLE_TEXT_EDITOR, ROLE_ALLOWED_TO_SWITCH ]
-  encoders:
-    App\Entity\Security\User:
-      algorithm: auto
+    ROLE_ADMIN: [ROLE_USER, ROLE_SONATA_ADMIN]
+    ROLE_EDITOR: [ROLE_ADMIN]
+    ROLE_TEXT_EDITOR: [ROLE_ADMIN]
+    ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_EDITOR, ROLE_TEXT_EDITOR, ROLE_ALLOWED_TO_SWITCH]
   providers:
     app_user_provider:
       entity:
@@ -61,14 +58,14 @@ security:
       provider: app_user_provider
       custom_authenticator: App\Security\LoginFormAuthenticator
   access_control:
-    - { path: ^/admin/security.*, role: [ ROLE_SUPER_ADMIN ] }
-    - { path: ^/admin/document.*, role: [ ROLE_EDITOR ] }
-    - { path: ^/admin/content.*, role: [ ROLE_EDITOR ] }
-    - { path: ^/admin/book.*, role: [ ROLE_EDITOR ] }
-    - { path: ^/admin/bibliography.*, role: [ ROLE_EDITOR ] }
-    - { path: ^/admin/text.*, role: [ ROLE_TEXT_EDITOR ] }
-    - { path: ^/admin.*, role: [ ROLE_ADMIN ] }
-    - { path: ^/api/login$, role: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
-    - { path: ^/api/v\d+/protected.*, role: [ IS_AUTHENTICATED_FULLY ] }
-    - { path: ^/api/v\d+/public.*, role: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
-    - { path: ^/.*, role: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
+    - { path: ^/admin/security.*, role: [ROLE_SUPER_ADMIN] }
+    - { path: ^/admin/document.*, role: [ROLE_EDITOR] }
+    - { path: ^/admin/content.*, role: [ROLE_EDITOR] }
+    - { path: ^/admin/book.*, role: [ROLE_EDITOR] }
+    - { path: ^/admin/bibliography.*, role: [ROLE_EDITOR] }
+    - { path: ^/admin/text.*, role: [ROLE_TEXT_EDITOR] }
+    - { path: ^/admin.*, role: [ROLE_ADMIN] }
+    - { path: ^/api/login$, role: [IS_AUTHENTICATED_ANONYMOUSLY] }
+    - { path: ^/api/v\d+/protected.*, role: [IS_AUTHENTICATED_FULLY] }
+    - { path: ^/api/v\d+/public.*, role: [IS_AUTHENTICATED_ANONYMOUSLY] }
+    - { path: ^/.*, role: [IS_AUTHENTICATED_ANONYMOUSLY] }

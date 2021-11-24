@@ -40,35 +40,35 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
      *
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      */
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(name="username", type="string", length=180, unique=true)
      */
     private $username;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=255, unique=false)
+     * @ORM\Column(name="full_name", type="string", length=255, unique=false)
      */
     private $fullName;
 
     /**
      * @var string[]
      *
-     * @ORM\Column(type="json")
+     * @ORM\Column(name="roles", type="json")
      */
     private $roles;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="password", type="string", length=255)
      */
     private $password;
 
@@ -94,7 +94,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function getUserIdentifier(): string
     {
-        return $this->username;
+        return (string) $this->username;
     }
 
     public function getUsername(): ?string

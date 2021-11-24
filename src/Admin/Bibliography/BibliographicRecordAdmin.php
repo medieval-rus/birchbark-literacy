@@ -63,13 +63,13 @@ final class BibliographicRecordAdmin extends AbstractEntityAdmin
     {
         $formMapper
             ->tab($this->getTabLabel('main'))
-                ->with('form.bibliographicRecord.section.basicInformation.label', ['class' => 'col-md-7'])
+                ->with($this->getSectionLabel('basicInformation'), ['class' => 'col-md-7'])
                     ->add('shortName', null, $this->createLabeledFormOptions('shortName'))
                     ->add('title', null, $this->createLabeledFormOptions('title'))
                     ->add('year', null, $this->createLabeledFormOptions('year'))
                     ->add('authors', null, $this->createLabeledManyToManyFormOptions('authors'))
                 ->end()
-                ->with('form.bibliographicRecord.section.details.label', ['class' => 'col-md-5'])
+                ->with($this->getSectionLabel('details'), ['class' => 'col-md-5'])
                     ->add('formalNotation', null, $this->createLabeledFormOptions('formalNotation'))
                     ->add('description', null, $this->createLabeledFormOptions('description'))
                 ->end()

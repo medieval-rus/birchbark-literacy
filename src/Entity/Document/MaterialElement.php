@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="bb__material_element")
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class MaterialElement
 {
@@ -38,63 +38,63 @@ class MaterialElement
      *
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      */
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(name="parts_count", type="integer", nullable=true)
      */
     private $partsCount;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text", length=65535, nullable=true)
+     * @ORM\Column(name="comment", type="text", length=65535, nullable=true)
      */
     private $comment;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="decimal", precision=65, scale=2, nullable=true)
+     * @ORM\Column(name="length", type="decimal", precision=65, scale=2, nullable=true)
      */
     private $length;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="decimal", precision=65, scale=2, nullable=true)
+     * @ORM\Column(name="inner_length", type="decimal", precision=65, scale=2, nullable=true)
      */
     private $innerLength;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="decimal", precision=65, scale=2, nullable=true)
+     * @ORM\Column(name="width", type="decimal", precision=65, scale=2, nullable=true)
      */
     private $width;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="decimal", precision=65, scale=2, nullable=true)
+     * @ORM\Column(name="inner_width", type="decimal", precision=65, scale=2, nullable=true)
      */
     private $innerWidth;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="decimal", precision=65, scale=2, nullable=true)
+     * @ORM\Column(name="diameter", type="decimal", precision=65, scale=2, nullable=true)
      */
     private $diameter;
 

@@ -31,16 +31,16 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="bibliography__author")
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class Author
 {
     /**
      * @var int
      *
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
