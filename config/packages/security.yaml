@@ -67,5 +67,5 @@ security:
     - { path: ^/admin.*, role: [ROLE_ADMIN] }
     - { path: ^/api/login$, role: [IS_AUTHENTICATED_ANONYMOUSLY] }
     - { path: ^/api/v\d+/protected.*, role: [IS_AUTHENTICATED_FULLY] }
-    - { path: ^/api/v\d+/public.*, role: [IS_AUTHENTICATED_ANONYMOUSLY] }
+    - { path: ^/api/v\d+/rnc.*, role: [IS_AUTHENTICATED_ANONYMOUSLY] }
     - { path: ^/.*, role: [IS_AUTHENTICATED_ANONYMOUSLY] }

@@ -44,7 +44,7 @@ final class DocumentsSorter implements DocumentsSorterInterface
         return $documents;
     }
 
-    private function compare(Document $a, Document $b): int
+    public function compare(Document $a, Document $b): int
     {
         $townNameOfDocumentA = $a->getTown()->getName();
         $numberOfDocumentA = $a->getNumber();

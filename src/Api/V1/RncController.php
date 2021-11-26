@@ -25,34 +25,60 @@ declare(strict_types=1);
 
 namespace App\Api\V1;
 
-use App\Services\Rnc\RncMetadataExporterInterface;
+use App\Services\Rnc\RncDataProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/v1/public")
+ * @Route("/v1/rnc")
  */
-final class PublicController extends AbstractController
+final class RncController extends AbstractController
 {
     /**
-     * @Route("/rnc-metadata/", name="api__public__rnc_metadata", methods={"GET"})
+     * @Route("/metadata/", name="api__v1__rnc__metadata", methods={"GET"})
      */
-    public function rncMetadata(RncMetadataExporterInterface $metadataExporter, Request $request): Response
+    public function metadata(RncDataProviderInterface $rncDataProvider, Request $request): Response
     {
         $response = new Response();
 
-        $metadata = $metadataExporter->getMetadata($request->getSchemeAndHttpHost(), true);
+        $metadata = $rncDataProvider->getMetadata($request->getSchemeAndHttpHost(), true);
 
-        if (0 === \count($metadata)) {
-            return $response;
+        if ('true' === $request->query->get('csv')) {
+            if (\count($metadata) > 0) {
+                array_unshift($metadata, array_keys($metadata[0]));
+
+                $response->setContent(
+                    implode(
+                        "\r\n",
+                        array_map(fn (array $row): string => implode(';', $row), $metadata)
+                    )
+                );
+            }
+        } else {
+            $response->setContent($this->toJson($metadata));
         }
 
-        array_unshift($metadata, array_keys($metadata[0]));
+        return $response;
+    }
 
-        $response->setContent(implode("\r\n", array_map(fn (array $row): string => implode(';', $row), $metadata)));
+    /**
+     * @Route("/texts/", name="api__v1__rnc__texts", methods={"GET"})
+     */
+    public function texts(RncDataProviderInterface $rncDataProvider): Response
+    {
+        $texts = $rncDataProvider->getTexts(true);
+
+        $response = new Response();
+
+        $response->setContent($this->toJson($texts));
 
         return $response;
+    }
+
+    private function toJson(array $array): string
+    {
+        return json_encode($array, \JSON_UNESCAPED_UNICODE | \JSON_PRETTY_PRINT);
     }
 }

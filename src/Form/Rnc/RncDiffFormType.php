@@ -23,9 +23,20 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Rnc;
+namespace App\Form\Rnc;
 
-interface RncMetadataExporterInterface
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+final class RncDiffFormType extends AbstractType
 {
-    public function getMetadata(string $baseUrl, bool $onlyShownOnSite = false): array;
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('yaml', FileType::class, ['label' => 'Yaml file', 'required' => true])
+            ->add('submit', SubmitType::class, ['label' => 'Send'])
+        ;
+    }
 }
