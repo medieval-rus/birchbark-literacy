@@ -31,6 +31,10 @@ use App\Repository\Document\DocumentRepository;
 use App\Services\Document\Formatter\DocumentFormatterInterface;
 use App\Services\Document\Sorter\DocumentsSorterInterface;
 use App\Services\Rnc\RncDataProviderInterface;
+use App\Services\Rnc\Yaml\YamlDocument;
+use App\Services\Rnc\Yaml\YamlLine;
+use App\Services\Rnc\Yaml\YamlLineElement;
+use App\Services\Rnc\Yaml\YamlPage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,8 +79,8 @@ final class RncController extends AbstractController
          * @var $yamlFile UploadedFile
          */
         $yamlFile = $form->get('yaml')->getData();
-        $yamlTextsByNumber = $rncDataProvider->parseYaml($yamlFile->getContent());
-        uksort($yamlTextsByNumber, $sorter);
+        $yamlDocumentsByNumber = $rncDataProvider->parseYaml($yamlFile->getContent());
+        uksort($yamlDocumentsByNumber, $sorter);
 
         $dbTexts = $rncDataProvider->getTexts(true);
         $dbTextsByNumber = array_combine(
@@ -95,27 +99,31 @@ final class RncController extends AbstractController
             implode(
                 "\r\n\r\n",
                 array_map(
-                    fn (string $documentNumber, array $yamlDocument): string => $documentNumber."\r\n".implode(
+                    fn (string $documentNumber, YamlDocument $yamlDocument): string => $documentNumber."\r\n".implode(
                         "\r\n",
                         array_map(
-                            fn (array $yamlPage): string => implode(
+                            fn (YamlPage $yamlPage): string => implode(
                                 "\r\n",
                                 array_map(
-                                    fn (array $yamlLine): string => implode(
+                                    fn (YamlLine $yamlLine): string => implode(
                                         ' ',
                                         array_map(
-                                            fn (array $yamlItem): string => $yamlItem['value'],
-                                            $yamlLine['items']
+                                            fn (YamlLineElement $element): string => $element->getValue(),
+                                            array_filter(
+                                                $yamlLine->getElements(),
+                                                fn (YamlLineElement $element): bool => null !== $element->getValue() &&
+                                                    empty($element->getProperty('label'))
+                                            )
                                         )
                                     ),
-                                    $yamlPage['lines']
+                                    $yamlPage->getLines()
                                 )
                             ),
-                            $yamlDocument['pages']
+                            $yamlDocument->getPages()
                         )
                     ),
-                    array_keys($yamlTextsByNumber),
-                    $yamlTextsByNumber
+                    array_keys($yamlDocumentsByNumber),
+                    $yamlDocumentsByNumber
                 )
             )
         );

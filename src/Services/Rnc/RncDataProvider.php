@@ -35,6 +35,12 @@ use App\Entity\Document\MaterialElement;
 use App\Helper\StringHelper;
 use App\Repository\Document\DocumentRepository;
 use App\Services\Document\Formatter\DocumentFormatterInterface;
+use App\Services\Rnc\Yaml\YamlAnalysis;
+use App\Services\Rnc\Yaml\YamlDocument;
+use App\Services\Rnc\Yaml\YamlLine;
+use App\Services\Rnc\Yaml\YamlLineElement;
+use App\Services\Rnc\Yaml\YamlModel;
+use App\Services\Rnc\Yaml\YamlPage;
 use RuntimeException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -70,161 +76,49 @@ final class RncDataProvider implements RncDataProviderInterface
         );
     }
 
+    /**
+     * @return YamlDocument[]
+     */
     public function parseYaml(string $rawYaml): array
     {
         $lines = explode("\r\n", $rawYaml);
 
-        $documents = [];
-
-        $lastDocumentIndex = null;
-        $lastPageIndex = null;
-        $lastLineIndex = null;
+        $yamlModel = new YamlModel([]);
 
         for ($lineIndex = 0; $lineIndex < \count($lines); ++$lineIndex) {
+            $humanReadableLineIndex = $lineIndex + 1;
             $line = $lines[$lineIndex];
 
-            if (StringHelper::StartsWith($line, '-document: ')) {
-                preg_match('/^-document: (.+)$/', $line, $matches);
-
-                $lastDocumentIndex = \count($documents);
-                $documents[] = [
-                    'number' => $matches[1],
-                    'pages' => [],
-                ];
-            } elseif (StringHelper::StartsWith($line, '-page: ')) {
-                preg_match('/^-page: (.+)$/', $line, $matches);
-
-                if (null === $lastDocumentIndex || !\array_key_exists($lastDocumentIndex, $documents)) {
-                    throw new RuntimeException(
-                        sprintf('Cannot parse line %d: page doesn\'t belong to any document.', $lineIndex)
-                    );
-                }
-
-                $lastPageIndex = \count($documents[$lastDocumentIndex]['pages']);
-
-                $documents[$lastDocumentIndex]['pages'][] = [
-                    'id' => $matches[1],
-                    'lines' => [],
-                ];
-            } elseif (StringHelper::StartsWith($line, '-line: ')) {
-                preg_match('/^-line: (.+)$/', $line, $matches);
-
-                if (null === $lastDocumentIndex || !\array_key_exists($lastDocumentIndex, $documents)) {
-                    throw new RuntimeException(
-                        sprintf('Cannot parse line %d: line doesn\'t belong to any document.', $lineIndex)
-                    );
-                }
-
-                if (
-                    null === $lastPageIndex ||
-                    !\array_key_exists($lastPageIndex, $documents[$lastDocumentIndex]['pages'])
-                ) {
-                    throw new RuntimeException(
-                        sprintf('Cannot parse line %d: line doesn\'t belong to any page.', $lineIndex)
-                    );
-                }
-
-                $lastLineIndex = \count($documents[$lastDocumentIndex]['pages'][$lastPageIndex]['lines']);
-
-                $documents[$lastDocumentIndex]['pages'][$lastPageIndex]['lines'][] = [
-                    'id' => $matches[1],
-                    'items' => [],
-                ];
-            } elseif (StringHelper::StartsWith($line, '-comment: ')) {
-                preg_match('/^-comment: (.+)$/', $line, $matches);
-
-                if (null === $lastDocumentIndex || !\array_key_exists($lastDocumentIndex, $documents)) {
-                    throw new RuntimeException(
-                        sprintf('Cannot parse line %d: comment doesn\'t belong to any document.', $lineIndex)
-                    );
-                }
-
-                if (
-                    null === $lastPageIndex ||
-                    !\array_key_exists($lastPageIndex, $documents[$lastDocumentIndex]['pages'])
-                ) {
-                    throw new RuntimeException(
-                        sprintf('Cannot parse line %d: comment doesn\'t belong to any page.', $lineIndex)
-                    );
-                }
-
-                if (
-                    null === $lastLineIndex ||
-                    !\array_key_exists($lastLineIndex, $documents[$lastDocumentIndex]['pages'][$lastPageIndex]['lines'])
-                ) {
-                    continue;
-                }
-
-                $documents[$lastDocumentIndex]['pages'][$lastPageIndex]['lines'][$lastLineIndex]['items'][] = [
-                    'type' => 'comment',
-                    'value' => $matches[1],
-                ];
-            } elseif (StringHelper::StartsWith($line, '-punc: ')) {
-                preg_match('/^-punc: (.+)$/', $line, $matches);
-
-                if (null === $lastDocumentIndex || !\array_key_exists($lastDocumentIndex, $documents)) {
-                    throw new RuntimeException(
-                        sprintf('Cannot parse line %d: punctuation doesn\'t belong to any document.', $lineIndex)
-                    );
-                }
-
-                if (
-                    null === $lastPageIndex ||
-                    !\array_key_exists($lastPageIndex, $documents[$lastDocumentIndex]['pages'])
-                ) {
-                    throw new RuntimeException(
-                        sprintf('Cannot parse line %d: punctuation doesn\'t belong to any page.', $lineIndex)
-                    );
-                }
-
-                if (
-                    null === $lastLineIndex ||
-                    !\array_key_exists($lastLineIndex, $documents[$lastDocumentIndex]['pages'][$lastPageIndex]['lines'])
-                ) {
-                    throw new RuntimeException(
-                        sprintf('Cannot parse line %d: punctuation doesn\'t belong to any line.', $lineIndex)
-                    );
-                }
-
-                $documents[$lastDocumentIndex]['pages'][$lastPageIndex]['lines'][$lastLineIndex]['items'][] = [
-                    'type' => 'punctuation',
-                    'value' => $matches[1],
-                ];
-            } elseif (StringHelper::StartsWith($line, '-word: ')) {
-                preg_match('/^-word: (.+)$/', $line, $matches);
-
-                if (null === $lastDocumentIndex || !\array_key_exists($lastDocumentIndex, $documents)) {
-                    throw new RuntimeException(
-                        sprintf('Cannot parse line %d: word doesn\'t belong to any document.', $lineIndex)
-                    );
-                }
-
-                if (
-                    null === $lastPageIndex ||
-                    !\array_key_exists($lastPageIndex, $documents[$lastDocumentIndex]['pages'])
-                ) {
-                    throw new RuntimeException(
-                        sprintf('Cannot parse line %d: word doesn\'t belong to any page.', $lineIndex)
-                    );
-                }
-
-                if (
-                    null === $lastLineIndex ||
-                    !\array_key_exists($lastLineIndex, $documents[$lastDocumentIndex]['pages'][$lastPageIndex]['lines'])
-                ) {
-                    throw new RuntimeException(
-                        sprintf('Cannot parse line %d: word doesn\'t belong to any line.', $lineIndex)
-                    );
-                }
-
-                $documents[$lastDocumentIndex]['pages'][$lastPageIndex]['lines'][$lastLineIndex]['items'][] = [
-                    'type' => 'word',
-                    'value' => $matches[1],
-                ];
+            if (1 === preg_match('/^-document: (.+)$/', $line, $matches)) {
+                $yamlModel->addDocument(new YamlDocument($matches[1], [], []));
+            } elseif (1 === preg_match('/^-page: +(.+)$/', $line, $matches)) {
+                $yamlModel->addPage($humanReadableLineIndex, new YamlPage($matches[1], []));
+            } elseif (1 === preg_match('/^-line: *(.*)$/', $line, $matches)) {
+                $yamlModel->addLine($humanReadableLineIndex, new YamlLine($matches[1], []));
+            } elseif (1 === preg_match('/^-comment: +(.+)$/', $line, $matches)) {
+                $yamlModel->addComment($humanReadableLineIndex, new YamlLineElement('comment', $matches[1], []));
+            } elseif (1 === preg_match('/^-fragment: *(.*)$/', $line, $matches)) {
+                $yamlModel->addElement($humanReadableLineIndex, new YamlLineElement('fragment', $matches[1], []));
+            } elseif (1 === preg_match('/^-punc: (.+)$/', $line, $matches)) {
+                $yamlModel->addElement($humanReadableLineIndex, new YamlLineElement('punctuation', $matches[1], []));
+            } elseif (1 === preg_match('/^-word: (.+)$/', $line, $matches)) {
+                $yamlModel->addElement($humanReadableLineIndex, new YamlLineElement('word', $matches[1], []));
+            } elseif (1 === preg_match('/^-part: (.+)$/', $line, $matches)) {
+                $yamlModel->addWordPart($humanReadableLineIndex, new YamlLineElement('part', $matches[1], []));
+            } elseif (1 === preg_match('/^ -ana: (.+)$/', $line, $matches)) {
+                $yamlModel->addAnalysis($humanReadableLineIndex, new YamlAnalysis($matches[1]));
+            } elseif (1 === preg_match('/^ {1}([^- ].*): ?(.*)$/', $line, $matches)) {
+                $yamlModel->addProperty($humanReadableLineIndex, 1, $matches[1], $matches[2]);
+            } elseif (1 === preg_match('/^ {2}([^- ].*): ?(.*)$/', $line, $matches)) {
+                $yamlModel->addProperty($humanReadableLineIndex, 2, $matches[1], $matches[2]);
+            } elseif (1 === preg_match('/^\s*$/', $line)) {
+                // ignore empty lines
+            } else {
+                throw new RuntimeException(sprintf('Cannot parse row %d ("%s").', $humanReadableLineIndex, $line));
             }
         }
 
-        return $this->alignWithDb($documents);
+        return $this->alignWithDb($yamlModel);
     }
 
     private function getMetadataRow(Document $document, string $baseUrl): array
@@ -406,7 +300,10 @@ final class RncDataProvider implements RncDataProviderInterface
         ];
     }
 
-    private function alignWithDb(array $yamlTexts): array
+    /**
+     * @return YamlDocument[]
+     */
+    private function alignWithDb(YamlModel $yamlModel): array
     {
         $numberByConventionalName = [];
 
@@ -416,19 +313,19 @@ final class RncDataProvider implements RncDataProviderInterface
                 ->getNumber($document);
         }
 
-        $yamlRowsByNumber = [];
-        foreach ($yamlTexts as $yamlTextData) {
-            if (1 === preg_match('/^[\/\d]+$/', $yamlTextData['number'], $matches)) {
+        $yamlDocumentsByNumber = [];
+        foreach ($yamlModel->getDocuments() as $yamlDocument) {
+            if (1 === preg_match('/^[\/\d]+$/', $yamlDocument->getNumber(), $matches)) {
                 $town = 'novgorod';
                 $number = implode(
                     '/',
                     array_map(
                         fn (string $numberPart): string => (string) (int) $numberPart,
-                        explode('/', $yamlTextData['number'])
+                        explode('/', $yamlDocument->getNumber())
                     )
                 );
-            } elseif (1 === preg_match('/[а-яА-Я]/', $yamlTextData['number'], $matches)) {
-                $parts = explode(' ', $yamlTextData['number']);
+            } elseif (1 === preg_match('/[а-яА-Я]/', $yamlDocument->getNumber(), $matches)) {
+                $parts = explode(' ', $yamlDocument->getNumber());
                 $number = array_pop($parts);
                 $town = implode(' ', $parts);
                 switch ($town) {
@@ -471,21 +368,21 @@ final class RncDataProvider implements RncDataProviderInterface
                         $town = 'mstislavl';
                         break;
                     default:
-                        if ('915-И' === $yamlTextData['number']) {
+                        if ('915-И' === $yamlDocument->getNumber()) {
                             $town = 'novgorod';
                             $number = '915i';
                         } else {
                             throw new RuntimeException(
                                 sprintf(
                                     'Cannot find document number "%s" from yaml file in db.',
-                                    $yamlTextData['number']
+                                    $yamlDocument->getNumber()
                                 )
                             );
                         }
                 }
             } else {
                 $town = 'novgorod';
-                $number = trim($yamlTextData['number']);
+                $number = trim($yamlDocument->getNumber());
             }
 
             $conventionalName = $town.' '.$number;
@@ -495,14 +392,14 @@ final class RncDataProvider implements RncDataProviderInterface
                     sprintf(
                         'Cannot find document with number "%s" in db ("%s" in yaml file).',
                         $conventionalName,
-                        $yamlTextData['number']
+                        $yamlDocument->getNumber()
                     )
                 );
             }
 
-            $yamlRowsByNumber[$numberByConventionalName[$conventionalName]] = $yamlTextData;
+            $yamlDocumentsByNumber[$numberByConventionalName[$conventionalName]] = $yamlDocument;
         }
 
-        return $yamlRowsByNumber;
+        return $yamlDocumentsByNumber;
     }
 }
