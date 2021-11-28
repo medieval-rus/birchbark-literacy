@@ -25,32 +25,27 @@ declare(strict_types=1);
 
 namespace App\FilterableTable\Filter\Parameter;
 
-use App\Entity\Document\ArchaeologicalFind;
-use App\Entity\Document\Excavation;
-use App\Services\Document\Formatter\DocumentFormatterInterface;
+use App\Entity\Document\Language;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\ExpressionBuilderInterface;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\FilterParameterInterface;
 use Vyfony\Bundle\FilterableTableBundle\Persistence\QueryBuilder\Alias\AliasFactoryInterface;
 
-final class ExcavationFilterParameter implements FilterParameterInterface, ExpressionBuilderInterface
+final class LanguageFilterParameter implements FilterParameterInterface, ExpressionBuilderInterface
 {
     private AliasFactoryInterface $aliasFactory;
-    private DocumentFormatterInterface $formatter;
 
-    public function __construct(AliasFactoryInterface $aliasFactory, DocumentFormatterInterface $formatter)
+    public function __construct(AliasFactoryInterface $aliasFactory)
     {
         $this->aliasFactory = $aliasFactory;
-        $this->formatter = $formatter;
     }
 
     public function getQueryParameterName(): string
     {
-        return 'excavation';
+        return 'language';
     }
 
     public function getType(): string
@@ -61,15 +56,13 @@ final class ExcavationFilterParameter implements FilterParameterInterface, Expre
     public function getOptions(EntityManager $entityManager): array
     {
         return [
-            'label' => 'controller.document.list.filter.excavation',
+            'label' => 'controller.document.list.filter.language',
             'attr' => [
                 'class' => '',
                 'data-vyfony-filterable-table-filter-parameter' => true,
             ],
-            'class' => Excavation::class,
-            'choice_label' => fn (Excavation $excavation): string => $this
-                ->formatter
-                ->getExcavationWithTown($excavation),
+            'class' => Language::class,
+            'choice_label' => 'name',
             'expanded' => false,
             'multiple' => true,
             'query_builder' => $this->createQueryBuilder(),
@@ -81,56 +74,41 @@ final class ExcavationFilterParameter implements FilterParameterInterface, Expre
      */
     public function buildWhereExpression(QueryBuilder $queryBuilder, $formData, string $entityAlias): ?string
     {
-        $excavations = $formData;
+        $languages = $formData;
 
-        if (0 === \count($excavations)) {
+        if (0 === \count($languages)) {
             return null;
         }
 
         $ids = [];
 
-        foreach ($excavations as $excavation) {
-            $ids[] = $excavation->getId();
+        foreach ($languages as $language) {
+            $ids[] = $language->getId();
         }
 
         $queryBuilder
             ->innerJoin(
-                $entityAlias.'.materialElements',
-                $materialElementAlias = $this->aliasFactory->createAlias(static::class, 'materialElements')
+                $entityAlias.'.contentElements',
+                $contentElementAlias = $this->aliasFactory->createAlias(static::class, 'contentElements')
             )
             ->innerJoin(
-                $materialElementAlias.'.find',
-                $findAlias = $this->aliasFactory->createAlias(static::class, 'find')
-            )
-            ->innerJoin(
-                ArchaeologicalFind::class,
-                $archaeologicalFindAlias = $this->aliasFactory->createAlias(static::class, 'archaeologicalFind'),
-                Join::WITH,
-                sprintf('%s.id = %s.id', $archaeologicalFindAlias, $findAlias)
-            )
-            ->innerJoin(
-                $archaeologicalFindAlias.'.excavation',
-                $excavationAlias = $this->aliasFactory->createAlias(static::class, 'excavation')
+                $contentElementAlias.'.language',
+                $languageAlias = $this->createAlias()
             )
         ;
 
-        return (string) $queryBuilder->expr()->in($excavationAlias.'.id', $ids);
+        return (string) $queryBuilder->expr()->in($languageAlias.'.id', $ids);
     }
 
     private function createQueryBuilder(): callable
     {
         return fn (EntityRepository $repository): QueryBuilder => $repository
-            ->createQueryBuilder($excavationAlias = $this->createAlias())
-            ->leftJoin(
-                $excavationAlias.'.town',
-                $townAlias = $this->aliasFactory->createAlias(static::class, 'town')
-            )
-            ->addOrderBy($townAlias.'.name', 'ASC')
-            ->addOrderBy($excavationAlias.'.name', 'ASC');
+                ->createQueryBuilder($entityAlias = $this->createAlias())
+                ->orderBy($entityAlias.'.name', 'ASC');
     }
 
     private function createAlias(): string
     {
-        return $this->aliasFactory->createAlias(static::class, 'excavation');
+        return $this->aliasFactory->createAlias(static::class, 'language');
     }
 }

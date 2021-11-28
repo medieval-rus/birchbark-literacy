@@ -31,15 +31,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class MenuBuilder
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private FactoryInterface $factory;
+    private RequestStack $requestStack;
 
     public function __construct(FactoryInterface $factory, RequestStack $requestStack)
     {

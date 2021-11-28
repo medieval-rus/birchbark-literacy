@@ -30,9 +30,15 @@ use App\FilterableTable\Filter\Parameter\ContentCategoryFilterParameter;
 use App\FilterableTable\Filter\Parameter\ConventionalDateFinalYearFilterParameter;
 use App\FilterableTable\Filter\Parameter\ConventionalDateInitialYearFilterParameter;
 use App\FilterableTable\Filter\Parameter\ExcavationFilterParameter;
+use App\FilterableTable\Filter\Parameter\GenreFilterParameter;
+use App\FilterableTable\Filter\Parameter\LanguageFilterParameter;
 use App\FilterableTable\Filter\Parameter\NumberFilterParameter;
+use App\FilterableTable\Filter\Parameter\OriginalTextFilterParameter;
 use App\FilterableTable\Filter\Parameter\StateOfPreservationFilterParameter;
+use App\FilterableTable\Filter\Parameter\StoragePlaceFilterParameter;
 use App\FilterableTable\Filter\Parameter\TownFilterParameter;
+use App\FilterableTable\Filter\Parameter\TranslatedTextFilterParameter;
+use App\FilterableTable\Filter\Parameter\WayOfWritingFilterParameter;
 use App\Services\Document\Sorter\DocumentsSorterInterface;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\AbstractFilterConfigurator;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\FilterParameterInterface;
@@ -45,45 +51,20 @@ use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Sorting\DbSortConfig
 
 final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
 {
-    /**
-     * @var DocumentsSorterInterface
-     */
-    private $sorter;
-
-    /**
-     * @var TownFilterParameter
-     */
-    private $townFilterParameter;
-
-    /**
-     * @var ExcavationFilterParameter
-     */
-    private $excavationFilterParameter;
-
-    /**
-     * @var StateOfPreservationFilterParameter
-     */
-    private $stateOfPreservationFilterParameter;
-
-    /**
-     * @var ContentCategoryFilterParameter
-     */
-    private $contentCategoryFilterParameter;
-
-    /**
-     * @var ConventionalDateInitialYearFilterParameter
-     */
-    private $conventionalDateInitialYearFilterParameter;
-
-    /**
-     * @var ConventionalDateFinalYearFilterParameter
-     */
-    private $conventionalDateFinalYearFilterParameter;
-
-    /**
-     * @var NumberFilterParameter
-     */
-    private $numberFilterParameter;
+    private DocumentsSorterInterface $sorter;
+    private TownFilterParameter $townFilterParameter;
+    private ExcavationFilterParameter $excavationFilterParameter;
+    private StateOfPreservationFilterParameter $stateOfPreservationFilterParameter;
+    private ContentCategoryFilterParameter $contentCategoryFilterParameter;
+    private ConventionalDateInitialYearFilterParameter $conventionalDateInitialYearFilterParameter;
+    private ConventionalDateFinalYearFilterParameter$conventionalDateFinalYearFilterParameter;
+    private NumberFilterParameter $numberFilterParameter;
+    private GenreFilterParameter $genreFilterParameter;
+    private LanguageFilterParameter $languageFilterParameter;
+    private OriginalTextFilterParameter $originalTextFilterParameter;
+    private TranslatedTextFilterParameter $translatedTextFilterParameter;
+    private StoragePlaceFilterParameter $storagePlaceFilterParameter;
+    private WayOfWritingFilterParameter $wayOfWritingFilterParameter;
 
     public function __construct(
         DocumentsSorterInterface $sorter,
@@ -93,7 +74,13 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
         ContentCategoryFilterParameter $contentCategoryFilterParameter,
         ConventionalDateInitialYearFilterParameter $conventionalDateInitialYearFilterParameter,
         ConventionalDateFinalYearFilterParameter $conventionalDateFinalYearFilterParameter,
-        NumberFilterParameter $numberFilterParameter
+        NumberFilterParameter $numberFilterParameter,
+        GenreFilterParameter $genreFilterParameter,
+        LanguageFilterParameter $languageFilterParameter,
+        OriginalTextFilterParameter $originalTextFilterParameter,
+        TranslatedTextFilterParameter $translatedTextFilterParameter,
+        StoragePlaceFilterParameter $storagePlaceFilterParameter,
+        WayOfWritingFilterParameter $wayOfWritingFilterParameter
     ) {
         $this->sorter = $sorter;
         $this->townFilterParameter = $townFilterParameter;
@@ -103,6 +90,12 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
         $this->conventionalDateInitialYearFilterParameter = $conventionalDateInitialYearFilterParameter;
         $this->conventionalDateFinalYearFilterParameter = $conventionalDateFinalYearFilterParameter;
         $this->numberFilterParameter = $numberFilterParameter;
+        $this->genreFilterParameter = $genreFilterParameter;
+        $this->languageFilterParameter = $languageFilterParameter;
+        $this->originalTextFilterParameter = $originalTextFilterParameter;
+        $this->translatedTextFilterParameter = $translatedTextFilterParameter;
+        $this->storagePlaceFilterParameter = $storagePlaceFilterParameter;
+        $this->wayOfWritingFilterParameter = $wayOfWritingFilterParameter;
     }
 
     public function createSubmitButtonOptions(): array
@@ -174,6 +167,12 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
             $this->excavationFilterParameter,
             $this->stateOfPreservationFilterParameter,
             $this->contentCategoryFilterParameter,
+            $this->genreFilterParameter,
+            $this->languageFilterParameter,
+            $this->storagePlaceFilterParameter,
+            $this->wayOfWritingFilterParameter,
+            $this->originalTextFilterParameter,
+            $this->translatedTextFilterParameter,
         ];
     }
 

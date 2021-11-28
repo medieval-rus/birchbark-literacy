@@ -35,15 +35,8 @@ use Vyfony\Bundle\FilterableTableBundle\Persistence\QueryBuilder\Alias\AliasFact
 
 final class ConventionalDateFinalYearFilterParameter implements FilterParameterInterface, ExpressionBuilderInterface
 {
-    /**
-     * @var AliasFactoryInterface
-     */
-    private $aliasFactory;
-
-    /**
-     * @var ConventionalDateCellRepository
-     */
-    private $conventionalDateCellRepository;
+    private AliasFactoryInterface $aliasFactory;
+    private ConventionalDateCellRepository $conventionalDateCellRepository;
 
     public function __construct(
         AliasFactoryInterface $aliasFactory,

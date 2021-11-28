@@ -26,8 +26,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Document\Document;
-use App\Entity\Document\Town;
 use App\Form\Document\DocumentsSearchType;
+use App\Repository\Content\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,7 +41,7 @@ final class DocumentController extends AbstractController
     /**
      * @Route("/list/", name="document__list")
      */
-    public function list(TableInterface $filterableTable): Response
+    public function list(TableInterface $filterableTable, PostRepository $postRepository): Response
     {
         return $this->render(
             'site/document/list.html.twig',
@@ -51,6 +51,7 @@ final class DocumentController extends AbstractController
                 'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'filterForm' => $filterableTable->getFormView(),
                 'table' => $filterableTable->getTableMetadata(),
+                'post' => $postRepository->findDatabase(),
             ]
         );
     }

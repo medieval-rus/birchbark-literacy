@@ -36,10 +36,7 @@ use Vyfony\Bundle\FilterableTableBundle\Persistence\QueryBuilder\Alias\AliasFact
 
 final class StateOfPreservationFilterParameter implements FilterParameterInterface, ExpressionBuilderInterface
 {
-    /**
-     * @var AliasFactoryInterface
-     */
-    private $aliasFactory;
+    private AliasFactoryInterface $aliasFactory;
 
     public function __construct(AliasFactoryInterface $aliasFactory)
     {
@@ -77,15 +74,15 @@ final class StateOfPreservationFilterParameter implements FilterParameterInterfa
      */
     public function buildWhereExpression(QueryBuilder $queryBuilder, $formData, string $entityAlias): ?string
     {
-        $stateOfPreservations = $formData;
+        $statesOfPreservation = $formData;
 
-        if (0 === \count($stateOfPreservations)) {
+        if (0 === \count($statesOfPreservation)) {
             return null;
         }
 
         $ids = [];
 
-        foreach ($stateOfPreservations as $stateOfPreservation) {
+        foreach ($statesOfPreservation as $stateOfPreservation) {
             $ids[] = $stateOfPreservation->getId();
         }
 

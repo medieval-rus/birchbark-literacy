@@ -25,41 +25,43 @@ declare(strict_types=1);
 
 namespace App\FilterableTable\Filter\Parameter;
 
-use App\Repository\Document\ConventionalDateCellRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\ExpressionBuilderInterface;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\FilterParameterInterface;
 use Vyfony\Bundle\FilterableTableBundle\Persistence\QueryBuilder\Alias\AliasFactoryInterface;
+use Vyfony\Bundle\FilterableTableBundle\Persistence\QueryBuilder\Parameter\ParameterFactoryInterface;
 
-final class ConventionalDateInitialYearFilterParameter implements FilterParameterInterface, ExpressionBuilderInterface
+final class TranslatedTextFilterParameter implements FilterParameterInterface, ExpressionBuilderInterface
 {
+    private ParameterFactoryInterface $parameterFactory;
     private AliasFactoryInterface $aliasFactory;
-    private ConventionalDateCellRepository $conventionalDateCellRepository;
 
-    public function __construct(
-        AliasFactoryInterface $aliasFactory,
-        ConventionalDateCellRepository $conventionalDateCellRepository
-    ) {
+    public function __construct(ParameterFactoryInterface $parameterFactory, AliasFactoryInterface $aliasFactory)
+    {
+        $this->parameterFactory = $parameterFactory;
         $this->aliasFactory = $aliasFactory;
-        $this->conventionalDateCellRepository = $conventionalDateCellRepository;
     }
 
     public function getQueryParameterName(): string
     {
-        return 'conventionalDateInitialYear';
+        return 'translation';
     }
 
     public function getType(): string
     {
-        return HiddenType::class;
+        return TextType::class;
     }
 
     public function getOptions(EntityManager $entityManager): array
     {
         return [
-            'data' => $this->conventionalDateCellRepository->getMinimalConventionalDate(),
+            'label' => 'controller.document.list.filter.translation',
+            'attr' => [
+                'class' => '',
+                'data-vyfony-filterable-table-filter-parameter' => true,
+            ],
         ];
     }
 
@@ -68,19 +70,27 @@ final class ConventionalDateInitialYearFilterParameter implements FilterParamete
      */
     public function buildWhereExpression(QueryBuilder $queryBuilder, $formData, string $entityAlias): ?string
     {
-        if (null === $formData) {
+        $filterValue = $formData;
+
+        if (null === $filterValue) {
             return null;
         }
 
-        $conventionalDateInitialYear = (int) $formData;
-
         $queryBuilder
             ->innerJoin(
-                $entityAlias.'.conventionalDate',
-                $conventionalDateAlias = $this->aliasFactory->createAlias(static::class, 'conventionalDate')
+                $entityAlias.'.contentElements',
+                $contentElementAlias = $this->aliasFactory->createAlias(static::class, 'contentElements')
             )
         ;
 
-        return (string) $queryBuilder->expr()->gte($conventionalDateAlias.'.initialYear', $conventionalDateInitialYear);
+        $queryBuilder->setParameter(
+            $parameterName = $this->parameterFactory->createParameter(
+                $entityAlias.'_translation',
+                0
+            ),
+            '%'.mb_strtolower($filterValue).'%'
+        );
+
+        return (string) $queryBuilder->expr()->like('LOWER('.$contentElementAlias.'.translatedText)', $parameterName);
     }
 }

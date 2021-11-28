@@ -65,4 +65,9 @@ final class PostRepository extends ServiceEntityRepository
     {
         return $this->find(6);
     }
+
+    public function findDatabase(): Post
+    {
+        return $this->find(7);
+    }
 }

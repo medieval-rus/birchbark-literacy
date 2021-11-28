@@ -27,6 +27,10 @@
 {% block page_title %}<h1 class="mr-hard-title">{{ block('title') }}</h1>{% endblock %}
 
 {%- block page_content -%}
+    {% import 'site/content/post.html.twig' as post_helper %}
+
+    {{ post_helper.render_post_body(post, false) }}
+
     {% if filterForm.children.number.vars.value is not empty %}
         {{ self.render_table(translationContext, table) }}
         {{ self.render_filter(translationContext, filterForm) }}

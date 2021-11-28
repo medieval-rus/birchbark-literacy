@@ -38,15 +38,8 @@ use Vyfony\Bundle\FilterableTableBundle\Table\Metadata\Column\ColumnMetadataInte
 
 final class DocumentsTableConfigurator extends AbstractTableConfigurator
 {
-    /**
-     * @var DocumentFormatterInterface
-     */
-    private $formatter;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private DocumentFormatterInterface $formatter;
+    private TranslatorInterface $translator;
 
     public function __construct(
         RouterInterface $router,

@@ -36,7 +36,7 @@ final class OriginalTextMarkupParser implements OriginalTextMarkupParserInterfac
     /**
      * @var RuleParserInterface[]
      */
-    private $ruleParsers = [];
+    private array $ruleParsers = [];
 
     /**
      * @return TextPieceInterface[]

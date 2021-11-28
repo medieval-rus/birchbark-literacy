@@ -33,10 +33,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class DocumentsSearchType extends AbstractType
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(RouterInterface $router)
     {

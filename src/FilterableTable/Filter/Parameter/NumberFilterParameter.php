@@ -31,20 +31,9 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\ExpressionBuilderInterface;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\FilterParameterInterface;
-use Vyfony\Bundle\FilterableTableBundle\Persistence\QueryBuilder\Alias\AliasFactoryInterface;
 
 final class NumberFilterParameter implements FilterParameterInterface, ExpressionBuilderInterface
 {
-    /**
-     * @var AliasFactoryInterface
-     */
-    private $aliasFactory;
-
-    public function __construct(AliasFactoryInterface $aliasFactory)
-    {
-        $this->aliasFactory = $aliasFactory;
-    }
-
     public function getQueryParameterName(): string
     {
         return 'number';

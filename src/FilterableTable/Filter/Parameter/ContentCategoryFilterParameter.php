@@ -36,10 +36,7 @@ use Vyfony\Bundle\FilterableTableBundle\Persistence\QueryBuilder\Alias\AliasFact
 
 final class ContentCategoryFilterParameter implements FilterParameterInterface, ExpressionBuilderInterface
 {
-    /**
-     * @var AliasFactoryInterface
-     */
-    private $aliasFactory;
+    private AliasFactoryInterface $aliasFactory;
 
     public function __construct(AliasFactoryInterface $aliasFactory)
     {

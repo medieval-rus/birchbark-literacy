@@ -87,6 +87,12 @@ controller:
         town: Город
         excavation: Раскоп
         stateOfPreservation: Состояние сохранности
+        wayOfWriting: Способ письма
+        language: Язык
+        genre: Жанр
+        storagePlace: Место хранения
+        text: Текст
+        translation: Перевод
     show:
       documentAdmin: Редактировать грамоту в админке
       textAdmin: Редактировать текст грамоты в админке
