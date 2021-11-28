@@ -78,7 +78,7 @@ final class LanguageFilterParameter implements FilterParameterInterface, Express
             return null;
         }
 
-        $ids = array_map(fn (Language $entity): int => $entity->getId(), $formData);
+        $ids = $formData->map(fn (Language $entity): int => $entity->getId())->toArray();
 
         $queryBuilder
             ->innerJoin(

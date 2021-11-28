@@ -85,7 +85,7 @@ final class ExcavationFilterParameter implements FilterParameterInterface, Expre
             return null;
         }
 
-        $ids = array_map(fn (Excavation $entity): int => $entity->getId(), $formData);
+        $ids = $formData->map(fn (Excavation $entity): int => $entity->getId())->toArray();
 
         $queryBuilder
             ->innerJoin(

@@ -78,7 +78,7 @@ final class StoragePlaceFilterParameter implements FilterParameterInterface, Exp
             return null;
         }
 
-        $ids = array_map(fn (StoragePlace $storagePlace): int => $storagePlace->getId(), $formData);
+        $ids = $formData->map(fn (StoragePlace $entity): int => $entity->getId())->toArray();
 
         $queryBuilder
             ->innerJoin(

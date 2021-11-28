@@ -78,7 +78,7 @@ final class WayOfWritingFilterParameter implements FilterParameterInterface, Exp
             return null;
         }
 
-        $ids = array_map(fn (WayOfWriting $entity): int => $entity->getId(), $formData);
+        $ids = $formData->map(fn (WayOfWriting $entity): int => $entity->getId())->toArray();
 
         $queryBuilder
             ->innerJoin(

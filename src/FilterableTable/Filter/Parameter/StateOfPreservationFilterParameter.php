@@ -78,7 +78,7 @@ final class StateOfPreservationFilterParameter implements FilterParameterInterfa
             return null;
         }
 
-        $ids = array_map(fn (StateOfPreservation $entity): int => $entity->getId(), $formData);
+        $ids = $formData->map(fn (StateOfPreservation $entity): int => $entity->getId())->toArray();
 
         $queryBuilder
             ->innerJoin(

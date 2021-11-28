@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace App\FilterableTable\Filter\Parameter;
 
 use App\Entity\Document\Town;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -74,11 +75,11 @@ final class TownFilterParameter implements FilterParameterInterface, ExpressionB
      */
     public function buildWhereExpression(QueryBuilder $queryBuilder, $formData, string $entityAlias): ?string
     {
-        if (0 === \count($formData)) {
+        if (!$formData instanceof Collection || 0 === $formData->count()) {
             return null;
         }
 
-        $ids = array_map(fn (Town $entity): int => $entity->getId(), $formData);
+        $ids = $formData->map(fn (Town $entity): int => $entity->getId())->toArray();
 
         $queryBuilder
             ->innerJoin(

@@ -78,7 +78,7 @@ final class GenreFilterParameter implements FilterParameterInterface, Expression
             return null;
         }
 
-        $ids = array_map(fn (Genre $entity): int => $entity->getId(), $formData);
+        $ids = $formData->map(fn (Genre $entity): int => $entity->getId())->toArray();
 
         $queryBuilder
             ->innerJoin(

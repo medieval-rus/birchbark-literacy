@@ -78,7 +78,7 @@ final class ContentCategoryFilterParameter implements FilterParameterInterface, 
             return null;
         }
 
-        $ids = array_map(fn (ContentCategory $entity): int => $entity->getId(), $formData);
+        $ids = $formData->map(fn (ContentCategory $entity): int => $entity->getId())->toArray();
 
         $queryBuilder
             ->innerJoin(
