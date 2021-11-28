@@ -74,17 +74,11 @@ final class LanguageFilterParameter implements FilterParameterInterface, Express
      */
     public function buildWhereExpression(QueryBuilder $queryBuilder, $formData, string $entityAlias): ?string
     {
-        $languages = $formData;
-
-        if (0 === \count($languages)) {
+        if (0 === \count($formData)) {
             return null;
         }
 
-        $ids = [];
-
-        foreach ($languages as $language) {
-            $ids[] = $language->getId();
-        }
+        $ids = array_map(fn (Language $entity): int => $entity->getId(), $formData);
 
         $queryBuilder
             ->innerJoin(

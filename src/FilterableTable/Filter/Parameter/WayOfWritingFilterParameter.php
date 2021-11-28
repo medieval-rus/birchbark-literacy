@@ -74,17 +74,11 @@ final class WayOfWritingFilterParameter implements FilterParameterInterface, Exp
      */
     public function buildWhereExpression(QueryBuilder $queryBuilder, $formData, string $entityAlias): ?string
     {
-        $waysOfWriting = $formData;
-
-        if (0 === \count($waysOfWriting)) {
+        if (0 === \count($formData)) {
             return null;
         }
 
-        $ids = [];
-
-        foreach ($waysOfWriting as $wayOfWriting) {
-            $ids[] = $wayOfWriting->getId();
-        }
+        $ids = array_map(fn (WayOfWriting $entity): int => $entity->getId(), $formData);
 
         $queryBuilder
             ->innerJoin(

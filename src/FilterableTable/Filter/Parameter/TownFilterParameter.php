@@ -74,17 +74,11 @@ final class TownFilterParameter implements FilterParameterInterface, ExpressionB
      */
     public function buildWhereExpression(QueryBuilder $queryBuilder, $formData, string $entityAlias): ?string
     {
-        $towns = $formData;
-
-        if (0 === \count($towns)) {
+        if (0 === \count($formData)) {
             return null;
         }
 
-        $ids = [];
-
-        foreach ($towns as $town) {
-            $ids[] = $town->getId();
-        }
+        $ids = array_map(fn (Town $entity): int => $entity->getId(), $formData);
 
         $queryBuilder
             ->innerJoin(

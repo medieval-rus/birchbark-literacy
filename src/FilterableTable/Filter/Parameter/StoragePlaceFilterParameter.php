@@ -74,21 +74,19 @@ final class StoragePlaceFilterParameter implements FilterParameterInterface, Exp
      */
     public function buildWhereExpression(QueryBuilder $queryBuilder, $formData, string $entityAlias): ?string
     {
-        $storagePlaces = $formData;
-
-        if (0 === \count($storagePlaces)) {
+        if (0 === \count($formData)) {
             return null;
         }
 
-        $ids = [];
-
-        foreach ($storagePlaces as $storagePlace) {
-            $ids[] = $storagePlace->getId();
-        }
+        $ids = array_map(fn (StoragePlace $storagePlace): int => $storagePlace->getId(), $formData);
 
         $queryBuilder
             ->innerJoin(
-                $entityAlias.'.storagePlace',
+                $entityAlias.'.materialElements',
+                $materialElementAlias = $this->aliasFactory->createAlias(static::class, 'materialElements')
+            )
+            ->innerJoin(
+                $materialElementAlias.'.storagePlace',
                 $storagePlaceAlias = $this->createAlias()
             )
         ;

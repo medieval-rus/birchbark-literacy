@@ -81,17 +81,11 @@ final class ExcavationFilterParameter implements FilterParameterInterface, Expre
      */
     public function buildWhereExpression(QueryBuilder $queryBuilder, $formData, string $entityAlias): ?string
     {
-        $excavations = $formData;
-
-        if (0 === \count($excavations)) {
+        if (0 === \count($formData)) {
             return null;
         }
 
-        $ids = [];
-
-        foreach ($excavations as $excavation) {
-            $ids[] = $excavation->getId();
-        }
+        $ids = array_map(fn (Excavation $entity): int => $entity->getId(), $formData);
 
         $queryBuilder
             ->innerJoin(
@@ -110,7 +104,7 @@ final class ExcavationFilterParameter implements FilterParameterInterface, Expre
             )
             ->innerJoin(
                 $archaeologicalFindAlias.'.excavation',
-                $excavationAlias = $this->aliasFactory->createAlias(static::class, 'excavation')
+                $excavationAlias = $this->createAlias()
             )
         ;
 

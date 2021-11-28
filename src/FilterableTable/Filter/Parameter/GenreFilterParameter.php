@@ -74,17 +74,11 @@ final class GenreFilterParameter implements FilterParameterInterface, Expression
      */
     public function buildWhereExpression(QueryBuilder $queryBuilder, $formData, string $entityAlias): ?string
     {
-        $genres = $formData;
-
-        if (0 === \count($genres)) {
+        if (0 === \count($formData)) {
             return null;
         }
 
-        $ids = [];
-
-        foreach ($genres as $genre) {
-            $ids[] = $genre->getId();
-        }
+        $ids = array_map(fn (Genre $entity): int => $entity->getId(), $formData);
 
         $queryBuilder
             ->innerJoin(

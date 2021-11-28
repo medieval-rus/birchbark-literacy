@@ -74,17 +74,11 @@ final class ContentCategoryFilterParameter implements FilterParameterInterface, 
      */
     public function buildWhereExpression(QueryBuilder $queryBuilder, $formData, string $entityAlias): ?string
     {
-        $contentCategories = $formData;
-
-        if (0 === \count($contentCategories)) {
+        if (0 === \count($formData)) {
             return null;
         }
 
-        $ids = [];
-
-        foreach ($contentCategories as $contentCategory) {
-            $ids[] = $contentCategory->getId();
-        }
+        $ids = array_map(fn (ContentCategory $entity): int => $entity->getId(), $formData);
 
         $queryBuilder
             ->innerJoin(
