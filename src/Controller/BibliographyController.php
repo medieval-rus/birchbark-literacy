@@ -46,13 +46,13 @@ final class BibliographyController extends AbstractController
         return $this->render(
             'site/bibliography/list.html.twig',
             [
-                'translationContext' => 'controller.library.bibliography.list',
+                'translationContext' => 'controller.bibliography.list',
                 'assetsContext' => 'bibliography/list',
                 'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'records' => $entityManager
                     ->getRepository(BibliographicRecord::class)
                     ->findBy([], ['shortName' => 'ASC']),
-                'post' => $postRepository->findFavoriteBibliographyDescription(),
+                'post' => $postRepository->findBibliography(),
             ]
         );
     }

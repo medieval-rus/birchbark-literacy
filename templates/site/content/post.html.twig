@@ -27,10 +27,25 @@
 
     {% import _self as self %}
 
-    {{ self.render_post_body(post.body) }}
+    {{ self.render_post_body(post) }}
 {%- endblock -%}
 
-{% macro render_post_body(body) %}
+{% macro render_post_body(post, renderLinkToAdminPanel) %}
+
     {% import _self as self %}
-    <div>{{ body|raw }}</div>
+
+    {% if post.body is not empty %}
+        <div>{{ post.body|raw }}</div>
+    {% endif %}
+
+    {% if is_granted('ROLE_ADMIN') and renderLinkToAdminPanel ?? true %}
+        <div class="container">
+            <a href="{{ path('content_post_edit', {'id': post.id}) }}"
+               target="_blank"
+               class="h5"
+            >
+                {{- 'global.post.admin'|trans -}}
+            </a>
+        </div>
+    {% endif %}
 {% endmacro %}

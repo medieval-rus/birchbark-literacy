@@ -56,7 +56,7 @@ final class PostRepository extends ServiceEntityRepository
         return $this->find(4);
     }
 
-    public function findFavoriteBibliographyDescription(): Post
+    public function findBibliography(): Post
     {
         return $this->find(5);
     }

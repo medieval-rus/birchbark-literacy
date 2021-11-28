@@ -22,8 +22,6 @@
 {% extends 'site/base.html.twig' %}
 
 {% block page_content %}
-    <h5><a href="{{ path('bibliographic_record__list') }}">{{ 'favoriteBibliography'|transWithContext(translationContext) }}</a></h5>
-
     <table class="table table-striped table-sm mr-book-list-table">
         <thead>
         <tr>
@@ -42,7 +40,7 @@
                 <td>
                     {% if bibliographicRecord.mainFile is not null %}
                         <a href="{{ bibliographicRecord.mainFile.url }}">
-                            {{ include('site/book/_download_icon.html.twig') }}
+                            {{ include('site/_download_icon.html.twig') }}
                         </a>
                     {% endif %}
                 </td>

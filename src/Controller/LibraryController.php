@@ -54,7 +54,7 @@ final class LibraryController extends AbstractController
         return $this->render(
             'site/book/list.html.twig',
             [
-                'translationContext' => 'controller.library.book.list',
+                'translationContext' => 'controller.library.list',
                 'assetsContext' => 'book/list',
                 'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'bibliographicRecords' => $bibliographicRecords,
@@ -76,7 +76,7 @@ final class LibraryController extends AbstractController
         return $this->render(
             'site/book/show.html.twig',
             [
-                'translationContext' => 'controller.library.book.show',
+                'translationContext' => 'controller.library.show',
                 'assetsContext' => 'book/show',
                 'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'bibliographicRecord' => $bibliographicRecord,

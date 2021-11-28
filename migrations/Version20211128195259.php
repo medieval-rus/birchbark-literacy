@@ -1,3 +1,7 @@
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of «Birchbark Literacy from Medieval Rus» database.
  *
@@ -19,5 +23,25 @@
  * see <http://www.gnu.org/licenses/>.
  */
 
-@import '../base';
-@import 'bibligraphy';
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+final class Version20211128195259 extends AbstractMigration
+{
+    public function getDescription(): string
+    {
+        return 'Bibliographic record: nullable year of publication.';
+    }
+
+    public function up(Schema $schema): void
+    {
+        $this->addSql('ALTER TABLE bibliography__bibliographic_record CHANGE year year INT DEFAULT NULL');
+    }
+
+    public function down(Schema $schema): void
+    {
+        $this->addSql('ALTER TABLE bibliography__bibliographic_record CHANGE year year INT NOT NULL');
+    }
+}

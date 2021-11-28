@@ -1,3 +1,7 @@
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of «Birchbark Literacy from Medieval Rus» database.
  *
@@ -19,5 +23,13 @@
  * see <http://www.gnu.org/licenses/>.
  */
 
-@import '../base';
-@import 'bibligraphy';
+namespace App\Services\Bibliography\Sorting;
+
+use App\Entity\Bibliography\BibliographicRecord;
+
+interface BibliographicRecordComparerInterface
+{
+    public function compareByName(BibliographicRecord $a, BibliographicRecord $b): int;
+
+    public function compareByYear(BibliographicRecord $a, BibliographicRecord $b): int;
+}

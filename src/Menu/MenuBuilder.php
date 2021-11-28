@@ -104,11 +104,14 @@ final class MenuBuilder
                     [
                         'library__book_list',
                         'library__book_show',
-                        'bibliographic_record__list',
                     ],
                     true
                 )
             )
+        ;
+
+        $menu
+            ->addChild('page.menu.bibliography', ['route' => 'bibliographic_record__list'])
         ;
 
         $menu

@@ -36,23 +36,30 @@ use App\Entity\Document\PalisadeBetweenEstates;
 use App\Entity\Document\RoadwayBetweenEstates;
 use App\Entity\Document\SingleEstate;
 use App\Entity\Media\File;
+use App\Services\Bibliography\Sorting\BibliographicRecordComparerInterface;
 use App\Services\Document\OriginalText\MarkupParser\OriginalTextMarkupParserInterface;
 use App\Services\Document\OriginalText\MarkupParser\TextPiece\ModifiableTextPieceInterface;
 use App\Services\Document\OriginalText\MarkupParser\TextPiece\TextPieceInterface;
-use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class DocumentFormatter implements DocumentFormatterInterface
 {
     private TranslatorInterface $translator;
     private OriginalTextMarkupParserInterface $originalTextMarkupParser;
+    private BibliographicRecordComparerInterface $bibliographicRecordComparer;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         TranslatorInterface $translator,
-        OriginalTextMarkupParserInterface $originalTextMarkupParser
+        OriginalTextMarkupParserInterface $originalTextMarkupParser,
+        BibliographicRecordComparerInterface $bibliographicRecordComparer,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->translator = $translator;
         $this->originalTextMarkupParser = $originalTextMarkupParser;
+        $this->bibliographicRecordComparer = $bibliographicRecordComparer;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function getNumber(Document $document): string
@@ -197,20 +204,7 @@ final class DocumentFormatter implements DocumentFormatterInterface
     {
         return $this->formatBibliographicRecords(
             $document,
-            $document->getDndVolumes(),
-            function (BibliographicRecord $bibliographicRecord, ?FileSupplement $fileSupplement) {
-                $label = null;
-
-                if (null !== $fileSupplement) {
-                    $label = $fileSupplement->getFile()->getDescription();
-                }
-
-                if (null === $label) {
-                    $label = $bibliographicRecord->getShortName();
-                }
-
-                return $label;
-            },
+            $document->getDndVolumes()->toArray(),
             fn () => $this->translator->trans('global.document.notDescribedInDnd')
         );
     }
@@ -219,8 +213,7 @@ final class DocumentFormatter implements DocumentFormatterInterface
     {
         return $this->formatBibliographicRecords(
             $document,
-            $document->getNgbVolumes(),
-            fn (BibliographicRecord $bibliographicRecord) => $bibliographicRecord->getShortName(),
+            $document->getNgbVolumes()->toArray(),
             fn () => '-'
         );
     }
@@ -229,8 +222,7 @@ final class DocumentFormatter implements DocumentFormatterInterface
     {
         return $this->formatBibliographicRecords(
             $document,
-            $document->getLiterature(),
-            fn (BibliographicRecord $bibliographicRecord) => $bibliographicRecord->getShortName(),
+            $document->getLiterature()->toArray(),
             fn () => '-'
         );
     }
@@ -388,24 +380,54 @@ final class DocumentFormatter implements DocumentFormatterInterface
         return sprintf('%s (%s)', $excavation->getName(), $excavation->getTown()->getName());
     }
 
-    public function formatConventionalDateCell(ConventionalDateCell $conventionalDateCell): string
+    public function getBibliographicRecordName(BibliographicRecord $record, string $downloadIcon = null): string
+    {
+        $downloadLink = null !== $downloadIcon && null !== $record->getMainFile()
+            ? sprintf('<a class="mr-download-icon" href="%s">%s</a>', $record->getMainFile()->getUrl(), $downloadIcon)
+            : '';
+
+        $remark = null === $record->getYear()
+            ? sprintf(
+                '<span aria-label="%s" data-microtip-position="top" role="tooltip">'.
+                '<span class="mr-bibliography-remark"><sup>%s</sup></span>'.
+                '</span>',
+                $this->translator->trans('global.bibliography.prePublicationRemark'),
+                $this->translator->trans('global.bibliography.prePublicationMark')
+            )
+            : '';
+
+        return sprintf(
+            '<span><span>%s</span>%s%s</span>',
+            $record->getShortName(),
+            $downloadLink,
+            $remark
+        );
+    }
+
+    private function formatConventionalDateCell(ConventionalDateCell $conventionalDateCell): string
     {
         return sprintf('%s‒%s', $conventionalDateCell->getInitialYear(), $conventionalDateCell->getFinalYear());
     }
 
     /**
-     * @param Collection|BibliographicRecord[] $bibliographicRecords
+     * @param BibliographicRecord[] $records
      */
     private function formatBibliographicRecords(
         Document $document,
-        Collection $bibliographicRecords,
-        callable $labelProvider,
+        array $records,
         callable $zeroRecordsValue
     ): string {
+        usort(
+            $records,
+            fn (BibliographicRecord $a, BibliographicRecord $b): int => $this
+                ->bibliographicRecordComparer
+                ->compareByName($a, $b)
+        );
+
         $literatureItems = [];
 
-        foreach ($bibliographicRecords as $bibliographicRecord) {
-            $fileSupplement = $bibliographicRecord
+        foreach ($records as $record) {
+            $fileSupplement = $record
                 ->getFileSupplements()
                 ->filter(fn (FileSupplement $supplement) => $supplement->getDocument()->getId() === $document->getId())
                 ->first();
@@ -414,13 +436,22 @@ final class DocumentFormatter implements DocumentFormatterInterface
                 $fileSupplement = null;
             }
 
-            $formattedItem = $labelProvider($bibliographicRecord, $fileSupplement);
+            $formattedItem = sprintf(
+                '<a href="%s#%s">%s</a>',
+                $this->urlGenerator->generate('bibliographic_record__list'),
+                $record->getShortName(),
+                $this->getBibliographicRecordName($record)
+            );
 
             if ($fileSupplement instanceof FileSupplement) {
-                $formattedItem = sprintf('<a href="%s">%s</a>', $fileSupplement->getFile()->getUrl(), $formattedItem);
+                $formattedItem .= sprintf(
+                    ' (<a href="%s">%s</a>)',
+                    $fileSupplement->getFile()->getUrl(),
+                    $fileSupplement->getFile()->getDescription() ?? $this->translator->trans('global.bibliography.fileSupplement')
+                );
             }
 
-            $literatureItems[] = $formattedItem;
+            $literatureItems[] = sprintf('<span>%s</span>', $formattedItem);
         }
 
         if (\count($literatureItems) > 0) {

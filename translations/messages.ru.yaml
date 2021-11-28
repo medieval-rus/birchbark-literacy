@@ -26,6 +26,7 @@ page:
     news: Новости
     dataBase: База данных
     library: Библиотека
+    bibliography: Библиография
     maps: Карты
   footer: © 2021 – Национальный исследовательский университет «Высшая школа экономики»; Институт славяноведения Российской академии наук
 
@@ -34,21 +35,19 @@ controller:
     index:
       title: Главная
   library:
-    book:
-      list:
-        title: Библиотека
-        favoriteBibliography: Раздел «Избранная библиография»
-        table:
-          column:
-            bookName: Название
-            download: Скачать
-      show:
-        title: Библиотека
-        download: Скачать документ
-        table:
-          column:
-            partName: Название
-            download: Скачать
+    list:
+      title: Библиотека
+      table:
+        column:
+          bookName: Название
+          download: Скачать
+    show:
+      title: Библиотека
+      download: Скачать документ
+      table:
+        column:
+          partName: Название
+          download: Скачать
   maps:
     index:
       title: Карты
@@ -144,3 +143,9 @@ global:
   backward: назад
   find:
     accidental: случайная находка
+  post:
+    admin: Редактировать запись в админке
+  bibliography:
+    fileSupplement: приложение
+    prePublicationMark: '[Предв.]'
+    prePublicationRemark: Публикация готовится к печати

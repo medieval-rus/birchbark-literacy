@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace App\Services\Document\Formatter;
 
+use App\Entity\Bibliography\BibliographicRecord;
 use App\Entity\Document\Document;
 use App\Entity\Document\Excavation;
 use App\Entity\Media\File;
@@ -79,6 +80,8 @@ interface DocumentFormatterInterface
     public function getTranslatedText(Document $document): array;
 
     public function getExcavation(Document $document): string;
+
+    public function getBibliographicRecordName(BibliographicRecord $record, string $downloadIcon = null): string;
 
     // todo move to a separate service
     public function getExcavationWithTown(Excavation $excavation): string;
