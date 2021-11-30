@@ -292,6 +292,7 @@ form:
       number: Номер
       town: Город
       isShownOnSite: Показывать грамоту на сайте
+      isPartOfRnc: Часть НКРЯ
       isPreliminaryPublication: Предварительная публикация
       scribe: Писец
       stateOfPreservation: Сохранность

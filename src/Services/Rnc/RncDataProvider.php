@@ -63,8 +63,8 @@ final class RncDataProvider implements RncDataProviderInterface
     public function getMetadata(string $baseUrl, bool $onlyShownOnSite = false): array
     {
         return array_map(
-            fn (Document $document) => $this->getMetadataRow($document, $baseUrl),
-            $this->documentRepository->findAllInConventionalOrder($onlyShownOnSite)
+            fn (Document $document): array => $this->getMetadataRow($document, $baseUrl),
+            $this->documentRepository->findAllInConventionalOrder($onlyShownOnSite, true)
         );
     }
 
@@ -72,7 +72,7 @@ final class RncDataProvider implements RncDataProviderInterface
     {
         return array_map(
             fn (Document $document) => $this->getText($document),
-            $this->documentRepository->findAllInConventionalOrder($onlyShownOnSite)
+            $this->documentRepository->findAllInConventionalOrder($onlyShownOnSite, true)
         );
     }
 
@@ -238,7 +238,7 @@ final class RncDataProvider implements RncDataProviderInterface
                 }
 
                 if ('915i' === $documentNumber) {
-                    return '915-И';
+                    return $documentNumber;
                 }
 
                 if (str_contains($documentNumber, '/')) {
@@ -307,7 +307,7 @@ final class RncDataProvider implements RncDataProviderInterface
     {
         $numberByConventionalName = [];
 
-        foreach ($this->documentRepository->findAllInConventionalOrder() as $document) {
+        foreach ($this->documentRepository->findAllInConventionalOrder(false, true) as $document) {
             $numberByConventionalName[$document->getTown()->getAlias().' '.$document->getNumber()] = $this
                 ->documentFormatter
                 ->getNumber($document);

@@ -74,6 +74,11 @@ final class DocumentAdmin extends AbstractEntityAdmin
                         $this->createLabeledFormOptions('isShownOnSite', ['required' => false])
                     )
                     ->add(
+                        'isPartOfRnc',
+                        CheckboxType::class,
+                        $this->createLabeledFormOptions('isPartOfRnc', ['required' => false])
+                    )
+                    ->add(
                         'isPreliminaryPublication',
                         CheckboxType::class,
                         $this->createLabeledFormOptions('isPreliminaryPublication', ['required' => false])

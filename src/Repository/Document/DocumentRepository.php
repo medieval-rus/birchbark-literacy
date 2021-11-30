@@ -65,12 +65,18 @@ final class DocumentRepository extends ServiceEntityRepository
     /**
      * @return Document[]
      */
-    public function findAllInConventionalOrder(bool $onlyShownOnSite = false): array
-    {
+    public function findAllInConventionalOrder(
+        bool $onlyShownOnSite = false,
+        bool $onlyPartOfRnc = false
+    ): array {
         $criteria = [];
 
         if ($onlyShownOnSite) {
             $criteria['isShownOnSite'] = true;
+        }
+
+        if ($onlyPartOfRnc) {
+            $criteria['isPartOfRnc'] = true;
         }
 
         $documents = $this->findBy($criteria);

@@ -64,7 +64,7 @@ final class RncController extends AbstractController
             return $this->render('site/rnc/yaml.html.twig', ['form' => $form->createView()]);
         }
 
-        $documents = $documentRepository->findAllInConventionalOrder();
+        $documents = $documentRepository->findAllInConventionalOrder(false, true);
         $documentsByNumber = array_combine(
             array_map(fn (Document $document): string => $documentFormatter->getNumber($document), $documents),
             $documents

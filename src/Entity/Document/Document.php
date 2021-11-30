@@ -75,6 +75,13 @@ class Document
     /**
      * @var bool
      *
+     * @ORM\Column(name="is_part_of_rnc", type="boolean", options={"default": true})
+     */
+    private $isPartOfRnc = false;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="is_preliminary_publication", type="boolean", options={"default": true})
      */
     private $isPreliminaryPublication = true;
@@ -268,6 +275,18 @@ class Document
     public function setIsShownOnSite(bool $isShownOnSite): self
     {
         $this->isShownOnSite = $isShownOnSite;
+
+        return $this;
+    }
+
+    public function getIsPartOfRnc(): ?bool
+    {
+        return $this->isPartOfRnc;
+    }
+
+    public function setIsPartOfRnc(bool $isPartOfRnc): self
+    {
+        $this->isPartOfRnc = $isPartOfRnc;
 
         return $this;
     }

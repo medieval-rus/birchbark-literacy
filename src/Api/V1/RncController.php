@@ -26,9 +26,11 @@ declare(strict_types=1);
 namespace App\Api\V1;
 
 use App\Services\Rnc\RncDataProviderInterface;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -41,26 +43,31 @@ final class RncController extends AbstractController
      */
     public function metadata(RncDataProviderInterface $rncDataProvider, Request $request): Response
     {
-        $response = new Response();
-
         $metadata = $rncDataProvider->getMetadata($request->getSchemeAndHttpHost(), true);
 
         if ('true' === $request->query->get('csv')) {
             if (\count($metadata) > 0) {
                 array_unshift($metadata, array_keys($metadata[0]));
 
-                $response->setContent(
+                $response = new Response(
                     implode(
                         "\r\n",
                         array_map(fn (array $row): string => implode(';', $row), $metadata)
                     )
                 );
+
+                $disposition = $response->headers->makeDisposition(
+                    ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                    sprintf('gramoty.ru_rnc_metadata_%s.csv', (new DateTime())->format('Y-m-d-H-i-s'))
+                );
+
+                $response->headers->set('Content-Disposition', $disposition);
+
+                return $response;
             }
-        } else {
-            $response->setContent($this->toJson($metadata));
         }
 
-        return $response;
+        return new Response($this->toJson($metadata));
     }
 
     /**
