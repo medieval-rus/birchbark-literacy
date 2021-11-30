@@ -77,7 +77,7 @@ class Document
      *
      * @ORM\Column(name="is_part_of_rnc", type="boolean", options={"default": true})
      */
-    private $isPartOfRnc = false;
+    private $isPartOfRnc = true;
 
     /**
      * @var bool
