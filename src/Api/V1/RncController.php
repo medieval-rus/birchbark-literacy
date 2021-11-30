@@ -58,7 +58,7 @@ final class RncController extends AbstractController
 
                 $disposition = $response->headers->makeDisposition(
                     ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                    sprintf('gramoty.ru_rnc_metadata_%s.csv', (new DateTime())->format('Y-m-d-H-i-s'))
+                    sprintf('%s_rnc_metadata_%s.csv', $request->getHost(), (new DateTime())->format('Y-m-d-H-i-s'))
                 );
 
                 $response->headers->set('Content-Disposition', $disposition);
