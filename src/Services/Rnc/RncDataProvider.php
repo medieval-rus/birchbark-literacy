@@ -269,7 +269,7 @@ final class RncDataProvider implements RncDataProviderInterface
                 return 'Torzh_'.str_replace('/', '_', $documentNumber);
             case 'mstislavl':
                 return 'Mst_'.str_replace('/', '_', $documentNumber);
-            case 'st-ryazan':
+            case 'staraya-ryazan':
                 return 'St_Ryazan_'.str_replace('/', '_', $documentNumber);
             default:
                 throw new RuntimeException(
