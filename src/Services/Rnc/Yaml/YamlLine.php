@@ -52,6 +52,11 @@ final class YamlLine implements YamlPropertyContainerInterface
         $this->elements[] = $element;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
     /**
      * @return YamlLineElement[]
      */

@@ -332,6 +332,9 @@ final class RncDataProvider implements RncDataProviderInterface
                     case 'Ст. Р.':
                         $town = 'staraya-russa';
                         break;
+                    case 'Ст. Ряз.':
+                        $town = 'staraya-ryazan';
+                        break;
                     case 'Свинц.':
                         $town = 'novgorod';
                         $number = 'lead'.$number;
