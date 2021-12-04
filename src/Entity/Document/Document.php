@@ -35,7 +35,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Table(
  *     name="bb__document",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="town__number", columns={"town_id", "number"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="number_is_unique_within_town", columns={"town_id", "number"})}
  * )
  * @ORM\Entity(repositoryClass=DocumentRepository::class)
  */
@@ -174,11 +174,7 @@ class Document
      * @var Collection|BibliographicRecord[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Bibliography\BibliographicRecord")
-     * @ORM\JoinTable(
-     *     name="bb__document_bibliographic_record_dnd",
-     *     joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="bibliographic_record_id", referencedColumnName="id")}
-     * )
+     * @ORM\JoinTable(name="bb__document__bibliographic_record__dnd")
      */
     private $dndVolumes;
 
@@ -186,11 +182,7 @@ class Document
      * @var Collection|BibliographicRecord[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Bibliography\BibliographicRecord")
-     * @ORM\JoinTable(
-     *     name="bb__document_bibliographic_record_ngb",
-     *     joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="bibliographic_record_id", referencedColumnName="id")}
-     * )
+     * @ORM\JoinTable(name="bb__document__bibliographic_record__ngb")
      */
     private $ngbVolumes;
 
@@ -198,11 +190,7 @@ class Document
      * @var Collection|BibliographicRecord[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Bibliography\BibliographicRecord")
-     * @ORM\JoinTable(
-     *     name="bb__document_bibliographic_record",
-     *     joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="bibliographic_record_id", referencedColumnName="id")}
-     * )
+     * @ORM\JoinTable(name="bb__document__bibliographic_record")
      */
     private $literature;
 
@@ -210,7 +198,7 @@ class Document
      * @var Collection|File[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Media\File", cascade={"persist"})
-     * @ORM\JoinTable(name="bb__document_photos")
+     * @ORM\JoinTable(name="bb__document__photos")
      */
     private $photos;
 
@@ -218,7 +206,7 @@ class Document
      * @var Collection|File[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Media\File", cascade={"persist"})
-     * @ORM\JoinTable(name="bb__document_drawings")
+     * @ORM\JoinTable(name="bb__document__drawings")
      */
     private $drawings;
 

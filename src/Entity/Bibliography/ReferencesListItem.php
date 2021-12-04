@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(
- *     name="bibliography__references_list_item",
+ *     name="bibliography__references_list__item",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(
  *             name="record_is_unique_within_list",

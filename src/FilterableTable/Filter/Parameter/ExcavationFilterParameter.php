@@ -25,12 +25,10 @@ declare(strict_types=1);
 
 namespace App\FilterableTable\Filter\Parameter;
 
-use App\Entity\Document\ArchaeologicalFind;
 use App\Entity\Document\Excavation;
 use App\Services\Document\Formatter\DocumentFormatterInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\ExpressionBuilderInterface;
@@ -93,18 +91,8 @@ final class ExcavationFilterParameter implements FilterParameterInterface, Expre
                 $materialElementAlias = $this->aliasFactory->createAlias(static::class, 'materialElements')
             )
             ->innerJoin(
-                $materialElementAlias.'.find',
-                $findAlias = $this->aliasFactory->createAlias(static::class, 'find')
-            )
-            ->innerJoin(
-                ArchaeologicalFind::class,
-                $archaeologicalFindAlias = $this->aliasFactory->createAlias(static::class, 'archaeologicalFind'),
-                Join::WITH,
-                sprintf('%s.id = %s.id', $archaeologicalFindAlias, $findAlias)
-            )
-            ->innerJoin(
-                $archaeologicalFindAlias.'.excavation',
-                $excavationAlias = $this->createAlias()
+                $materialElementAlias.'.excavation',
+                $excavationAlias = $this->aliasFactory->createAlias(static::class, 'excavation')
             )
         ;
 

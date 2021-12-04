@@ -28,7 +28,15 @@ namespace App\Entity\Document;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__material_element__find__street")
+ * @ORM\Table(
+ *     name="bb__street",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(
+ *             name="street_is_unique_within_town",
+ *             columns={"name", "town_id"}
+ *         )
+ *     }
+ * )
  * @ORM\Entity()
  */
 class Street

@@ -96,7 +96,7 @@ class BibliographicRecord
      *     cascade={"persist"},
      *     inversedBy="bibliographicRecords"
      * )
-     * @ORM\JoinTable(name="bibliography__bibliographic_record_author")
+     * @ORM\JoinTable(name="bibliography__bibliographic_record__author")
      */
     private $authors;
 

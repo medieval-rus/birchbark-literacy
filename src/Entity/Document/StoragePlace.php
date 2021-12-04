@@ -28,7 +28,7 @@ namespace App\Entity\Document;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__material_element__storage_place")
+ * @ORM\Table(name="bb__storage_place")
  * @ORM\Entity()
  */
 class StoragePlace

@@ -227,17 +227,6 @@ class MaterialElement
     private $commentOnDepths;
 
     /**
-     * @var AbstractFind
-     *
-     * @ORM\OneToOne(
-     *     targetEntity="App\Entity\Document\AbstractFind",
-     *     cascade={"persist"}
-     * )
-     * @ORM\JoinColumn(name="find_id", referencedColumnName="id", nullable=true)
-     */
-    private $find;
-
-    /**
      * @var Document
      *
      * @ORM\ManyToOne(
@@ -584,18 +573,6 @@ class MaterialElement
     public function getCommentOnDepths(): ?string
     {
         return $this->commentOnDepths;
-    }
-
-    public function setFind(AbstractFind $find): self
-    {
-        $this->find = $find;
-
-        return $this;
-    }
-
-    public function getFind(): ?AbstractFind
-    {
-        return $this->find;
     }
 
     public function setDocument(Document $document): self

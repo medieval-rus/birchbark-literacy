@@ -28,7 +28,7 @@ namespace App\Entity\Document;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__content_element__content_element")
+ * @ORM\Table(name="bb__content_element")
  * @ORM\Entity()
  */
 class ContentElement

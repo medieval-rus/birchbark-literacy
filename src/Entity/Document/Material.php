@@ -29,7 +29,7 @@ use App\Repository\Document\MaterialRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__material_element__material")
+ * @ORM\Table(name="bb__material")
  * @ORM\Entity(repositoryClass=MaterialRepository::class)
  */
 class Material

@@ -28,7 +28,7 @@ namespace App\Entity\Document;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__content_element__category")
+ * @ORM\Table(name="bb__content_category")
  * @ORM\Entity()
  */
 class ContentCategory

@@ -31,7 +31,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="bb__ordered_list__ordered_list")
+ * @ORM\Table(name="bb__document_list")
  * @ORM\Entity(repositoryClass=DocumentListRepository::class)
  */
 class DocumentList
@@ -66,7 +66,7 @@ class DocumentList
      *     targetEntity="App\Entity\Document\Document",
      *     cascade={"persist"}
      * )
-     * @ORM\JoinTable(name="bb__ordered_list__item")
+     * @ORM\JoinTable(name="bb__document_list__item")
      */
     private $documents;
 

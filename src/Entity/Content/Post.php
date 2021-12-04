@@ -29,6 +29,7 @@ use App\Repository\Content\PostRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table(name="content__post")
  * @ORM\Entity(repositoryClass=PostRepository::class)
  */
 class Post

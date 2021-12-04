@@ -29,8 +29,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(
- *     name="bb__material_element__find__excavation",
- *     uniqueConstraints={@ORM\UniqueConstraint(columns={"name", "town_id"})}
+ *     name="bb__excavation",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(
+ *             name="excavation_is_unique_within_town",
+ *             columns={"name", "town_id"}
+ *         )
+ *     }
  * )
  * @ORM\Entity()
  */
