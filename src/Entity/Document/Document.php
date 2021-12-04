@@ -243,6 +243,11 @@ class Document
         return $this->id;
     }
 
+    public function getNumber(): ?string
+    {
+        return $this->number;
+    }
+
     public function setNumber(string $number): self
     {
         $this->number = $number;
@@ -250,9 +255,9 @@ class Document
         return $this;
     }
 
-    public function getNumber(): ?string
+    public function getTown(): ?Town
     {
-        return $this->number;
+        return $this->town;
     }
 
     public function setTown(Town $town): self
@@ -260,11 +265,6 @@ class Document
         $this->town = $town;
 
         return $this;
-    }
-
-    public function getTown(): ?Town
-    {
-        return $this->town;
     }
 
     public function getIsShownOnSite(): ?bool
@@ -315,6 +315,11 @@ class Document
         return $this;
     }
 
+    public function getStateOfPreservation(): ?StateOfPreservation
+    {
+        return $this->stateOfPreservation;
+    }
+
     public function setStateOfPreservation(?StateOfPreservation $stateOfPreservation): self
     {
         $this->stateOfPreservation = $stateOfPreservation;
@@ -322,9 +327,9 @@ class Document
         return $this;
     }
 
-    public function getStateOfPreservation(): ?StateOfPreservation
+    public function getConventionalDate(): ?ConventionalDateCell
     {
-        return $this->stateOfPreservation;
+        return $this->conventionalDate;
     }
 
     public function setConventionalDate(?ConventionalDateCell $conventionalDate): self
@@ -332,11 +337,6 @@ class Document
         $this->conventionalDate = $conventionalDate;
 
         return $this;
-    }
-
-    public function getConventionalDate(): ?ConventionalDateCell
-    {
-        return $this->conventionalDate;
     }
 
     public function getIsConventionalDateBiasedBackward(): ?bool
@@ -363,21 +363,14 @@ class Document
         return $this;
     }
 
-    public function setStratigraphicalDate(?string $stratigraphicalDate): self
-    {
-        $this->stratigraphicalDate = $stratigraphicalDate;
-
-        return $this;
-    }
-
     public function getStratigraphicalDate(): ?string
     {
         return $this->stratigraphicalDate;
     }
 
-    public function setNonStratigraphicalDate(?string $nonStratigraphicalDate): self
+    public function setStratigraphicalDate(?string $stratigraphicalDate): self
     {
-        $this->nonStratigraphicalDate = $nonStratigraphicalDate;
+        $this->stratigraphicalDate = $stratigraphicalDate;
 
         return $this;
     }
@@ -387,9 +380,9 @@ class Document
         return $this->nonStratigraphicalDate;
     }
 
-    public function setWayOfWriting(WayOfWriting $wayOfWriting): self
+    public function setNonStratigraphicalDate(?string $nonStratigraphicalDate): self
     {
-        $this->wayOfWriting = $wayOfWriting;
+        $this->nonStratigraphicalDate = $nonStratigraphicalDate;
 
         return $this;
     }
@@ -399,18 +392,9 @@ class Document
         return $this->wayOfWriting;
     }
 
-    /**
-     * @param Collection|MaterialElement[] $materialElements
-     *
-     * @return Document
-     */
-    public function setMaterialElements(Collection $materialElements): self
+    public function setWayOfWriting(WayOfWriting $wayOfWriting): self
     {
-        $this->materialElements = new ArrayCollection();
-
-        foreach ($materialElements as $materialElement) {
-            $this->addMaterialElement($materialElement);
-        }
+        $this->wayOfWriting = $wayOfWriting;
 
         return $this;
     }
@@ -423,6 +407,20 @@ class Document
         return $this->materialElements;
     }
 
+    /**
+     * @param Collection|MaterialElement[] $materialElements
+     */
+    public function setMaterialElements(Collection $materialElements): self
+    {
+        $this->materialElements = new ArrayCollection();
+
+        foreach ($materialElements as $materialElement) {
+            $this->addMaterialElement($materialElement);
+        }
+
+        return $this;
+    }
+
     public function addMaterialElement(MaterialElement $materialElement): void
     {
         $materialElement->setDocument($this);
@@ -431,9 +429,15 @@ class Document
     }
 
     /**
+     * @return Collection|ContentElement[]
+     */
+    public function getContentElements(): Collection
+    {
+        return $this->contentElements;
+    }
+
+    /**
      * @param Collection|ContentElement[] $contentElements
-     *
-     * @return Document
      */
     public function setContentElements(Collection $contentElements): self
     {
@@ -444,14 +448,6 @@ class Document
         }
 
         return $this;
-    }
-
-    /**
-     * @return Collection|ContentElement[]
-     */
-    public function getContentElements(): Collection
-    {
-        return $this->contentElements;
     }
 
     public function addContentElement(ContentElement $contentElement): void
@@ -476,11 +472,7 @@ class Document
      */
     public function setDndVolumes(Collection $dndVolumes): self
     {
-        $this->dndVolumes = new ArrayCollection();
-
-        foreach ($dndVolumes as $dndVolume) {
-            $this->dndVolumes[] = $dndVolume;
-        }
+        $this->dndVolumes = $dndVolumes;
 
         return $this;
     }
@@ -500,11 +492,7 @@ class Document
      */
     public function setNgbVolumes(Collection $ngbVolumes): self
     {
-        $this->ngbVolumes = new ArrayCollection();
-
-        foreach ($ngbVolumes as $ngbVolume) {
-            $this->ngbVolumes[] = $ngbVolume;
-        }
+        $this->ngbVolumes = $ngbVolumes;
 
         return $this;
     }
@@ -524,11 +512,7 @@ class Document
      */
     public function setLiterature(Collection $literature): self
     {
-        $this->literature = new ArrayCollection();
-
-        foreach ($literature as $literatureItem) {
-            $this->literature[] = $literatureItem;
-        }
+        $this->literature = $literature;
 
         return $this;
     }

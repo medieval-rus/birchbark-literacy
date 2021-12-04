@@ -70,6 +70,11 @@ class Excavation
         return $this->id;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -77,9 +82,9 @@ class Excavation
         return $this;
     }
 
-    public function getName(): ?string
+    public function getTown(): ?Town
     {
-        return $this->name;
+        return $this->town;
     }
 
     public function setTown(Town $town): self
@@ -87,10 +92,5 @@ class Excavation
         $this->town = $town;
 
         return $this;
-    }
-
-    public function getTown(): ?Town
-    {
-        return $this->town;
     }
 }

@@ -63,9 +63,24 @@ class Square
      */
     private $excavation;
 
+    public function __toString(): string
+    {
+        return sprintf(
+            '%s (%s, %s)',
+            $this->name,
+            $this->excavation->getName(),
+            $this->excavation->getTown()->getName()
+        );
+    }
+
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 
     public function setName(string $name): self
@@ -75,9 +90,9 @@ class Square
         return $this;
     }
 
-    public function getName(): string
+    public function getExcavation(): ?Excavation
     {
-        return $this->name;
+        return $this->excavation;
     }
 
     public function setExcavation(Excavation $excavation): self
@@ -85,21 +100,5 @@ class Square
         $this->excavation = $excavation;
 
         return $this;
-    }
-
-    public function getExcavation(): Excavation
-    {
-        return $this->excavation;
-    }
-
-    public function getAdminNameWithExcavationAndTown(): string
-    {
-        $nameWithExcavation = $this->getName();
-
-        if (null !== $this->excavation) {
-            $nameWithExcavation .= ' ('.$this->excavation->getName().', '.$this->excavation->getTown()->getName().')';
-        }
-
-        return $nameWithExcavation;
     }
 }

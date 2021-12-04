@@ -23,51 +23,32 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Entity\Document;
+namespace App\Admin\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\Admin\AbstractEntityAdmin;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 
-/**
- * @ORM\Table(name="bb__content_element__category")
- * @ORM\Entity()
- */
-class ContentCategory
+final class EstateAdmin extends AbstractEntityAdmin
 {
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(name="id", type="integer")
-     */
-    private $id;
+    protected $baseRouteName = 'document_estate';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
-     */
-    private $name;
+    protected $baseRoutePattern = 'document/estate';
 
-    public function __toString(): string
+    protected function configureListFields(ListMapper $listMapper): void
     {
-        return (string) $this->name;
+        $listMapper
+            ->addIdentifier('name', null, $this->createLabeledListOptions('name'))
+            ->add('excavation.name', null, $this->createLabeledListOptions('excavation.name'))
+            ->add('excavation.town.name', null, $this->createLabeledListOptions('excavation.town.name'))
+        ;
     }
 
-    public function getId(): int
+    protected function configureFormFields(FormMapper $formMapper): void
     {
-        return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
+        $formMapper
+            ->add('name', null, $this->createLabeledFormOptions('name'))
+            ->add('excavation', null, $this->createLabeledFormOptions('excavation'))
+        ;
     }
 }

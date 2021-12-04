@@ -85,6 +85,11 @@ class DocumentList
         return $this->id;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -92,9 +97,9 @@ class DocumentList
         return $this;
     }
 
-    public function getName(): ?string
+    public function getDescription(): ?string
     {
-        return $this->name;
+        return $this->description;
     }
 
     public function setDescription(?string $description): self
@@ -102,11 +107,6 @@ class DocumentList
         $this->description = $description;
 
         return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
     }
 
     /**

@@ -27,8 +27,6 @@ namespace App\Services\Rnc;
 
 use App\Entity\Bibliography\BibliographicRecord;
 use App\Entity\Bibliography\FileSupplement;
-use App\Entity\Document\AbstractFind;
-use App\Entity\Document\ArchaeologicalFind;
 use App\Entity\Document\ContentElement;
 use App\Entity\Document\Document;
 use App\Entity\Document\MaterialElement;
@@ -216,10 +214,8 @@ final class RncDataProvider implements RncDataProviderInterface
                 array_unique(
                     $document
                         ->getMaterialElements()
-                        ->map(fn (MaterialElement $materialElement) => $materialElement->getFind())
-                        ->filter(fn (?AbstractFind $find) => $find instanceof ArchaeologicalFind)
-                        ->filter(fn (ArchaeologicalFind $find): bool => null !== $find->getExcavation())
-                        ->map(fn (ArchaeologicalFind $find): string => $find->getExcavation()->getName())
+                        ->filter(fn (MaterialElement $element): bool => null !== $element->getExcavation())
+                        ->map(fn (MaterialElement $element): string => $element->getExcavation()->getName())
                         ->toArray()
                 )
             ),

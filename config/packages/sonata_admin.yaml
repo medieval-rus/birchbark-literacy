@@ -61,6 +61,10 @@ sonata_admin:
           - admin.material
           - admin.state_of_preservation
           - admin.storage_place
+          - admin.estate
+          - admin.square
+          - admin.stratum
+          - admin.street
         roles: [ROLE_EDITOR]
       content:
         label_catalogue: admin
@@ -165,6 +169,34 @@ services:
   admin.excavation:
     class: App\Admin\Document\ExcavationAdmin
     arguments: [null, App\Entity\Document\Excavation, null]
+    calls:
+      - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.noop']]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.estate:
+    class: App\Admin\Document\EstateAdmin
+    arguments: [null, App\Entity\Document\Estate, null]
+    calls:
+      - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.noop']]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.square:
+    class: App\Admin\Document\SquareAdmin
+    arguments: [null, App\Entity\Document\Square, null]
+    calls:
+      - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.noop']]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.stratum:
+    class: App\Admin\Document\StratumAdmin
+    arguments: [null, App\Entity\Document\Stratum, null]
+    calls:
+      - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.noop']]
+    tags:
+      - { name: sonata.admin, manager_type: orm }
+  admin.street:
+    class: App\Admin\Document\StreetAdmin
+    arguments: [null, App\Entity\Document\Street, null]
     calls:
       - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.noop']]
     tags:

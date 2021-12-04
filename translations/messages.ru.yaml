@@ -136,12 +136,6 @@ global:
     bool:
       "true": да
       "false": нет
-  relationToEstates:
-    single: усадьба %estate%
-    roadway: мостовая между усадьбами %estates%
-    palisade: частокол между усадьбами %estateOne% и %estateTwo%
-    unknown: усадьба неизвестна
-    notRelated: вне усадеб
   noTranslatedText: Перевода нет
   or: или
   withAProbableBias: с вероятным смещением
@@ -155,3 +149,8 @@ global:
     fileSupplement: приложение
     prePublicationMark: '[Предв.]'
     prePublicationRemark: Публикация готовится к печати
+  materialElement:
+    singleEstate: усадьба %estates%
+    manyEstates: усадьбы %estates%
+    roadway: мостовая
+    palisade: частокол

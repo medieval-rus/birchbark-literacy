@@ -56,6 +56,14 @@ menu:
       label: Города
     excavation:
       label: Раскопы
+    estate:
+      label: Усадьбы
+    square:
+      label: Квадраты
+    stratum:
+      label: Пласты
+    street:
+      label: Улицы
     material:
       label: Материалы
     stateOfPreservation:
@@ -123,6 +131,32 @@ list:
     fields:
       id: Внутренний идентификатор
       name: Название раскопа
+      town:
+        name: Город
+  estate:
+    fields:
+      name: Название усадьбы
+      excavation:
+        name: Раскоп
+        town:
+          name: Город
+  square:
+    fields:
+      name: Название квадрата
+      excavation:
+        name: Раскоп
+        town:
+          name: Город
+  stratum:
+    fields:
+      name: Название пласта
+      excavation:
+        name: Раскоп
+        town:
+          name: Город
+  street:
+    fields:
+      name: Название улицы
       town:
         name: Город
   material:
@@ -237,6 +271,24 @@ form:
     section:
       common:
         label: Сведения о раскопе
+  estate:
+    fields:
+      name: Название усадьбы
+      excavation: Раскоп
+  square:
+    fields:
+      name: Название квадрата
+      excavation: Раскоп
+  stratum:
+    fields:
+      name: Название пласта
+      excavation: Раскоп
+      initialDepth: Начальная глубина
+      finalDepth: Конечная глубина
+  street:
+    fields:
+      name: Название улицы
+      town: Город
   material:
     fields:
       name: Название материала
@@ -321,11 +373,20 @@ form:
       originalText: Текст
       translatedText: Перевод
   materialElement:
+    tab:
+      main:
+        label: Основная информация
+      find:
+        label: Информация о находке
     section:
       basicInformation:
         label: Основная информация
       size:
         label: Размеры
+      archaeologicalInformation:
+        label: Археологическая информация
+      socialInformation:
+        label: Социокультурная информация
     fields:
       name: Название
       partsCount: Количество элементов
@@ -337,6 +398,21 @@ form:
       width: Ширина
       innerWidth: Ширина внутреннего слоя
       diameter: Диаметр
+      isArchaeologicalFind: Археологическая находка
+      year: Год находки
+      excavation: Раскоп
+      initialTier: Начальный ярус
+      finalTier: Конечный ярус
+      commentOnTiers: Комментарий к ярусам
+      initialDepth: Начальная глубина
+      finalDepth: Конечная глубина
+      commentOnDepths: Комментарий к глубинам
+      squares: Квадраты
+      strata: Пласты
+      estates: Усадьбы
+      streets: Улицы
+      isPalisade: Частокол
+      isRoadway: Мостовая
   documentText:
     section:
       texts:
@@ -451,6 +527,18 @@ town_delete: Удалить город
 excavation_list: Раскопы
 excavation_create: Добавить новый раскоп
 excavation_delete: Удалить раскоп
+estate_list: Усадьбы
+estate_create: Добавить новую усадьбу
+estate_delete: Удалить усадьбу
+square_list: Квадраты
+square_create: Добавить новый квадрат
+square_delete: Удалить квадрат
+stratum_list: Пласты
+stratum_create: Добавить новый пласт
+stratum_delete: Удалить пласт
+street_list: Улицы
+street_create: Добавить новую улицы
+street_delete: Удалить улицу
 material_list: Материалы
 material_create: Добавить материал
 material_delete: Удалить материал

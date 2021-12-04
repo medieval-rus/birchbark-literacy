@@ -27,14 +27,10 @@ namespace App\Services\Document\Formatter;
 
 use App\Entity\Bibliography\BibliographicRecord;
 use App\Entity\Bibliography\FileSupplement;
-use App\Entity\Document\AccidentalFind;
-use App\Entity\Document\ArchaeologicalFind;
 use App\Entity\Document\ConventionalDateCell;
 use App\Entity\Document\Document;
+use App\Entity\Document\Estate;
 use App\Entity\Document\Excavation;
-use App\Entity\Document\PalisadeBetweenEstates;
-use App\Entity\Document\RoadwayBetweenEstates;
-use App\Entity\Document\SingleEstate;
 use App\Entity\Media\File;
 use App\Services\Bibliography\Sorting\BibliographicRecordComparerInterface;
 use App\Services\Document\OriginalText\MarkupParser\OriginalTextMarkupParserInterface;
@@ -295,84 +291,90 @@ final class DocumentFormatter implements DocumentFormatterInterface
     public function getExcavation(Document $document): string
     {
         $estatesNamesByExcavationName = [];
+        $modifiersByExcavationName = [];
 
         foreach ($document->getMaterialElements() as $materialElement) {
-            $find = $materialElement->getFind();
-
-            if ($find instanceof ArchaeologicalFind) {
-                $excavation = $find->getExcavation();
+            if ($materialElement->getIsArchaeologicalFind()) {
+                $excavation = $materialElement->getExcavation();
 
                 if (null !== $excavation) {
                     if (!\array_key_exists($excavation->getName(), $estatesNamesByExcavationName)) {
                         $estatesNamesByExcavationName[(string) $excavation->getName()] = [];
                     }
 
-                    $relationToEstates = $find->getRelationToEstates();
+                    $estates = $materialElement->getEstates()->toArray();
 
-                    switch (true) {
-                        case $relationToEstates instanceof SingleEstate:
-                            $formattedRelationToEstates = $this->translator->trans(
-                                'global.relationToEstates.single',
-                                [
-                                    '%estate%' => $relationToEstates->getEstate()->getName(),
-                                ]
-                            );
-                            break;
-                        case $relationToEstates instanceof RoadwayBetweenEstates:
-                            $estates = $relationToEstates->getEstates();
-                            $formattedEstates = [];
-                            foreach ($estates as $estate) {
-                                $formattedEstates[] = $estate->getName();
-                            }
-                            $formattedRelationToEstates = $this->translator->trans(
-                                'global.relationToEstates.roadway',
-                                [
-                                    '%estates%' => implode(', ', $formattedEstates),
-                                ]
-                            )
-                            ;
-
-                            break;
-                        case $relationToEstates instanceof PalisadeBetweenEstates:
-                            $formattedRelationToEstates = $this->translator->trans(
-                                'global.relationToEstates.palisade',
-                                [
-                                    '%estateOne%' => $relationToEstates->getEstateOne()->getName(),
-                                    '%estateTwo%' => $relationToEstates->getEstateTwo()->getName(),
-                                ]
-                            );
-                            break;
+                    $formattedEstates = null;
+                    if (\count($estates) > 0) {
+                        $formattedEstates = $this->translator->trans(
+                            1 === \count($estates)
+                                ? 'global.materialElement.singleEstate'
+                                : 'global.materialElement.manyEstates',
+                            [
+                                '%estates%' => implode(
+                                    ', ',
+                                    array_map(fn (Estate $estate): string => $estate->getName(), $estates)
+                                ),
+                            ]
+                        );
                     }
 
-                    if (isset($formattedRelationToEstates)) {
-                        $estatesNamesByExcavationName[(string) $excavation->getName()][$formattedRelationToEstates] =
-                            $formattedRelationToEstates;
+                    $modifiers = [];
+
+                    if ($materialElement->getIsRoadway()) {
+                        $modifiers[] = $this->translator->trans('global.materialElement.roadway');
+                    }
+
+                    if ($materialElement->getIsPalisade()) {
+                        $modifiers[] = $this->translator->trans('global.materialElement.palisade');
+                    }
+
+                    $formattedModifiers = null;
+                    if (\count($modifiers) > 0) {
+                        $formattedModifiers = implode(', ', $modifiers);
+                    }
+
+                    if (null !== $formattedEstates) {
+                        $estatesNamesByExcavationName[$excavation->getName()][$formattedEstates] = $formattedEstates;
+                    }
+
+                    if (null !== $formattedModifiers) {
+                        $modifiersByExcavationName[$excavation->getName()][$formattedModifiers] = $formattedModifiers;
                     }
                 }
-            } elseif ($find instanceof AccidentalFind) {
+            } else {
                 $estatesNamesByExcavationName[$this->translator->trans('global.find.accidental')] = [];
             }
         }
 
-        $implodedExcavationsNamesWithEstatesNames = '-';
-
-        if (\count($estatesNamesByExcavationName) > 0) {
-            $excavationNameWithEstatesNamesCollection = [];
-
-            foreach ($estatesNamesByExcavationName as $excavationName => $formattedEstates) {
-                $excavationNameWithEstateNames = $excavationName;
-
-                if (\count($formattedEstates) > 0) {
-                    $excavationNameWithEstateNames .= ' ('.implode(', ', $formattedEstates).')';
-                }
-
-                $excavationNameWithEstatesNamesCollection[] = $excavationNameWithEstateNames;
-            }
-
-            $implodedExcavationsNamesWithEstatesNames = implode(' // ', $excavationNameWithEstatesNamesCollection);
+        if (0 === \count($estatesNamesByExcavationName)) {
+            return '-';
         }
 
-        return $implodedExcavationsNamesWithEstatesNames;
+        $excavationNameWithEstatesNamesCollection = [];
+
+        foreach ($estatesNamesByExcavationName as $excavationName => $estates) {
+            $modifiers = \array_key_exists($excavationName, $modifiersByExcavationName)
+                ? $modifiersByExcavationName[$excavationName]
+                : [];
+
+            $excavationNameWithEstateNames = $excavationName;
+
+            $formattedModifiers = implode(', ', $modifiers);
+            $formattedEstates = implode(', ', $estates);
+
+            if (\count($estates) > 0 && \count($modifiers) > 0) {
+                $excavationNameWithEstateNames .= sprintf(' (%s; %s)', $formattedEstates, $formattedModifiers);
+            } elseif (\count($estates) > 0) {
+                $excavationNameWithEstateNames .= sprintf(' (%s)', $formattedEstates);
+            } elseif (\count($modifiers) > 0) {
+                $excavationNameWithEstateNames .= sprintf(' (%s)', $formattedModifiers);
+            }
+
+            $excavationNameWithEstatesNamesCollection[] = $excavationNameWithEstateNames;
+        }
+
+        return implode(' // ', $excavationNameWithEstatesNamesCollection);
     }
 
     public function getExcavationWithTown(Excavation $excavation): string

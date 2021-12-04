@@ -67,14 +67,14 @@ class ArchaeologicalFind extends AbstractFind implements ExcavationDependentFind
     private $relationToStrata;
 
     /**
-     * @var string|null
+     * @var int|null
      *
      * @ORM\Column(name="initial_tier", type="integer", nullable=true)
      */
     private $initialTier;
 
     /**
-     * @var string|null
+     * @var int|null
      *
      * @ORM\Column(name="final_tier", type="integer", nullable=true)
      */
@@ -163,26 +163,26 @@ class ArchaeologicalFind extends AbstractFind implements ExcavationDependentFind
         return $this->relationToStrata;
     }
 
-    public function setInitialTier(?string $initialTier): self
+    public function setInitialTier(?int $initialTier): self
     {
         $this->initialTier = $initialTier;
 
         return $this;
     }
 
-    public function getInitialTier(): ?string
+    public function getInitialTier(): ?int
     {
         return $this->initialTier;
     }
 
-    public function setFinalTier(?string $finalTier): self
+    public function setFinalTier(?int $finalTier): self
     {
         $this->finalTier = $finalTier;
 
         return $this;
     }
 
-    public function getFinalTier(): ?string
+    public function getFinalTier(): ?int
     {
         return $this->finalTier;
     }

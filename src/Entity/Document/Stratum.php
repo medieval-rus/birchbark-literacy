@@ -46,9 +46,9 @@ class Stratum
     private $id;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
@@ -77,9 +77,24 @@ class Stratum
      */
     private $finalDepth;
 
+    public function __toString(): string
+    {
+        return sprintf(
+            '%s (%s, %s)',
+            $this->name,
+            $this->excavation->getName(),
+            $this->excavation->getTown()->getName()
+        );
+    }
+
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 
     public function setName(?string $name): self
@@ -89,9 +104,9 @@ class Stratum
         return $this;
     }
 
-    public function getName(): ?string
+    public function getExcavation(): ?Excavation
     {
-        return $this->name;
+        return $this->excavation;
     }
 
     public function setExcavation(Excavation $excavation): self
@@ -101,9 +116,9 @@ class Stratum
         return $this;
     }
 
-    public function getExcavation(): Excavation
+    public function getInitialDepth(): ?string
     {
-        return $this->excavation;
+        return $this->initialDepth;
     }
 
     public function setInitialDepth(?string $initialDepth): self
@@ -113,9 +128,9 @@ class Stratum
         return $this;
     }
 
-    public function getInitialDepth(): ?string
+    public function getFinalDepth(): ?string
     {
-        return $this->initialDepth;
+        return $this->finalDepth;
     }
 
     public function setFinalDepth(?string $finalDepth): self
@@ -123,10 +138,5 @@ class Stratum
         $this->finalDepth = $finalDepth;
 
         return $this;
-    }
-
-    public function getFinalDepth(): ?string
-    {
-        return $this->finalDepth;
     }
 }

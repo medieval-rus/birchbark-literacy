@@ -109,21 +109,14 @@ class ContentElement
         return $this->id;
     }
 
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setCategory(?ContentCategory $category): self
+    public function setDescription(?string $description): self
     {
-        $this->category = $category;
+        $this->description = $description;
 
         return $this;
     }
@@ -133,9 +126,9 @@ class ContentElement
         return $this->category;
     }
 
-    public function setGenre(?Genre $genre): self
+    public function setCategory(?ContentCategory $category): self
     {
-        $this->genre = $genre;
+        $this->category = $category;
 
         return $this;
     }
@@ -145,9 +138,9 @@ class ContentElement
         return $this->genre;
     }
 
-    public function setLanguage(?Language $language): self
+    public function setGenre(?Genre $genre): self
     {
-        $this->language = $language;
+        $this->genre = $genre;
 
         return $this;
     }
@@ -157,9 +150,9 @@ class ContentElement
         return $this->language;
     }
 
-    public function setOriginalText(?string $originalText): self
+    public function setLanguage(?Language $language): self
     {
-        $this->originalText = $originalText;
+        $this->language = $language;
 
         return $this;
     }
@@ -169,9 +162,9 @@ class ContentElement
         return $this->originalText;
     }
 
-    public function setTranslatedText(?string $translatedText): self
+    public function setOriginalText(?string $originalText): self
     {
-        $this->translatedText = $translatedText;
+        $this->originalText = $originalText;
 
         return $this;
     }
@@ -181,9 +174,9 @@ class ContentElement
         return $this->translatedText;
     }
 
-    public function setDocument(Document $document): self
+    public function setTranslatedText(?string $translatedText): self
     {
-        $this->document = $document;
+        $this->translatedText = $translatedText;
 
         return $this;
     }
@@ -191,5 +184,12 @@ class ContentElement
     public function getDocument(): Document
     {
         return $this->document;
+    }
+
+    public function setDocument(Document $document): self
+    {
+        $this->document = $document;
+
+        return $this;
     }
 }

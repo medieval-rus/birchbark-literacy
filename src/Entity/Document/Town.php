@@ -105,21 +105,14 @@ class Town
         return $this->id;
     }
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setAbbreviatedName(string $abbreviatedName): self
+    public function setName(string $name): self
     {
-        $this->abbreviatedName = $abbreviatedName;
+        $this->name = $name;
 
         return $this;
     }
@@ -129,9 +122,9 @@ class Town
         return $this->abbreviatedName;
     }
 
-    public function setAlias(string $alias): self
+    public function setAbbreviatedName(string $abbreviatedName): self
     {
-        $this->alias = $alias;
+        $this->abbreviatedName = $abbreviatedName;
 
         return $this;
     }
@@ -141,9 +134,9 @@ class Town
         return $this->alias;
     }
 
-    public function setGoogleMapsPlaceId(string $googleMapsPlaceId): self
+    public function setAlias(string $alias): self
     {
-        $this->googleMapsPlaceId = $googleMapsPlaceId;
+        $this->alias = $alias;
 
         return $this;
     }
@@ -153,9 +146,9 @@ class Town
         return $this->googleMapsPlaceId;
     }
 
-    public function setGoogleMapsLatLng(string $googleMapsLatLng): self
+    public function setGoogleMapsPlaceId(string $googleMapsPlaceId): self
     {
-        $this->googleMapsLatLng = $googleMapsLatLng;
+        $this->googleMapsPlaceId = $googleMapsPlaceId;
 
         return $this;
     }
@@ -163,6 +156,21 @@ class Town
     public function getGoogleMapsLatLng(): ?string
     {
         return $this->googleMapsLatLng;
+    }
+
+    public function setGoogleMapsLatLng(string $googleMapsLatLng): self
+    {
+        $this->googleMapsLatLng = $googleMapsLatLng;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Document[]
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
     }
 
     /**
@@ -179,14 +187,6 @@ class Town
         }
 
         return $this;
-    }
-
-    /**
-     * @return Collection|Document[]
-     */
-    public function getDocuments(): Collection
-    {
-        return $this->documents;
     }
 
     public function addDocument(Document $document): void
