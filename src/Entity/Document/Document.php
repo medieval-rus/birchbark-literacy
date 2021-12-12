@@ -70,14 +70,14 @@ class Document
      *
      * @ORM\Column(name="is_shown_on_site", type="boolean", options={"default": false})
      */
-    private $isShownOnSite = false;
+    private $isShownOnSite;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_part_of_rnc", type="boolean", options={"default": true})
+     * @ORM\Column(name="is_part_of_corpus", type="boolean", options={"default": true})
      */
-    private $isPartOfRnc = true;
+    private $isPartOfCorpus;
 
     /**
      * @var bool
@@ -212,6 +212,8 @@ class Document
 
     public function __construct()
     {
+        $this->isShownOnSite = false;
+        $this->isPartOfCorpus = true;
         $this->materialElements = new ArrayCollection();
         $this->contentElements = new ArrayCollection();
         $this->dndVolumes = new ArrayCollection();
@@ -267,14 +269,14 @@ class Document
         return $this;
     }
 
-    public function getIsPartOfRnc(): ?bool
+    public function getIsPartOfCorpus(): ?bool
     {
-        return $this->isPartOfRnc;
+        return $this->isPartOfCorpus;
     }
 
-    public function setIsPartOfRnc(bool $isPartOfRnc): self
+    public function setIsPartOfCorpus(bool $isPartOfCorpus): self
     {
-        $this->isPartOfRnc = $isPartOfRnc;
+        $this->isPartOfCorpus = $isPartOfCorpus;
 
         return $this;
     }

@@ -23,25 +23,17 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace DoctrineMigrations;
+namespace App\Services\Corpus\Indices;
 
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
-
-final class Version20211130211821 extends AbstractMigration
+final class IndexGenerator implements IndexGeneratorInterface
 {
-    public function getDescription(): string
+    public function generateForward(array $documents): array
     {
-        return 'RNC support.';
+        return [];
     }
 
-    public function up(Schema $schema): void
+    public function generateBackward(array $documents): array
     {
-        $this->addSql('ALTER TABLE bb__document ADD is_part_of_rnc TINYINT(1) DEFAULT \'1\' NOT NULL');
-    }
-
-    public function down(Schema $schema): void
-    {
-        $this->addSql('ALTER TABLE bb__document DROP is_part_of_rnc');
+        return [];
     }
 }

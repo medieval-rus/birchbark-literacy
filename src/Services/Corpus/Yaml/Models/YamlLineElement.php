@@ -23,18 +23,43 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Document\Sorter;
+namespace App\Services\Corpus\Yaml\Models;
 
-use App\Entity\Document\Document;
-
-interface DocumentsSorterInterface
+final class YamlLineElement implements YamlPropertyContainerInterface
 {
-    /**
-     * @param Document[] $documents
-     *
-     * @return Document[]
-     */
-    public function sort(array $documents): array;
+    use PropertyContainer;
 
-    public function compare(Document $a, Document $b): int;
+    private string $type;
+
+    private ?string $value;
+
+    /**
+     * @var YamlAnalysis[]
+     */
+    private array $analyses;
+
+    /**
+     * @param YamlAnalysis[] $analyses
+     */
+    public function __construct(string $type, ?string $value, array $analyses)
+    {
+        $this->type = $type;
+        $this->value = $value;
+        $this->analyses = $analyses;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getValue(): ?string
+    {
+        return $this->value;
+    }
+
+    public function addAnalysis(YamlAnalysis $analysis): void
+    {
+        $this->analyses[] = $analysis;
+    }
 }

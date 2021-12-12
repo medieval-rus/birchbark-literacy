@@ -23,18 +23,11 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Rnc;
+namespace App\Services\Corpus\Indices;
 
-use App\Services\Rnc\Yaml\YamlDocument;
-
-interface RncDataProviderInterface
+interface IndexGeneratorInterface
 {
-    public function getMetadata(string $baseUrl, bool $onlyShownOnSite = false): array;
+    public function generateForward(array $documents): array;
 
-    public function getTexts(bool $onlyShownOnSite = false): array;
-
-    /**
-     * @return YamlDocument[]
-     */
-    public function parseYaml(string $rawYaml): array;
+    public function generateBackward(array $documents): array;
 }

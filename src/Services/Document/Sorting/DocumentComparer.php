@@ -23,27 +23,12 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Document\Sorter;
+namespace App\Services\Document\Sorting;
 
 use App\Entity\Document\Document;
-use RuntimeException;
 
-final class DocumentsSorter implements DocumentsSorterInterface
+final class DocumentComparer implements DocumentComparerInterface
 {
-    /**
-     * @param Document[] $documents
-     *
-     * @return Document[]
-     */
-    public function sort(array $documents): array
-    {
-        if (!usort($documents, [$this, 'compare'])) {
-            throw new RuntimeException('Cannot sort birchbark documents');
-        }
-
-        return $documents;
-    }
-
     public function compare(Document $a, Document $b): int
     {
         $townNameOfDocumentA = $a->getTown()->getName();

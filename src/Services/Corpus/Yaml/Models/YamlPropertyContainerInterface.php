@@ -23,25 +23,11 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace DoctrineMigrations;
+namespace App\Services\Corpus\Yaml\Models;
 
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
-
-final class Version20211130211821 extends AbstractMigration
+interface YamlPropertyContainerInterface
 {
-    public function getDescription(): string
-    {
-        return 'RNC support.';
-    }
+    public function addProperty(int $parsingLineIndex, string $key, string $value): void;
 
-    public function up(Schema $schema): void
-    {
-        $this->addSql('ALTER TABLE bb__document ADD is_part_of_rnc TINYINT(1) DEFAULT \'1\' NOT NULL');
-    }
-
-    public function down(Schema $schema): void
-    {
-        $this->addSql('ALTER TABLE bb__document DROP is_part_of_rnc');
-    }
+    public function getProperty(string $key): array;
 }

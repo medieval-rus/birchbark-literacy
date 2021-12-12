@@ -23,22 +23,33 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Api\V1;
+namespace App\Services\Corpus\Yaml\Models;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-
-/**
- * @Route("/v1/protected")
- */
-final class ProtectedController extends AbstractController
+trait PropertyContainer
 {
     /**
-     * @Route("/test/", name="api__protected__test", methods={"GET"})
+     * @var string[][]|null[][]
      */
-    public function test(): Response
+    private array $properties = [];
+
+    public function addProperty(int $parsingLineIndex, string $key, ?string $value): void
     {
-        return $this->json(['this' => 'is a test', 'magicNumber' => 42]);
+        if (!\array_key_exists($key, $this->properties)) {
+            $this->properties[$key] = [];
+        }
+
+        $this->properties[$key][] = $value;
+    }
+
+    /**
+     * @return string[]|null[]
+     */
+    public function getProperty(string $key): array
+    {
+        if (!\array_key_exists($key, $this->properties)) {
+            return [];
+        }
+
+        return $this->properties[$key];
     }
 }

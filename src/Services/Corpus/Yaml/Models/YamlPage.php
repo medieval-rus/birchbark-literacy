@@ -23,16 +23,55 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Rnc\Yaml;
+namespace App\Services\Corpus\Yaml\Models;
 
-final class YamlAnalysis implements YamlPropertyContainerInterface
+use RuntimeException;
+
+final class YamlPage implements YamlPropertyContainerInterface
 {
     use PropertyContainer;
 
     private string $name;
 
-    public function __construct(string $name)
+    /**
+     * @var YamlLine[]
+     */
+    private array $lines;
+
+    /**
+     * @param YamlLine[] $lines
+     */
+    public function __construct(string $name, array $lines)
     {
         $this->name = $name;
+        $this->lines = $lines;
+    }
+
+    public function addLine(YamlLine $line): void
+    {
+        $this->lines[] = $line;
+    }
+
+    public function getLastLine(string $parsingEntityName, int $parsingLineIndex): YamlLine
+    {
+        if (0 === \count($this->lines)) {
+            throw new RuntimeException(
+                sprintf(
+                    'Cannot parse line %d: %s doesn\'t belong to any line.',
+                    $parsingLineIndex,
+                    $parsingEntityName
+                )
+            );
+        }
+
+        return end($this->lines);
+    }
+
+    /**
+     * @return YamlLine[]
+     */
+    public function getLines(): array
+    {
+        return $this->lines;
     }
 }

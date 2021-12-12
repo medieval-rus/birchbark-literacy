@@ -23,7 +23,3 @@ root:
     _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
     route: index
     permanent: true
-
-api_login:
-  path: /api/login
-  methods: [POST]

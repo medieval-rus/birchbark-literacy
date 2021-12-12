@@ -23,7 +23,7 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Rnc\Yaml;
+namespace App\Services\Corpus\Yaml\Models;
 
 use RuntimeException;
 

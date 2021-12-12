@@ -26,23 +26,24 @@ declare(strict_types=1);
 namespace App\Repository\Document;
 
 use App\Entity\Document\Document;
-use App\Services\Document\Sorter\DocumentsSorterInterface;
+use App\Services\Document\Sorting\DocumentComparerInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 final class DocumentRepository extends ServiceEntityRepository
 {
     private TownRepository $townRepository;
-    private DocumentsSorterInterface $documentsSorter;
+    private DocumentComparerInterface $documentComparer;
 
     public function __construct(
         ManagerRegistry $registry,
         TownRepository $townRepository,
-        DocumentsSorterInterface $documentsSorter
+        DocumentComparerInterface $documentComparer
     ) {
         parent::__construct($registry, Document::class);
+
         $this->townRepository = $townRepository;
-        $this->documentsSorter = $documentsSorter;
+        $this->documentComparer = $documentComparer;
     }
 
     public function findOneByTownAliasAndNumber(
@@ -65,22 +66,22 @@ final class DocumentRepository extends ServiceEntityRepository
     /**
      * @return Document[]
      */
-    public function findAllInConventionalOrder(
-        bool $onlyShownOnSite = false,
-        bool $onlyPartOfRnc = false
-    ): array {
+    public function findAllInConventionalOrder(bool $onlyShownOnSite = false, bool $onlyPartOfCorpus = false): array
+    {
         $criteria = [];
 
         if ($onlyShownOnSite) {
             $criteria['isShownOnSite'] = true;
         }
 
-        if ($onlyPartOfRnc) {
-            $criteria['isPartOfRnc'] = true;
+        if ($onlyPartOfCorpus) {
+            $criteria['isPartOfCorpus'] = true;
         }
 
         $documents = $this->findBy($criteria);
 
-        return $this->documentsSorter->sort($documents);
+        usort($documents, fn (Document $a, Document $b): int => $this->documentComparer->compare($a, $b));
+
+        return $documents;
     }
 }

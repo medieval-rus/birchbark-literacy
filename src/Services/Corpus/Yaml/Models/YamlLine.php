@@ -23,71 +23,60 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Rnc\Yaml;
+namespace App\Services\Corpus\Yaml\Models;
 
 use RuntimeException;
 
-final class YamlDocument implements YamlPropertyContainerInterface
+final class YamlLine implements YamlPropertyContainerInterface
 {
     use PropertyContainer;
 
-    private string $number;
-
-    /**
-     * @var YamlPage[]
-     */
-    private array $pages;
+    private ?string $name;
 
     /**
      * @var YamlLineElement[]
      */
-    private array $wordParts;
+    private array $elements;
 
     /**
-     * @param YamlPage[] $pages
+     * @param YamlLineElement[] $items
      */
-    public function __construct(string $number, array $pages, array $wordParts)
+    public function __construct(?string $name, array $elements)
     {
-        $this->number = $number;
-        $this->pages = $pages;
-        $this->wordParts = $wordParts;
+        $this->name = $name;
+        $this->elements = $elements;
     }
 
-    public function addPage(YamlPage $page): void
+    public function addElement(YamlLineElement $element): void
     {
-        $this->pages[] = $page;
+        $this->elements[] = $element;
     }
 
-    public function registerWordPart(YamlLineElement $wordPart): void
+    public function getName(): ?string
     {
-        $this->wordParts[] = $wordPart;
+        return $this->name;
     }
 
-    public function getLastPage(string $parsingEntityName, int $parsingLineIndex): YamlPage
+    /**
+     * @return YamlLineElement[]
+     */
+    public function getElements(): array
     {
-        if (0 === \count($this->pages)) {
+        return $this->elements;
+    }
+
+    public function getLastElement(string $parsingEntityName, int $parsingLineIndex): YamlLineElement
+    {
+        if (0 === \count($this->elements)) {
             throw new RuntimeException(
                 sprintf(
-                    'Cannot parse line %d: %s doesn\'t belong to any page.',
+                    'Cannot parse line %d: %s doesn\'t belong to any line element.',
                     $parsingLineIndex,
                     $parsingEntityName
                 )
             );
         }
 
-        return end($this->pages);
-    }
-
-    public function getNumber(): string
-    {
-        return $this->number;
-    }
-
-    /**
-     * @return YamlPage[]
-     */
-    public function getPages(): array
-    {
-        return $this->pages;
+        return end($this->elements);
     }
 }

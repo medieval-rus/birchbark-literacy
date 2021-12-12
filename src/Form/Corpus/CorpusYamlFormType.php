@@ -23,14 +23,14 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Form\Rnc;
+namespace App\Form\Corpus;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class RncDiffFormType extends AbstractType
+final class CorpusYamlFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

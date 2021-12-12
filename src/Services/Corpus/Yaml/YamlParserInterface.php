@@ -23,33 +23,14 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Rnc\Yaml;
+namespace App\Services\Corpus\Yaml;
 
-trait PropertyContainer
+use App\Services\Corpus\Yaml\Models\YamlDocument;
+
+interface YamlParserInterface
 {
     /**
-     * @var string[][]|null[][]
+     * @return YamlDocument[]
      */
-    private array $properties = [];
-
-    public function addProperty(int $parsingLineIndex, string $key, ?string $value): void
-    {
-        if (!\array_key_exists($key, $this->properties)) {
-            $this->properties[$key] = [];
-        }
-
-        $this->properties[$key][] = $value;
-    }
-
-    /**
-     * @return string[]|null[]
-     */
-    public function getProperty(string $key): array
-    {
-        if (!\array_key_exists($key, $this->properties)) {
-            return [];
-        }
-
-        return $this->properties[$key];
-    }
+    public function parseYaml(string $rawYaml): array;
 }

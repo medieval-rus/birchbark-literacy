@@ -39,7 +39,7 @@ use App\FilterableTable\Filter\Parameter\StoragePlaceFilterParameter;
 use App\FilterableTable\Filter\Parameter\TownFilterParameter;
 use App\FilterableTable\Filter\Parameter\TranslatedTextFilterParameter;
 use App\FilterableTable\Filter\Parameter\WayOfWritingFilterParameter;
-use App\Services\Document\Sorter\DocumentsSorterInterface;
+use App\Services\Document\Sorting\DocumentComparerInterface;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\AbstractFilterConfigurator;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\FilterParameterInterface;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\Table\TableParameterInterface;
@@ -51,7 +51,7 @@ use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Sorting\DbSortConfig
 
 final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
 {
-    private DocumentsSorterInterface $sorter;
+    private DocumentComparerInterface $documentComparer;
     private TownFilterParameter $townFilterParameter;
     private ExcavationFilterParameter $excavationFilterParameter;
     private StateOfPreservationFilterParameter $stateOfPreservationFilterParameter;
@@ -67,7 +67,7 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
     private WayOfWritingFilterParameter $wayOfWritingFilterParameter;
 
     public function __construct(
-        DocumentsSorterInterface $sorter,
+        DocumentComparerInterface $documentComparer,
         TownFilterParameter $townFilterParameter,
         ExcavationFilterParameter $excavationFilterParameter,
         StateOfPreservationFilterParameter $stateOfPreservationFilterParameter,
@@ -82,7 +82,7 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
         StoragePlaceFilterParameter $storagePlaceFilterParameter,
         WayOfWritingFilterParameter $wayOfWritingFilterParameter
     ) {
-        $this->sorter = $sorter;
+        $this->documentComparer = $documentComparer;
         $this->townFilterParameter = $townFilterParameter;
         $this->excavationFilterParameter = $excavationFilterParameter;
         $this->stateOfPreservationFilterParameter = $stateOfPreservationFilterParameter;
@@ -191,6 +191,12 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
 
     protected function createCustomSortConfiguration(): ?CustomSortConfigurationInterface
     {
-        return new CustomSortConfiguration(fn (array $documents): array => $this->sorter->sort($documents));
+        return new CustomSortConfiguration(
+            function (array $documents): array {
+                usort($documents, fn (Document $a, Document $b): int => $this->documentComparer->compare($a, $b));
+
+                return $documents;
+            }
+        );
     }
 }

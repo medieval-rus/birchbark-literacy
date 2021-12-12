@@ -23,43 +23,11 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Rnc\Yaml;
+namespace App\Services\Corpus;
 
-final class YamlLineElement implements YamlPropertyContainerInterface
+interface CorpusDataProviderInterface
 {
-    use PropertyContainer;
+    public function getMetadata(string $baseUrl, bool $onlyShownOnSite = false): array;
 
-    private string $type;
-
-    private ?string $value;
-
-    /**
-     * @var YamlAnalysis[]
-     */
-    private array $analyses;
-
-    /**
-     * @param YamlAnalysis[] $analyses
-     */
-    public function __construct(string $type, ?string $value, array $analyses)
-    {
-        $this->type = $type;
-        $this->value = $value;
-        $this->analyses = $analyses;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function getValue(): ?string
-    {
-        return $this->value;
-    }
-
-    public function addAnalysis(YamlAnalysis $analysis): void
-    {
-        $this->analyses[] = $analysis;
-    }
+    public function getTexts(bool $onlyShownOnSite = false): array;
 }
