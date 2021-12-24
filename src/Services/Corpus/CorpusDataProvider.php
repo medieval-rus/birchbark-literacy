@@ -120,7 +120,7 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
             'approx_date' => null !== $document->getConventionalDate()
                 ? str_replace('‒', '-', $this->documentFormatter->getConventionalDate($document))
                 : null,
-            'genre' => implode(
+            'category' => implode(
                 ' | ',
                 array_unique(
                     $document
@@ -147,7 +147,7 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
                     'number' => $document->getNumber(),
                 ]
             ),
-            'type' => implode(
+            'genre' => implode(
                 ' | ',
                 array_unique(
                     $document
