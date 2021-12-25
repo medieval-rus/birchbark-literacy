@@ -82,7 +82,7 @@ final class IndexGenerator implements IndexGeneratorInterface
                                             ),
                                         $analysis
                                     )
-                            );
+                                );
                         }
                     }
                 }
