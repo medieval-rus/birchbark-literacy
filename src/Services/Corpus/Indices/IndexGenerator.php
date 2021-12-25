@@ -71,7 +71,7 @@ final class IndexGenerator implements IndexGeneratorInterface
                     foreach ($line->getElements() as $element) {
                         foreach ($element->getAnalyses() as $analysis) {
                             $indexSource
-                                ->йgetOrCreateWord($analysis->getLemmaWithoutModifiers(), $analysis->getPartOfSpeech())
+                                ->getOrCreateWord($analysis->getLemmaWithoutModifiers(), $analysis->getPartOfSpeech())
                                 ->addEntry(
                                     new InflectedFormSource(
                                         $this
