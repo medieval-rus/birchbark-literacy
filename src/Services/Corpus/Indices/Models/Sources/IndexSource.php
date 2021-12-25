@@ -32,9 +32,9 @@ final class IndexSource
      */
     private array $words;
 
-    public function __construct(array $items)
+    public function __construct(array $words)
     {
-        $this->words = $items;
+        $this->words = $words;
     }
 
     /**

@@ -38,9 +38,9 @@ final class InflectedForm
     /**
      * @param InflectedFromEntry[] $entries
      */
-    public function __construct(string $word, array $entries, bool $isUnsure, bool $isPhonemicUnsure)
+    public function __construct(string $form, array $entries, bool $isUnsure, bool $isPhonemicUnsure)
     {
-        $this->form = $word;
+        $this->form = $form;
         $this->entries = $entries;
         $this->isUnsure = $isUnsure;
         $this->isPhonemicUnsure = $isPhonemicUnsure;

@@ -42,7 +42,7 @@ final class YamlAnalysis implements YamlPropertyContainerInterface
 
     public function getLemmaModifiers(): string
     {
-        if (StringHelper::endsWith($this->getLemma(), '*?')) {
+        if (StringHelper::endsWith($this->getLemma(), '*?') || StringHelper::endsWith($this->getLemma(), '?*')) {
             return '*?';
         }
 
@@ -59,7 +59,7 @@ final class YamlAnalysis implements YamlPropertyContainerInterface
 
     public function getLemmaWithoutModifiers(): string
     {
-        return StringHelper::removeFromEnd(StringHelper::removeFromEnd($this->getLemma(), '?'), '*');
+        return rtrim($this->getLemma(), "?*");
     }
 
     public function getLemma(): string
