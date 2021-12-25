@@ -59,7 +59,7 @@ final class YamlAnalysis implements YamlPropertyContainerInterface
 
     public function getLemmaWithoutModifiers(): string
     {
-        return rtrim($this->getLemma(), "?*");
+        return rtrim($this->getLemma(), '?*');
     }
 
     public function getLemma(): string

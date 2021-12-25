@@ -79,14 +79,26 @@ final class CorpusYamlController extends AbstractController
         $forwardIndexEntries = $this->filterIndex($forwardIndexEntries, true);
         $backwardIndexEntries = $this->filterIndex($backwardIndexEntries, false);
 
-        uksort($forwardIndexEntries, fn (string $a, string $b): int => $this->compareLemmas($a, $b));
-        uksort($backwardIndexEntries, fn (string $a, string $b): int => $this->compareLemmas(strrev($a), strrev($b)));
+        usort(
+            $forwardIndexEntries,
+            fn (array $a, array $b): int => $this->compareLemmas($a['label'], $b['label'])
+        );
+        usort(
+            $backwardIndexEntries,
+            fn (array $a, array $b): int => $this->compareLemmas(strrev($a['label']), strrev($b['label']))
+        );
 
         return $this->createZipResponse(
             sprintf('%s_indices.zip', $yamlFileName),
             [
-                sprintf('forward_index_for_%s.txt', $yamlFileName) => implode("\r\n", $forwardIndexEntries),
-                sprintf('backward_index_for_%s.txt', $yamlFileName) => implode("\r\n", $backwardIndexEntries),
+                sprintf('forward_index_for_%s.txt', $yamlFileName) => implode(
+                    "\r\n",
+                    array_column($forwardIndexEntries, 'value')
+                ),
+                sprintf('backward_index_for_%s.txt', $yamlFileName) => implode(
+                    "\r\n",
+                    array_column($backwardIndexEntries, 'value')
+                ),
             ]
         );
     }
@@ -239,10 +251,9 @@ final class CorpusYamlController extends AbstractController
 
         return array_filter(
             $indexEntries,
-            fn (string $lemma): bool => $isForward ?
-                !StringHelper::startsWith($lemma, $ellipsis) :
-                !StringHelper::endsWith($lemma, $ellipsis),
-            \ARRAY_FILTER_USE_KEY
+            fn (array $indexEntryData): bool => $isForward ?
+                !StringHelper::startsWith($indexEntryData['label'], $ellipsis) :
+                !StringHelper::endsWith($indexEntryData['label'], $ellipsis),
         );
     }
 
@@ -285,9 +296,12 @@ final class CorpusYamlController extends AbstractController
 
     private function formatIndex(WordIndex $index): array
     {
-        return array_combine(
-            array_map(fn (Word $word): string => $word->getLemma(), $index->getWords()),
-            array_map(fn (Word $word): string => $this->formatWord($word), $index->getWords())
+        return array_map(
+            fn (Word $word): array => [
+                'label' => $word->getLemma(),
+                'value' => $this->formatWord($word),
+            ],
+            $index->getWords()
         );
     }
 
