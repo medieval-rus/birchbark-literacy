@@ -23,14 +23,47 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml;
+namespace App\Services\Corpus\Indices\Models\Sources;
 
-use App\Services\Corpus\Yaml\Models\YamlDocument;
-
-interface YamlParserInterface extends YamlParsingHelperInterface
+final class IndexItemSource
 {
+    private string $lemma;
+    private string $partOfSpeech;
     /**
-     * @return YamlDocument[]
+     * @var IndexItemEntrySource[]
      */
-    public function parseYaml(string $rawYaml): array;
+    private array $entries;
+
+    /**
+     * @param IndexItemEntrySource[] $entries
+     */
+    public function __construct(string $lemma, string $partOfSpeech, array $entries)
+    {
+        $this->lemma = $lemma;
+        $this->partOfSpeech = $partOfSpeech;
+        $this->entries = $entries;
+    }
+
+    public function getLemma(): string
+    {
+        return $this->lemma;
+    }
+
+    public function getPartOfSpeech(): string
+    {
+        return $this->partOfSpeech;
+    }
+
+    /**
+     * @return IndexItemEntrySource[]
+     */
+    public function getEntries(): array
+    {
+        return $this->entries;
+    }
+
+    public function addEntry(IndexItemEntrySource $entry): void
+    {
+        $this->entries[] = $entry;
+    }
 }

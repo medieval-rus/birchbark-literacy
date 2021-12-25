@@ -23,14 +23,28 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml;
+namespace App\Services\Corpus\Indices\Models;
 
-use App\Services\Corpus\Yaml\Models\YamlDocument;
-
-interface YamlParserInterface extends YamlParsingHelperInterface
+final class WordIndex
 {
     /**
-     * @return YamlDocument[]
+     * @var Word[]
      */
-    public function parseYaml(string $rawYaml): array;
+    private array $words;
+
+    /**
+     * @param Word[] $words
+     */
+    public function __construct(array $words)
+    {
+        $this->words = $words;
+    }
+
+    /**
+     * @return Word[]
+     */
+    public function getWords(): array
+    {
+        return $this->words;
+    }
 }

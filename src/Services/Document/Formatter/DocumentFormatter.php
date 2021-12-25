@@ -449,7 +449,8 @@ final class DocumentFormatter implements DocumentFormatterInterface
                 $formattedItem .= sprintf(
                     ' (<a href="%s">%s</a>)',
                     $fileSupplement->getFile()->getUrl(),
-                    $fileSupplement->getFile()->getDescription() ?? $this->translator->trans('global.bibliography.fileSupplement')
+                    $fileSupplement->getFile()->getDescription() ??
+                    $this->translator->trans('global.bibliography.fileSupplement')
                 );
             }
 

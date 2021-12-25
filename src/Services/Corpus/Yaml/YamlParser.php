@@ -90,110 +90,133 @@ final class YamlParser implements YamlParserInterface
             }
         }
 
-        return $this->alignWithDb($yamlModel);
+        return $this->getDocumentsByNumber($yamlModel->getDocuments());
     }
 
-    /**
-     * @return YamlDocument[]
-     */
-    private function alignWithDb(YamlModel $yamlModel): array
+    public function getNumber(YamlDocument $yamlDocument, array $numbersByConventionalName = null): string
     {
-        $numberByConventionalName = [];
+        $conventionalName = $this->getConventionalName($yamlDocument);
+
+        if (null === $numbersByConventionalName) {
+            $numbersByConventionalName = $this->getNumbersByConventionalName();
+        }
+
+        if (!\array_key_exists($conventionalName, $numbersByConventionalName)) {
+            throw new RuntimeException(
+                sprintf(
+                    'Cannot find document with number "%s" in db ("%s" in yaml file).',
+                    $conventionalName,
+                    $yamlDocument->getNumber()
+                )
+            );
+        }
+
+        return $numbersByConventionalName[$conventionalName];
+    }
+
+    public function getNumbersByConventionalName(): array
+    {
+        $numbersByConventionalName = [];
 
         foreach ($this->documentRepository->findAllInConventionalOrder(false, true) as $document) {
-            $numberByConventionalName[$document->getTown()->getAlias().' '.$document->getNumber()] = $this
+            $numbersByConventionalName[$document->getTown()->getAlias().' '.$document->getNumber()] = $this
                 ->documentFormatter
                 ->getNumber($document);
         }
 
+        return $numbersByConventionalName;
+    }
+
+    private function getConventionalName(YamlDocument $yamlDocument): string
+    {
+        if (1 === preg_match('/^[\/\d]+$/', $yamlDocument->getNumber(), $matches)) {
+            $town = 'novgorod';
+            $number = implode(
+                '/',
+                array_map(
+                    fn (string $numberPart): string => (string) (int) $numberPart,
+                    explode('/', $yamlDocument->getNumber())
+                )
+            );
+        } elseif (1 === preg_match('/[а-яА-Я]/', $yamlDocument->getNumber(), $matches)) {
+            $parts = explode(' ', $yamlDocument->getNumber());
+            $number = array_pop($parts);
+            $town = implode(' ', $parts);
+            switch ($town) {
+                case 'Ст. Р.':
+                    $town = 'staraya-russa';
+                    break;
+                case 'Ст. Ряз.':
+                    $town = 'staraya-ryazan';
+                    break;
+                case 'Свинц.':
+                    $town = 'novgorod';
+                    $number = 'lead'.$number;
+                    break;
+                case 'Вол.':
+                    $town = 'vologda';
+                    break;
+                case 'Мос.':
+                    $town = 'moscow';
+                    break;
+                case 'Смол.':
+                    $town = 'smolensk';
+                    break;
+                case 'Звен.':
+                    $town = 'zvenigorod';
+                    break;
+                case 'Вит.':
+                    $town = 'vitebsk';
+                    break;
+                case 'Город.':
+                    $town = 'novgorod';
+                    $number = '950';
+                    break;
+                case 'Пск.':
+                    $town = 'pskov';
+                    break;
+                case 'Твер.':
+                    $town = 'tver';
+                    break;
+                case 'Торж.':
+                    $town = 'torzhok';
+                    break;
+                case 'Мст.':
+                    $town = 'mstislavl';
+                    break;
+                default:
+                    if ('915-И' === $yamlDocument->getNumber()) {
+                        $town = 'novgorod';
+                        $number = '915i';
+                    } else {
+                        throw new RuntimeException(
+                            sprintf(
+                                'Cannot find document number "%s" from yaml file in db.',
+                                $yamlDocument->getNumber()
+                            )
+                        );
+                    }
+            }
+        } else {
+            $town = 'novgorod';
+            $number = trim($yamlDocument->getNumber());
+        }
+
+        return $town.' '.$number;
+    }
+
+    /**
+     * @param YamlDocument[] $yamlDocuments
+     *
+     * @return YamlDocument[]
+     */
+    private function getDocumentsByNumber(array $yamlDocuments): array
+    {
+        $numbersByConventionalName = $this->getNumbersByConventionalName();
+
         $yamlDocumentsByNumber = [];
-        foreach ($yamlModel->getDocuments() as $yamlDocument) {
-            if (1 === preg_match('/^[\/\d]+$/', $yamlDocument->getNumber(), $matches)) {
-                $town = 'novgorod';
-                $number = implode(
-                    '/',
-                    array_map(
-                        fn (string $numberPart): string => (string) (int) $numberPart,
-                        explode('/', $yamlDocument->getNumber())
-                    )
-                );
-            } elseif (1 === preg_match('/[а-яА-Я]/', $yamlDocument->getNumber(), $matches)) {
-                $parts = explode(' ', $yamlDocument->getNumber());
-                $number = array_pop($parts);
-                $town = implode(' ', $parts);
-                switch ($town) {
-                    case 'Ст. Р.':
-                        $town = 'staraya-russa';
-                        break;
-                    case 'Ст. Ряз.':
-                        $town = 'staraya-ryazan';
-                        break;
-                    case 'Свинц.':
-                        $town = 'novgorod';
-                        $number = 'lead'.$number;
-                        break;
-                    case 'Вол.':
-                        $town = 'vologda';
-                        break;
-                    case 'Мос.':
-                        $town = 'moscow';
-                        break;
-                    case 'Смол.':
-                        $town = 'smolensk';
-                        break;
-                    case 'Звен.':
-                        $town = 'zvenigorod';
-                        break;
-                    case 'Вит.':
-                        $town = 'vitebsk';
-                        break;
-                    case 'Город.':
-                        $town = 'novgorod';
-                        $number = '950';
-                        break;
-                    case 'Пск.':
-                        $town = 'pskov';
-                        break;
-                    case 'Твер.':
-                        $town = 'tver';
-                        break;
-                    case 'Торж.':
-                        $town = 'torzhok';
-                        break;
-                    case 'Мст.':
-                        $town = 'mstislavl';
-                        break;
-                    default:
-                        if ('915-И' === $yamlDocument->getNumber()) {
-                            $town = 'novgorod';
-                            $number = '915i';
-                        } else {
-                            throw new RuntimeException(
-                                sprintf(
-                                    'Cannot find document number "%s" from yaml file in db.',
-                                    $yamlDocument->getNumber()
-                                )
-                            );
-                        }
-                }
-            } else {
-                $town = 'novgorod';
-                $number = trim($yamlDocument->getNumber());
-            }
-
-            $conventionalName = $town.' '.$number;
-
-            if (!\array_key_exists($conventionalName, $numberByConventionalName)) {
-                throw new RuntimeException(
-                    sprintf(
-                        'Cannot find document with number "%s" in db ("%s" in yaml file).',
-                        $conventionalName,
-                        $yamlDocument->getNumber()
-                    )
-                );
-            }
-
-            $yamlDocumentsByNumber[$numberByConventionalName[$conventionalName]] = $yamlDocument;
+        foreach ($yamlDocuments as $yamlDocument) {
+            $yamlDocumentsByNumber[$this->getNumber($yamlDocument, $numbersByConventionalName)] = $yamlDocument;
         }
 
         return $yamlDocumentsByNumber;

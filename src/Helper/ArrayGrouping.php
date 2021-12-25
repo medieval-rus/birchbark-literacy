@@ -23,14 +23,31 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml;
+namespace App\Helper;
 
-use App\Services\Corpus\Yaml\Models\YamlDocument;
-
-interface YamlParserInterface extends YamlParsingHelperInterface
+final class ArrayGrouping
 {
-    /**
-     * @return YamlDocument[]
-     */
-    public function parseYaml(string $rawYaml): array;
+    private string $key;
+    private array $items;
+
+    public function __construct(string $key, array $items)
+    {
+        $this->key = $key;
+        $this->items = $items;
+    }
+
+    public function getKey(): string
+    {
+        return $this->key;
+    }
+
+    public function getItems(): array
+    {
+        return $this->items;
+    }
+
+    public function addItem($item): void
+    {
+        $this->items[] = $item;
+    }
 }

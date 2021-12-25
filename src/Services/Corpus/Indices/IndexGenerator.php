@@ -25,15 +25,91 @@ declare(strict_types=1);
 
 namespace App\Services\Corpus\Indices;
 
+use App\Helper\ArrayGrouping;
+use App\Helper\ArrayHelper;
+use App\Services\Corpus\Indices\Models\InflectedForm;
+use App\Services\Corpus\Indices\Models\InflectedFromEntry;
+use App\Services\Corpus\Indices\Models\Sources\IndexItemEntrySource;
+use App\Services\Corpus\Indices\Models\Sources\IndexItemSource;
+use App\Services\Corpus\Indices\Models\Sources\IndexSource;
+use App\Services\Corpus\Indices\Models\Word;
+use App\Services\Corpus\Indices\Models\WordIndex;
+use App\Services\Corpus\Yaml\Models\YamlDocument;
+use App\Services\Corpus\Yaml\YamlParsingHelperInterface;
+
 final class IndexGenerator implements IndexGeneratorInterface
 {
-    public function generateForward(array $documents): array
+    private YamlParsingHelperInterface $yamlParsingHelper;
+
+    public function __construct(YamlParsingHelperInterface $yamlParsingHelper)
     {
-        return [];
+        $this->yamlParsingHelper = $yamlParsingHelper;
     }
 
-    public function generateBackward(array $documents): array
+    /**
+     * @param YamlDocument[] $documents
+     */
+    public function generate(array $documents): WordIndex
     {
-        return [];
+        $numbersByConventionalName = $this->yamlParsingHelper->getNumbersByConventionalName();
+
+        $index = new IndexSource([]);
+
+        foreach ($documents as $document) {
+            foreach ($document->getPages() as $page) {
+                foreach ($page->getLines() as $line) {
+                    foreach ($line->getElements() as $element) {
+                        foreach ($element->getAnalyses() as $analysis) {
+                            $index
+                                ->getOrCreateItem($analysis->getLemma(), $analysis->getPartOfSpeech())
+                                ->addEntry(
+                                    new IndexItemEntrySource(
+                                        $this
+                                            ->yamlParsingHelper
+                                            ->getNumber(
+                                                $analysis->getElement()->getLine()->getPage()->getDocument(),
+                                                $numbersByConventionalName
+                                            ),
+                                        $analysis
+                                    )
+                                );
+                        }
+                    }
+                }
+            }
+        }
+
+        return new WordIndex(
+            array_map(
+                fn (IndexItemSource $itemSource): Word => new Word(
+                    $itemSource->getLemma(),
+                    $itemSource->getPartOfSpeech(),
+                    array_map(
+                        fn (ArrayGrouping $groupingByWord): InflectedForm => new InflectedForm(
+                            $groupingByWord->getKey(),
+                            array_map(
+                                fn (ArrayGrouping $groupingByDocument): InflectedFromEntry => new InflectedFromEntry(
+                                    $groupingByDocument->getKey(),
+                                    \count($groupingByDocument->getItems())
+                                ),
+                                ArrayHelper::groupBy(
+                                    $groupingByWord->getItems(),
+                                    fn (IndexItemEntrySource $itemEntrySource): string => $itemEntrySource
+                                        ->getDocumentNumber()
+                                )
+                            )
+                        ),
+                        ArrayHelper::groupBy(
+                            $itemSource->getEntries(),
+                            fn (IndexItemEntrySource $itemEntrySource): string => $itemEntrySource
+                                ->getAnalysis()
+                                ->getElement()
+                                ->getValue()
+                        )
+                    )
+                ),
+                array_values($index->getItems())
+            )
+        );
     }
 }

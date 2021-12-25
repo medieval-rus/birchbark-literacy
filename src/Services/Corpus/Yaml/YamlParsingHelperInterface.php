@@ -27,10 +27,9 @@ namespace App\Services\Corpus\Yaml;
 
 use App\Services\Corpus\Yaml\Models\YamlDocument;
 
-interface YamlParserInterface extends YamlParsingHelperInterface
+interface YamlParsingHelperInterface
 {
-    /**
-     * @return YamlDocument[]
-     */
-    public function parseYaml(string $rawYaml): array;
+    public function getNumber(YamlDocument $yamlDocument, array $numbersByConventionalName = null): string;
+
+    public function getNumbersByConventionalName(): array;
 }

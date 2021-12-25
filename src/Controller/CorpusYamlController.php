@@ -30,6 +30,10 @@ use App\Form\Corpus\CorpusYamlFormType;
 use App\Repository\Document\DocumentRepository;
 use App\Services\Corpus\CorpusDataProviderInterface;
 use App\Services\Corpus\Indices\IndexGeneratorInterface;
+use App\Services\Corpus\Indices\Models\InflectedForm;
+use App\Services\Corpus\Indices\Models\InflectedFromEntry;
+use App\Services\Corpus\Indices\Models\Word;
+use App\Services\Corpus\Indices\Models\WordIndex;
 use App\Services\Corpus\Yaml\Models\YamlDocument;
 use App\Services\Corpus\Yaml\Models\YamlLine;
 use App\Services\Corpus\Yaml\Models\YamlLineElement;
@@ -66,14 +70,19 @@ final class CorpusYamlController extends AbstractController
 
         [$yamlFileName, $yamlDocumentsByNumber] = $this->readYaml($form, $yamlParser);
 
-        $forwardIndex = $indexGenerator->generateForward($yamlDocumentsByNumber);
-        $backwardIndex = $indexGenerator->generateBackward($yamlDocumentsByNumber);
+        $index = $indexGenerator->generate($yamlDocumentsByNumber);
+
+        $forwardIndexEntries = $this->formatIndex($index);
+        $backwardIndexEntries = $forwardIndexEntries;
+
+        uksort($forwardIndexEntries, fn (string $a, string $b): int => $this->compareLemmas($a, $b));
+        uksort($backwardIndexEntries, fn (string $a, string $b): int => $this->compareLemmas(strrev($a), strrev($b)));
 
         return $this->createZipResponse(
             sprintf('%s_indices.zip', $yamlFileName),
             [
-                sprintf('forward_index_for_%s.json', $yamlFileName) => $this->toJson($forwardIndex),
-                sprintf('backward_index_for_%s.json', $yamlFileName) => $this->toJson($backwardIndex),
+                sprintf('forward_index_for_%s.txt', $yamlFileName) => implode("\r\n", $forwardIndexEntries),
+                sprintf('backward_index_for_%s.txt', $yamlFileName) => implode("\r\n", $backwardIndexEntries),
             ]
         );
     }
@@ -81,7 +90,7 @@ final class CorpusYamlController extends AbstractController
     /**
      * @Route("/diff/", name="corpus_yaml__diff", methods={"GET", "POST"})
      */
-    public function yaml(
+    public function diff(
         Request $request,
         CorpusDataProviderInterface $corpusDataProvider,
         YamlParserInterface $yamlParser,
@@ -122,7 +131,9 @@ final class CorpusYamlController extends AbstractController
                 sprintf('yaml_%s.txt', $yamlFileName) => implode(
                     "\r\n\r\n",
                     array_map(
-                        fn (string $documentNumber, YamlDocument $yamlDocument): string => $documentNumber."\r\n".implode(
+                        fn (string $documentNumber, YamlDocument $yamlDocument): string => $documentNumber.
+                            "\r\n".
+                            implode(
                                 "\r\n",
                                 array_map(
                                     fn (YamlPage $yamlPage): string => implode(
@@ -213,8 +224,52 @@ final class CorpusYamlController extends AbstractController
         return $this->render('site/corpus/yaml.html.twig', ['form' => $form->createView()]);
     }
 
-    private function toJson(array $array): string
+    private function compareLemmas(string $a, string $b): int
     {
-        return json_encode($array, \JSON_UNESCAPED_UNICODE | \JSON_PRETTY_PRINT);
+        return strnatcmp($a, $b);
+    }
+
+    private function formatIndex(WordIndex $index): array
+    {
+        return array_combine(
+            array_map(fn (Word $word): string => $word->getLemma(), $index->getWords()),
+            array_map(fn (Word $word): string => $this->formatWord($word), $index->getWords())
+        );
+    }
+
+    private function formatWord(Word $word): string
+    {
+        return sprintf(
+            '%s (%s): %s',
+            $word->getLemma(),
+            $word->getPartOfSpeech(),
+            implode(
+                '; ',
+                array_map(
+                    fn (InflectedForm $inflectedForm): string => $this->formatInflectedForm($inflectedForm),
+                    $word->getInflectedForms()
+                )
+            )
+        );
+    }
+
+    private function formatInflectedForm(InflectedForm $inflectedForm): string
+    {
+        return sprintf(
+            '%s (%s)',
+            $inflectedForm->getWord(),
+            implode(
+                ', ',
+                array_map(
+                    fn (InflectedFromEntry $entry): string => $this->formatInflectedFromEntry($entry),
+                    $inflectedForm->getEntries()
+                )
+            )
+        );
+    }
+
+    private function formatInflectedFromEntry(InflectedFromEntry $entry): string
+    {
+        return sprintf('%s - %s', $entry->getDocumentNumber(), $entry->getCount());
     }
 }

@@ -25,14 +25,64 @@ declare(strict_types=1);
 
 namespace App\Services\Corpus\Yaml\Models;
 
+use Exception;
+
 final class YamlAnalysis implements YamlPropertyContainerInterface
 {
     use PropertyContainer;
 
     private string $name;
+    private YamlLineElement $element;
 
     public function __construct(string $name)
     {
         $this->name = $name;
+    }
+
+    public function getLemma(): string
+    {
+        $lemmas = $this->getProperty('lemma');
+        if (1 !== \count($lemmas)) {
+            throw $this->createAnalysisException('lemma', $lemmas);
+        }
+
+        return $lemmas[0];
+    }
+
+    public function getPartOfSpeech(): string
+    {
+        $partsOfSpeech = $this->getProperty('grdic');
+        if (1 !== \count($partsOfSpeech)) {
+            throw $this->createAnalysisException('grdic', $partsOfSpeech);
+        }
+
+        return $partsOfSpeech[0];
+    }
+
+    public function getElement(): YamlLineElement
+    {
+        return $this->element;
+    }
+
+    public function setElement(YamlLineElement $element): void
+    {
+        $this->element = $element;
+    }
+
+    private function createAnalysisException(
+        string $propertyName,
+        array $properties
+    ): Exception {
+        return new Exception(
+            sprintf(
+                'Found %d "%s" tags: document = %s; page = %s; line = %s; value = %s',
+                \count($properties),
+                $propertyName,
+                $this->element->getLine()->getPage()->getDocument()->getNumber(),
+                $this->element->getLine()->getPage()->getName(),
+                $this->element->getLine()->getName() ?? '',
+                $this->element->getValue() ?? ''
+            )
+        );
     }
 }

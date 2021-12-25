@@ -23,14 +23,42 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml;
+namespace App\Services\Corpus\Indices\Models;
 
-use App\Services\Corpus\Yaml\Models\YamlDocument;
-
-interface YamlParserInterface extends YamlParsingHelperInterface
+final class Word
 {
+    private string $lemma;
+    private string $partOfSpeech;
     /**
-     * @return YamlDocument[]
+     * @var InflectedForm[]
      */
-    public function parseYaml(string $rawYaml): array;
+    private array $inflectedForms;
+
+    /**
+     * @param InflectedForm[] $inflectedForms
+     */
+    public function __construct(string $lemma, string $partOfSpeech, array $inflectedForms)
+    {
+        $this->lemma = $lemma;
+        $this->partOfSpeech = $partOfSpeech;
+        $this->inflectedForms = $inflectedForms;
+    }
+
+    public function getLemma(): string
+    {
+        return $this->lemma;
+    }
+
+    public function getPartOfSpeech(): string
+    {
+        return $this->partOfSpeech;
+    }
+
+    /**
+     * @return InflectedForm[]
+     */
+    public function getInflectedForms(): array
+    {
+        return $this->inflectedForms;
+    }
 }

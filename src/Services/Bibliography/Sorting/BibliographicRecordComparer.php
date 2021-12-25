@@ -29,7 +29,7 @@ use App\Entity\Bibliography\BibliographicRecord;
 
 final class BibliographicRecordComparer implements BibliographicRecordComparerInterface
 {
-    private const CyrillicNamePatter = '/^[а-яёА-ЯЁ].*$/u';
+    private const CYRILLIN_NAME_PATTERN = '/^[а-яёА-ЯЁ].*$/u';
 
     public function compareByName(BibliographicRecord $a, BibliographicRecord $b): int
     {
@@ -78,8 +78,8 @@ final class BibliographicRecordComparer implements BibliographicRecordComparerIn
         $aShortName = $a->getShortName();
         $bShortName = $b->getShortName();
 
-        $aIsCyrillic = 1 === preg_match(self::CyrillicNamePatter, $aShortName);
-        $bIsCyrillic = 1 === preg_match(self::CyrillicNamePatter, $bShortName);
+        $aIsCyrillic = 1 === preg_match(self::CYRILLIN_NAME_PATTERN, $aShortName);
+        $bIsCyrillic = 1 === preg_match(self::CYRILLIN_NAME_PATTERN, $bShortName);
 
         if ($aIsCyrillic && !$bIsCyrillic) {
             return -1;

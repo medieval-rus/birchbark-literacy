@@ -32,11 +32,11 @@ final class YamlLine implements YamlPropertyContainerInterface
     use PropertyContainer;
 
     private ?string $name;
-
     /**
      * @var YamlLineElement[]
      */
     private array $elements;
+    private YamlPage $page;
 
     /**
      * @param YamlLineElement[] $items
@@ -50,6 +50,7 @@ final class YamlLine implements YamlPropertyContainerInterface
     public function addElement(YamlLineElement $element): void
     {
         $this->elements[] = $element;
+        $element->setLine($this);
     }
 
     public function getName(): ?string
@@ -78,5 +79,15 @@ final class YamlLine implements YamlPropertyContainerInterface
         }
 
         return end($this->elements);
+    }
+
+    public function getPage(): YamlPage
+    {
+        return $this->page;
+    }
+
+    public function setPage(YamlPage $page): void
+    {
+        $this->page = $page;
     }
 }

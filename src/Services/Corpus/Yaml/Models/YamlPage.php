@@ -32,11 +32,11 @@ final class YamlPage implements YamlPropertyContainerInterface
     use PropertyContainer;
 
     private string $name;
-
     /**
      * @var YamlLine[]
      */
     private array $lines;
+    private YamlDocument $document;
 
     /**
      * @param YamlLine[] $lines
@@ -50,6 +50,7 @@ final class YamlPage implements YamlPropertyContainerInterface
     public function addLine(YamlLine $line): void
     {
         $this->lines[] = $line;
+        $line->setPage($this);
     }
 
     public function getLastLine(string $parsingEntityName, int $parsingLineIndex): YamlLine
@@ -67,11 +68,26 @@ final class YamlPage implements YamlPropertyContainerInterface
         return end($this->lines);
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     /**
      * @return YamlLine[]
      */
     public function getLines(): array
     {
         return $this->lines;
+    }
+
+    public function getDocument(): YamlDocument
+    {
+        return $this->document;
+    }
+
+    public function setDocument(YamlDocument $document): void
+    {
+        $this->document = $document;
     }
 }

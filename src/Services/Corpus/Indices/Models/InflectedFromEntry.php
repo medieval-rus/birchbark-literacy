@@ -23,14 +23,26 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml;
+namespace App\Services\Corpus\Indices\Models;
 
-use App\Services\Corpus\Yaml\Models\YamlDocument;
-
-interface YamlParserInterface extends YamlParsingHelperInterface
+final class InflectedFromEntry
 {
-    /**
-     * @return YamlDocument[]
-     */
-    public function parseYaml(string $rawYaml): array;
+    private string $documentNumber;
+    private int $count;
+
+    public function __construct(string $documentNumber, int $count)
+    {
+        $this->documentNumber = $documentNumber;
+        $this->count = $count;
+    }
+
+    public function getDocumentNumber(): string
+    {
+        return $this->documentNumber;
+    }
+
+    public function getCount(): int
+    {
+        return $this->count;
+    }
 }

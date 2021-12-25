@@ -154,8 +154,7 @@ final class YamlModel
 
     public function addProperty(int $parsingLineIndex, int $level, string $key, string $value): void
     {
-        if (
-            !\array_key_exists($level, $this->lastObjectsByLevel) ||
+        if (!\array_key_exists($level, $this->lastObjectsByLevel) ||
             null === $propertyContainer = $this->lastObjectsByLevel[$level]
         ) {
             throw new RuntimeException(

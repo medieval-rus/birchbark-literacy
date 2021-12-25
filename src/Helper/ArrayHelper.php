@@ -23,14 +23,27 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml;
+namespace App\Helper;
 
-use App\Services\Corpus\Yaml\Models\YamlDocument;
-
-interface YamlParserInterface extends YamlParsingHelperInterface
+abstract class ArrayHelper
 {
     /**
-     * @return YamlDocument[]
+     * @return ArrayGrouping[]
      */
-    public function parseYaml(string $rawYaml): array;
+    public static function groupBy(array $array, callable $keyExtractor): array
+    {
+        $result = [];
+
+        foreach ($array as $item) {
+            $key = $keyExtractor($item);
+
+            if (!\array_key_exists($key, $result)) {
+                $result[$key] = new ArrayGrouping($key, []);
+            }
+
+            $result[$key]->addItem($item);
+        }
+
+        return array_values($result);
+    }
 }

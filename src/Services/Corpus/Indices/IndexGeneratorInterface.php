@@ -25,9 +25,13 @@ declare(strict_types=1);
 
 namespace App\Services\Corpus\Indices;
 
+use App\Services\Corpus\Indices\Models\WordIndex;
+use App\Services\Corpus\Yaml\Models\YamlDocument;
+
 interface IndexGeneratorInterface
 {
-    public function generateForward(array $documents): array;
-
-    public function generateBackward(array $documents): array;
+    /**
+     * @param YamlDocument[] $documents
+     */
+    public function generate(array $documents): WordIndex;
 }

@@ -23,14 +23,36 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml;
+namespace App\Services\Corpus\Indices\Models\Sources;
 
-use App\Services\Corpus\Yaml\Models\YamlDocument;
-
-interface YamlParserInterface extends YamlParsingHelperInterface
+final class IndexSource
 {
     /**
-     * @return YamlDocument[]
+     * @var IndexItemSource[]
      */
-    public function parseYaml(string $rawYaml): array;
+    private array $items;
+
+    public function __construct(array $items)
+    {
+        $this->items = $items;
+    }
+
+    /**
+     * @return IndexItemSource[]
+     */
+    public function getItems(): array
+    {
+        return $this->items;
+    }
+
+    public function getOrCreateItem(string $lemma, string $partOfSpeech): IndexItemSource
+    {
+        $key = sprintf('%s_%s', $lemma, $partOfSpeech);
+
+        if (!\array_key_exists($key, $this->items)) {
+            $this->items[$key] = new IndexItemSource($lemma, $partOfSpeech, []);
+        }
+
+        return $this->items[$key];
+    }
 }

@@ -30,13 +30,12 @@ final class YamlLineElement implements YamlPropertyContainerInterface
     use PropertyContainer;
 
     private string $type;
-
     private ?string $value;
-
     /**
      * @var YamlAnalysis[]
      */
     private array $analyses;
+    private YamlLine $line;
 
     /**
      * @param YamlAnalysis[] $analyses
@@ -61,5 +60,24 @@ final class YamlLineElement implements YamlPropertyContainerInterface
     public function addAnalysis(YamlAnalysis $analysis): void
     {
         $this->analyses[] = $analysis;
+        $analysis->setElement($this);
+    }
+
+    /**
+     * @return YamlAnalysis[]
+     */
+    public function getAnalyses(): array
+    {
+        return $this->analyses;
+    }
+
+    public function getLine(): YamlLine
+    {
+        return $this->line;
+    }
+
+    public function setLine(YamlLine $line): void
+    {
+        $this->line = $line;
     }
 }

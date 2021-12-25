@@ -32,12 +32,10 @@ final class YamlDocument implements YamlPropertyContainerInterface
     use PropertyContainer;
 
     private string $number;
-
     /**
      * @var YamlPage[]
      */
     private array $pages;
-
     /**
      * @var YamlLineElement[]
      */
@@ -56,6 +54,7 @@ final class YamlDocument implements YamlPropertyContainerInterface
     public function addPage(YamlPage $page): void
     {
         $this->pages[] = $page;
+        $page->setDocument($this);
     }
 
     public function registerWordPart(YamlLineElement $wordPart): void

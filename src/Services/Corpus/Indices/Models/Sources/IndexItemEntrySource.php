@@ -23,14 +23,28 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml;
+namespace App\Services\Corpus\Indices\Models\Sources;
 
-use App\Services\Corpus\Yaml\Models\YamlDocument;
+use App\Services\Corpus\Yaml\Models\YamlAnalysis;
 
-interface YamlParserInterface extends YamlParsingHelperInterface
+final class IndexItemEntrySource
 {
-    /**
-     * @return YamlDocument[]
-     */
-    public function parseYaml(string $rawYaml): array;
+    private string $documentNumber;
+    private YamlAnalysis $analysis;
+
+    public function __construct(string $documentNumber, YamlAnalysis $analysis)
+    {
+        $this->documentNumber = $documentNumber;
+        $this->analysis = $analysis;
+    }
+
+    public function getDocumentNumber(): string
+    {
+        return $this->documentNumber;
+    }
+
+    public function getAnalysis(): YamlAnalysis
+    {
+        return $this->analysis;
+    }
 }
