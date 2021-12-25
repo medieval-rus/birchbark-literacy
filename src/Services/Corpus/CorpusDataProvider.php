@@ -117,6 +117,7 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
                     ->toArray()
             ),
             'stratigraphic_date' => $document->getStratigraphicalDate(),
+            'non_stratigraphic_date' => $document->getNonStratigraphicalDate(),
             'approx_date' => null !== $document->getConventionalDate()
                 ? str_replace('‒', '-', $this->documentFormatter->getConventionalDate($document))
                 : null,
@@ -167,7 +168,6 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
                         ->toArray()
                 )
             ),
-            'non_stratigraphic_date' => $document->getNonStratigraphicalDate(),
         ];
     }
 
