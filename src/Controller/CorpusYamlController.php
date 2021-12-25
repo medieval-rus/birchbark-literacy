@@ -27,6 +27,7 @@ namespace App\Controller;
 
 use App\Entity\Document\Document;
 use App\Form\Corpus\CorpusYamlFormType;
+use App\Helper\StringHelper;
 use App\Repository\Document\DocumentRepository;
 use App\Services\Corpus\CorpusDataProviderInterface;
 use App\Services\Corpus\Indices\IndexGeneratorInterface;
@@ -74,6 +75,9 @@ final class CorpusYamlController extends AbstractController
 
         $forwardIndexEntries = $this->formatIndex($index);
         $backwardIndexEntries = $forwardIndexEntries;
+
+        $forwardIndexEntries = $this->filterIndex($forwardIndexEntries, true);
+        $backwardIndexEntries = $this->filterIndex($backwardIndexEntries, false);
 
         uksort($forwardIndexEntries, fn (string $a, string $b): int => $this->compareLemmas($a, $b));
         uksort($backwardIndexEntries, fn (string $a, string $b): int => $this->compareLemmas(strrev($a), strrev($b)));
@@ -226,7 +230,57 @@ final class CorpusYamlController extends AbstractController
 
     private function compareLemmas(string $a, string $b): int
     {
-        return strnatcmp($a, $b);
+        return strnatcmp($this->prepareLemmaForComparison($a), $this->prepareLemmaForComparison($b));
+    }
+
+    private function filterIndex(array $indexEntries, bool $isForward): array
+    {
+        $ellipsis = '…';
+
+        return array_filter(
+            $indexEntries,
+            fn (string $lemma): bool => $isForward ?
+                !StringHelper::startsWith($lemma, $ellipsis) :
+                !StringHelper::endsWith($lemma, $ellipsis),
+            \ARRAY_FILTER_USE_KEY
+        );
+    }
+
+    private function prepareInflectedForm(string $form): string
+    {
+        $form = StringHelper::removeFromStart($form, ')');
+        $form = StringHelper::removeFromStart($form, ']');
+        $form = StringHelper::removeFromEnd($form, '(');
+        $form = StringHelper::removeFromEnd($form, '[');
+
+        if (1 === preg_match('/^[^(]+\).*/', $form)) {
+            $form = '('.$form;
+        }
+
+        if (1 === preg_match('/^[^[]+\].*/', $form)) {
+            $form = '['.$form;
+        }
+
+        if (1 === preg_match('/.*\([^)]+$/', $form)) {
+            $form = $form.')';
+        }
+
+        if (1 === preg_match('/.*\[[^]]+$/', $form)) {
+            $form = $form.']';
+        }
+
+        return $form;
+    }
+
+    private function prepareLemmaForComparison(string $lemma): string
+    {
+        return mb_strtolower(
+            str_replace(
+                ['(', ')', '[', ']', '?', '*'],
+                ['', '', '', '', '', ''],
+                $lemma
+            )
+        );
     }
 
     private function formatIndex(WordIndex $index): array
@@ -256,15 +310,17 @@ final class CorpusYamlController extends AbstractController
     private function formatInflectedForm(InflectedForm $inflectedForm): string
     {
         return sprintf(
-            '%s (%s)',
-            $inflectedForm->getWord(),
+            '%s (%s)%s%s',
+            $this->prepareInflectedForm($inflectedForm->getForm()),
             implode(
                 ', ',
                 array_map(
                     fn (InflectedFromEntry $entry): string => $this->formatInflectedFromEntry($entry),
                     $inflectedForm->getEntries()
                 )
-            )
+            ),
+            $inflectedForm->getIsUnsure() ? ' (?)' : '',
+            $inflectedForm->getIsPhonemicUnsure() ? ' (*)' : ''
         );
     }
 

@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace App\Services\Corpus\Yaml\Models;
 
+use App\Helper\StringHelper;
 use Exception;
 
 final class YamlAnalysis implements YamlPropertyContainerInterface
@@ -37,6 +38,28 @@ final class YamlAnalysis implements YamlPropertyContainerInterface
     public function __construct(string $name)
     {
         $this->name = $name;
+    }
+
+    public function getLemmaModifiers(): string
+    {
+        if (StringHelper::endsWith($this->getLemma(), '*?')) {
+            return '*?';
+        }
+
+        if (StringHelper::endsWith($this->getLemma(), '?')) {
+            return '?';
+        }
+
+        if (StringHelper::endsWith($this->getLemma(), '*')) {
+            return '*';
+        }
+
+        return '';
+    }
+
+    public function getLemmaWithoutModifiers(): string
+    {
+        return StringHelper::removeFromEnd(StringHelper::removeFromEnd($this->getLemma(), '?'), '*');
     }
 
     public function getLemma(): string

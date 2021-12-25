@@ -25,26 +25,45 @@ declare(strict_types=1);
 
 namespace App\Services\Corpus\Indices\Models\Sources;
 
-use App\Services\Corpus\Yaml\Models\YamlAnalysis;
-
-final class IndexItemEntrySource
+final class WordSource
 {
-    private string $documentNumber;
-    private YamlAnalysis $analysis;
+    private string $lemma;
+    private string $partOfSpeech;
+    /**
+     * @var InflectedFormSource[]
+     */
+    private array $entries;
 
-    public function __construct(string $documentNumber, YamlAnalysis $analysis)
+    /**
+     * @param InflectedFormSource[] $entries
+     */
+    public function __construct(string $lemma, string $partOfSpeech, array $entries)
     {
-        $this->documentNumber = $documentNumber;
-        $this->analysis = $analysis;
+        $this->lemma = $lemma;
+        $this->partOfSpeech = $partOfSpeech;
+        $this->entries = $entries;
     }
 
-    public function getDocumentNumber(): string
+    public function getLemma(): string
     {
-        return $this->documentNumber;
+        return $this->lemma;
     }
 
-    public function getAnalysis(): YamlAnalysis
+    public function getPartOfSpeech(): string
     {
-        return $this->analysis;
+        return $this->partOfSpeech;
+    }
+
+    /**
+     * @return InflectedFormSource[]
+     */
+    public function getEntries(): array
+    {
+        return $this->entries;
+    }
+
+    public function addEntry(InflectedFormSource $entry): void
+    {
+        $this->entries[] = $entry;
     }
 }

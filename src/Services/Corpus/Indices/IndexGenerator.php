@@ -29,9 +29,9 @@ use App\Helper\ArrayGrouping;
 use App\Helper\ArrayHelper;
 use App\Services\Corpus\Indices\Models\InflectedForm;
 use App\Services\Corpus\Indices\Models\InflectedFromEntry;
-use App\Services\Corpus\Indices\Models\Sources\IndexItemEntrySource;
-use App\Services\Corpus\Indices\Models\Sources\IndexItemSource;
 use App\Services\Corpus\Indices\Models\Sources\IndexSource;
+use App\Services\Corpus\Indices\Models\Sources\InflectedFormSource;
+use App\Services\Corpus\Indices\Models\Sources\WordSource;
 use App\Services\Corpus\Indices\Models\Word;
 use App\Services\Corpus\Indices\Models\WordIndex;
 use App\Services\Corpus\Yaml\Models\YamlDocument;
@@ -51,19 +51,29 @@ final class IndexGenerator implements IndexGeneratorInterface
      */
     public function generate(array $documents): WordIndex
     {
+        $indexSource = $this->getIndexSource($documents);
+
+        return $this->createWordIndex($indexSource);
+    }
+
+    /**
+     * @param YamlDocument[] $documents
+     */
+    private function getIndexSource(array $documents): IndexSource
+    {
         $numbersByConventionalName = $this->yamlParsingHelper->getNumbersByConventionalName();
 
-        $index = new IndexSource([]);
+        $indexSource = new IndexSource([]);
 
         foreach ($documents as $document) {
             foreach ($document->getPages() as $page) {
                 foreach ($page->getLines() as $line) {
                     foreach ($line->getElements() as $element) {
                         foreach ($element->getAnalyses() as $analysis) {
-                            $index
-                                ->getOrCreateItem($analysis->getLemma(), $analysis->getPartOfSpeech())
+                            $indexSource
+                                ->йgetOrCreateWord($analysis->getLemmaWithoutModifiers(), $analysis->getPartOfSpeech())
                                 ->addEntry(
-                                    new IndexItemEntrySource(
+                                    new InflectedFormSource(
                                         $this
                                             ->yamlParsingHelper
                                             ->getNumber(
@@ -72,44 +82,74 @@ final class IndexGenerator implements IndexGeneratorInterface
                                             ),
                                         $analysis
                                     )
-                                );
+                            );
                         }
                     }
                 }
             }
         }
 
+        return $indexSource;
+    }
+
+    private function createWordIndex(IndexSource $indexSource)
+    {
         return new WordIndex(
             array_map(
-                fn (IndexItemSource $itemSource): Word => new Word(
-                    $itemSource->getLemma(),
-                    $itemSource->getPartOfSpeech(),
-                    array_map(
-                        fn (ArrayGrouping $groupingByWord): InflectedForm => new InflectedForm(
-                            $groupingByWord->getKey(),
-                            array_map(
-                                fn (ArrayGrouping $groupingByDocument): InflectedFromEntry => new InflectedFromEntry(
-                                    $groupingByDocument->getKey(),
-                                    \count($groupingByDocument->getItems())
-                                ),
-                                ArrayHelper::groupBy(
-                                    $groupingByWord->getItems(),
-                                    fn (IndexItemEntrySource $itemEntrySource): string => $itemEntrySource
-                                        ->getDocumentNumber()
-                                )
-                            )
-                        ),
-                        ArrayHelper::groupBy(
-                            $itemSource->getEntries(),
-                            fn (IndexItemEntrySource $itemEntrySource): string => $itemEntrySource
-                                ->getAnalysis()
-                                ->getElement()
-                                ->getValue()
-                        )
-                    )
+                fn (WordSource $wordSource): Word => new Word(
+                    $wordSource->getLemma(),
+                    $wordSource->getPartOfSpeech(),
+                    $this->createInflectedForms($wordSource->getEntries())
                 ),
-                array_values($index->getItems())
+                $indexSource->getWords()
             )
         );
+    }
+
+    /**
+     * @param InflectedFormSource[] $inflectedFormSources
+     *
+     * @return InflectedForm[]
+     */
+    private function createInflectedForms(array $inflectedFormSources): array
+    {
+        $groupedByLemmaModifiers = ArrayHelper::groupBy(
+            $inflectedFormSources,
+            fn (InflectedFormSource $itemEntrySource): string => $itemEntrySource->getAnalysis()->getLemmaModifiers()
+        );
+
+        $inflectedForms = [];
+
+        foreach ($groupedByLemmaModifiers as $modifiers => $grouping) {
+            $groupedByInflectedForm = ArrayHelper::groupBy(
+                $inflectedFormSources,
+                fn (InflectedFormSource $itemEntrySource): string => $itemEntrySource
+                    ->getAnalysis()
+                    ->getElement()
+                    ->getValue()
+            );
+
+            foreach ($groupedByInflectedForm as $groupingByInflectedForm) {
+                $inflectedForms[] = new InflectedForm(
+                    $groupingByInflectedForm->getKey(),
+                    array_map(
+                        fn (ArrayGrouping $groupingByDocument): InflectedFromEntry => new InflectedFromEntry(
+                            $groupingByDocument->getKey(),
+                            \count($groupingByDocument->getItems())
+                        ),
+                        // group by document
+                        ArrayHelper::groupBy(
+                            $groupingByInflectedForm->getItems(),
+                            fn (InflectedFormSource $itemEntrySource): string => $itemEntrySource
+                                ->getDocumentNumber()
+                        )
+                    ),
+                    str_contains($modifiers, '?'),
+                    str_contains($modifiers, '*')
+                );
+            }
+        }
+
+        return $inflectedForms;
     }
 }

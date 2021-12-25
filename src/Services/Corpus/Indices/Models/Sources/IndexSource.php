@@ -28,31 +28,31 @@ namespace App\Services\Corpus\Indices\Models\Sources;
 final class IndexSource
 {
     /**
-     * @var IndexItemSource[]
+     * @var WordSource[]
      */
-    private array $items;
+    private array $words;
 
     public function __construct(array $items)
     {
-        $this->items = $items;
+        $this->words = $items;
     }
 
     /**
-     * @return IndexItemSource[]
+     * @return WordSource[]
      */
-    public function getItems(): array
+    public function getWords(): array
     {
-        return $this->items;
+        return $this->words;
     }
 
-    public function getOrCreateItem(string $lemma, string $partOfSpeech): IndexItemSource
+    public function getOrCreateWord(string $lemma, string $partOfSpeech): WordSource
     {
         $key = sprintf('%s_%s', $lemma, $partOfSpeech);
 
-        if (!\array_key_exists($key, $this->items)) {
-            $this->items[$key] = new IndexItemSource($lemma, $partOfSpeech, []);
+        if (!\array_key_exists($key, $this->words)) {
+            $this->words[$key] = new WordSource($lemma, $partOfSpeech, []);
         }
 
-        return $this->items[$key];
+        return $this->words[$key];
     }
 }

@@ -44,6 +44,6 @@ abstract class ArrayHelper
             $result[$key]->addItem($item);
         }
 
-        return array_values($result);
+        return $result;
     }
 }

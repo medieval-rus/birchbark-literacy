@@ -27,24 +27,28 @@ namespace App\Services\Corpus\Indices\Models;
 
 final class InflectedForm
 {
-    private string $word;
+    private string $form;
     /**
      * @var InflectedFromEntry[]
      */
     private array $entries;
+    private bool $isUnsure;
+    private bool $isPhonemicUnsure;
 
     /**
      * @param InflectedFromEntry[] $entries
      */
-    public function __construct(string $word, array $entries)
+    public function __construct(string $word, array $entries, bool $isUnsure, bool $isPhonemicUnsure)
     {
-        $this->word = $word;
+        $this->form = $word;
         $this->entries = $entries;
+        $this->isUnsure = $isUnsure;
+        $this->isPhonemicUnsure = $isPhonemicUnsure;
     }
 
-    public function getWord(): string
+    public function getForm(): string
     {
-        return $this->word;
+        return $this->form;
     }
 
     /**
@@ -53,5 +57,15 @@ final class InflectedForm
     public function getEntries(): array
     {
         return $this->entries;
+    }
+
+    public function getIsUnsure(): bool
+    {
+        return $this->isUnsure;
+    }
+
+    public function getIsPhonemicUnsure(): bool
+    {
+        return $this->isPhonemicUnsure;
     }
 }
