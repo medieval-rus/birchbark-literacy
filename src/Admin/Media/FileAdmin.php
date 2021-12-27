@@ -101,6 +101,7 @@ final class FileAdmin extends AbstractEntityAdmin
     protected function postPersist(object $object): void
     {
         $this->dispatcher->addListener(KernelEvents::TERMINATE, function () use ($object): void {
+            set_time_limit(900);
             $this->thumbnailsGenerator->generateAll($object);
         });
     }
