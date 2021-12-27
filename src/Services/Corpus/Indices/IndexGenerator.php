@@ -113,40 +113,66 @@ final class IndexGenerator implements IndexGeneratorInterface
      */
     private function createInflectedForms(array $inflectedFormSources): array
     {
-        $groupedByLemmaModifiers = ArrayHelper::groupBy(
-            $inflectedFormSources,
-            fn (InflectedFormSource $itemEntrySource): string => $itemEntrySource->getAnalysis()->getLemmaModifiers()
-        );
-
         $inflectedForms = [];
 
-        foreach ($groupedByLemmaModifiers as $modifiers => $grouping) {
-            $groupedByInflectedForm = ArrayHelper::groupBy(
-                $inflectedFormSources,
+        $groupedByWordModifiers = ArrayHelper::groupBy(
+            $inflectedFormSources,
+            fn (InflectedFormSource $itemEntrySource): string => $itemEntrySource
+                ->getAnalysis()
+                ->getElement()
+                ->getModifiers()
+                ->__toString()
+        );
+
+        foreach ($groupedByWordModifiers as $groupingByWordModifiers) {
+            /**
+             * @var InflectedFormSource $wordModifiersSource
+             */
+            $wordModifiersSource = $groupingByWordModifiers->getItems()[0];
+
+            $groupedByLemmaModifiers = ArrayHelper::groupBy(
+                $groupingByWordModifiers->getItems(),
                 fn (InflectedFormSource $itemEntrySource): string => $itemEntrySource
                     ->getAnalysis()
-                    ->getElement()
-                    ->getValue()
+                    ->getModifiers()
+                    ->__toString()
             );
 
-            foreach ($groupedByInflectedForm as $groupingByInflectedForm) {
-                $inflectedForms[] = new InflectedForm(
-                    $groupingByInflectedForm->getKey(),
-                    array_map(
-                        fn (ArrayGrouping $groupingByDocument): InflectedFromEntry => new InflectedFromEntry(
-                            $groupingByDocument->getKey(),
-                            \count($groupingByDocument->getItems())
-                        ),
-                        // group by document
-                        ArrayHelper::groupBy(
-                            $groupingByInflectedForm->getItems(),
-                            fn (InflectedFormSource $itemEntrySource): string => $itemEntrySource
-                                ->getDocumentNumber()
-                        )
-                    ),
-                    str_contains($modifiers, '?'),
-                    str_contains($modifiers, '*')
+            foreach ($groupedByLemmaModifiers as $groupingByLemmaModifiers) {
+                /**
+                 * @var InflectedFormSource $lemmaModifiersSource
+                 */
+                $lemmaModifiersSource = $groupingByLemmaModifiers->getItems()[0];
+
+                $groupedByInflectedForm = ArrayHelper::groupBy(
+                    $groupingByLemmaModifiers->getItems(),
+                    fn (InflectedFormSource $itemEntrySource): string => $itemEntrySource
+                        ->getAnalysis()
+                        ->getElement()
+                        ->getValue()
                 );
+
+                foreach ($groupedByInflectedForm as $groupingByInflectedForm) {
+                    $inflectedForms[] = new InflectedForm(
+                        $groupingByInflectedForm->getKey(),
+                        array_map(
+                            fn (ArrayGrouping $groupingByDocument): InflectedFromEntry => new InflectedFromEntry(
+                                $groupingByDocument->getKey(),
+                                \count($groupingByDocument->getItems())
+                            ),
+                            // group by document
+                            ArrayHelper::groupBy(
+                                $groupingByInflectedForm->getItems(),
+                                fn (InflectedFormSource $inflectedFormSource): string => $inflectedFormSource
+                                    ->getDocumentNumber()
+                            )
+                        ),
+                        $lemmaModifiersSource->getAnalysis()->getModifiers()->getIsUnsure(),
+                        $lemmaModifiersSource->getAnalysis()->getModifiers()->getIsPhonemicUnsure(),
+                        $wordModifiersSource->getAnalysis()->getElement()->getModifiers()->getIsReconstruction(),
+                        $wordModifiersSource->getAnalysis()->getElement()->getModifiers()->getIsMisspelled()
+                    );
+                }
             }
         }
 

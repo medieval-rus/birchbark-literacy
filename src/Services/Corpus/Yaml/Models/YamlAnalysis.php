@@ -40,21 +40,21 @@ final class YamlAnalysis implements YamlPropertyContainerInterface
         $this->name = $name;
     }
 
-    public function getLemmaModifiers(): string
+    public function getModifiers(): YamlAnalysisModifiers
     {
         if (StringHelper::endsWith($this->getLemma(), '*?') || StringHelper::endsWith($this->getLemma(), '?*')) {
-            return '*?';
+            return new YamlAnalysisModifiers(true, true);
         }
 
         if (StringHelper::endsWith($this->getLemma(), '?')) {
-            return '?';
+            return new YamlAnalysisModifiers(true, false);
         }
 
         if (StringHelper::endsWith($this->getLemma(), '*')) {
-            return '*';
+            return new YamlAnalysisModifiers(false, true);
         }
 
-        return '';
+        return new YamlAnalysisModifiers(false, false);
     }
 
     public function getLemmaWithoutModifiers(): string

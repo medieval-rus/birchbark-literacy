@@ -57,18 +57,18 @@ final class YamlLineElement implements YamlPropertyContainerInterface
         return $this->value;
     }
 
-    public function addAnalysis(YamlAnalysis $analysis): void
-    {
-        $this->analyses[] = $analysis;
-        $analysis->setElement($this);
-    }
-
     /**
      * @return YamlAnalysis[]
      */
     public function getAnalyses(): array
     {
         return $this->analyses;
+    }
+
+    public function addAnalysis(YamlAnalysis $analysis): void
+    {
+        $this->analyses[] = $analysis;
+        $analysis->setElement($this);
     }
 
     public function getLine(): YamlLine
@@ -79,5 +79,13 @@ final class YamlLineElement implements YamlPropertyContainerInterface
     public function setLine(YamlLine $line): void
     {
         $this->line = $line;
+    }
+
+    public function getModifiers(): YamlLineElementModifiers
+    {
+        return new YamlLineElementModifiers(
+            \in_array('реконструкция', $this->getProperty('Комментарий'), true),
+            \in_array('!', $this->getProperty('?!'), true),
+        );
     }
 }

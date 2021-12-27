@@ -23,50 +23,22 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Indices\Models;
+namespace App\Services\Corpus\Yaml\Models;
 
-final class InflectedForm
+final class YamlAnalysisModifiers
 {
-    private string $form;
-    /**
-     * @var InflectedFromEntry[]
-     */
-    private array $entries;
     private bool $isUnsure;
     private bool $isPhonemicUnsure;
-    private bool $isReconstruction;
-    private bool $isMisspelled;
 
-    /**
-     * @param InflectedFromEntry[] $entries
-     */
-    public function __construct(
-        string $form,
-        array $entries,
-        bool $isUnsure,
-        bool $isPhonemicUnsure,
-        bool $isReconstruction,
-        bool $isMisspelled
-    ) {
-        $this->form = $form;
-        $this->entries = $entries;
+    public function __construct(bool $isUnsure, bool $isPhonemicUnsure)
+    {
         $this->isUnsure = $isUnsure;
         $this->isPhonemicUnsure = $isPhonemicUnsure;
-        $this->isReconstruction = $isReconstruction;
-        $this->isMisspelled = $isMisspelled;
     }
 
-    public function getForm(): string
+    public function __toString(): string
     {
-        return $this->form;
-    }
-
-    /**
-     * @return InflectedFromEntry[]
-     */
-    public function getEntries(): array
-    {
-        return $this->entries;
+        return sprintf('%s%s', $this->isUnsure ? '?' : '', $this->isPhonemicUnsure ? '*' : '');
     }
 
     public function getIsUnsure(): bool
@@ -77,15 +49,5 @@ final class InflectedForm
     public function getIsPhonemicUnsure(): bool
     {
         return $this->isPhonemicUnsure;
-    }
-
-    public function getIsReconstruction(): bool
-    {
-        return $this->isReconstruction;
-    }
-
-    public function getIsMisspelled(): bool
-    {
-        return $this->isMisspelled;
     }
 }

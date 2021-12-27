@@ -324,8 +324,9 @@ final class CorpusYamlController extends AbstractController
     private function formatInflectedForm(InflectedForm $inflectedForm): string
     {
         return sprintf(
-            '%s (%s)%s%s',
+            '%s%s (%s)%s%s%s',
             $this->prepareInflectedForm($inflectedForm->getForm()),
+            $inflectedForm->getIsMisspelled() ? ' (!)' : '',
             implode(
                 ', ',
                 array_map(
@@ -334,7 +335,8 @@ final class CorpusYamlController extends AbstractController
                 )
             ),
             $inflectedForm->getIsUnsure() ? ' (?)' : '',
-            $inflectedForm->getIsPhonemicUnsure() ? ' (*)' : ''
+            $inflectedForm->getIsPhonemicUnsure() ? ' (*)' : '',
+            $inflectedForm->getIsReconstruction() ? ' (реконстр.)' : ''
         );
     }
 
