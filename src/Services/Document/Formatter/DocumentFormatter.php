@@ -456,7 +456,7 @@ final class DocumentFormatter implements DocumentFormatterInterface
             if ($fileSupplement instanceof FileSupplement) {
                 $formattedItem .= sprintf(
                     ' (<a href="%s">%s</a>)',
-                    $fileSupplement->getFile()->getUrl(),
+                    $this->thumbnailsGenerator->getThumbnail($fileSupplement->getFile(), 'document'),
                     $fileSupplement->getFile()->getDescription() ??
                     $this->translator->trans('global.bibliography.fileSupplement')
                 );

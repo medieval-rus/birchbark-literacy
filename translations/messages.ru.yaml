@@ -146,7 +146,7 @@ global:
   post:
     admin: Редактировать запись в админке
   bibliography:
-    fileSupplement: приложение
+    fileSupplement: посмотреть
     prePublicationMark: '[Предв.]'
     prePublicationRemark: Публикация готовится к печати
   materialElement:
