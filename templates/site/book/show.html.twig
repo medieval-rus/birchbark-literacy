@@ -42,7 +42,7 @@
 
     {% if bibliographicRecord.mainFile is not null %}
         <p>
-            <a href="{{ thumbnailsGenerator.thumbnail(bibliographicRecord.mainFile) }}">
+            <a href="{{ thumbnailsGenerator.thumbnail(bibliographicRecord.mainFile, 'document') }}">
                 {{ 'download'|transWithContext(translationContext) }}
             </a>
         </p>
@@ -64,7 +64,7 @@
                     </th>
                     <td>
                         {% if structuralComponent.file is not null %}
-                            <a href="{{ thumbnailsGenerator.thumbnail(structuralComponent.file) }}">
+                            <a href="{{ thumbnailsGenerator.thumbnail(structuralComponent.file, 'document') }}">
                                 {{ include('site/_download_icon.html.twig') }}
                             </a>
                         {% endif %}

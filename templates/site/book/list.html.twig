@@ -39,7 +39,7 @@
                 </th>
                 <td>
                     {% if bibliographicRecord.mainFile is not null %}
-                        <a href="{{ thumbnailsGenerator.thumbnail(bibliographicRecord.mainFile) }}">
+                        <a href="{{ thumbnailsGenerator.thumbnail(bibliographicRecord.mainFile, 'document') }}">
                             {{ include('site/_download_icon.html.twig') }}
                         </a>
                     {% endif %}

@@ -36,6 +36,7 @@ use App\Services\Bibliography\Sorting\BibliographicRecordComparerInterface;
 use App\Services\Document\OriginalText\MarkupParser\OriginalTextMarkupParserInterface;
 use App\Services\Document\OriginalText\MarkupParser\TextPiece\ModifiableTextPieceInterface;
 use App\Services\Document\OriginalText\MarkupParser\TextPiece\TextPieceInterface;
+use App\Services\Media\Thumbnails\ThumbnailsGeneratorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -45,17 +46,20 @@ final class DocumentFormatter implements DocumentFormatterInterface
     private OriginalTextMarkupParserInterface $originalTextMarkupParser;
     private BibliographicRecordComparerInterface $bibliographicRecordComparer;
     private UrlGeneratorInterface $urlGenerator;
+    private ThumbnailsGeneratorInterface $thumbnailsGenerator;
 
     public function __construct(
         TranslatorInterface $translator,
         OriginalTextMarkupParserInterface $originalTextMarkupParser,
         BibliographicRecordComparerInterface $bibliographicRecordComparer,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        ThumbnailsGeneratorInterface $thumbnailsGenerator
     ) {
         $this->translator = $translator;
         $this->originalTextMarkupParser = $originalTextMarkupParser;
         $this->bibliographicRecordComparer = $bibliographicRecordComparer;
         $this->urlGenerator = $urlGenerator;
+        $this->thumbnailsGenerator = $thumbnailsGenerator;
     }
 
     public function getNumber(Document $document): string
@@ -385,7 +389,11 @@ final class DocumentFormatter implements DocumentFormatterInterface
     public function getBibliographicRecordName(BibliographicRecord $record, string $downloadIcon = null): string
     {
         $downloadLink = null !== $downloadIcon && null !== $record->getMainFile()
-            ? sprintf('<a class="mr-download-icon" href="%s">%s</a>', $record->getMainFile()->getUrl(), $downloadIcon)
+            ? sprintf(
+                '<a class="mr-download-icon" href="%s">%s</a>',
+                $this->thumbnailsGenerator->getThumbnail($record->getMainFile(), 'document'),
+                $downloadIcon
+            )
             : '';
 
         $remark = null === $record->getYear()
