@@ -344,7 +344,7 @@ form:
       number: Номер
       town: Город
       isShownOnSite: Показывать грамоту на сайте
-      onlyPartOfCorpus: Часть корпуса
+      isPartOfCorpus: Часть корпуса
       isPreliminaryPublication: Предварительная публикация
       scribe: Писец
       stateOfPreservation: Сохранность
