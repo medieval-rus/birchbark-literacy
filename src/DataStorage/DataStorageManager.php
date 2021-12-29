@@ -65,7 +65,7 @@ final class DataStorageManager implements DataStorageManagerInterface
                     implode(
                         ', ',
                         array_map(
-                            fn ($folderData) => sprintf('"%s"', $folderData['pattern']),
+                            fn (array $folderData): string => sprintf('"%s"', $folderData['pattern']),
                             $this->osfFolders
                         )
                     )

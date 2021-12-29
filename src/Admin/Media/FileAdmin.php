@@ -167,7 +167,7 @@ final class FileAdmin extends AbstractEntityAdmin
 
         if ($this->isImage($file)) {
             $contentOptions['help'] = sprintf(
-                '<img src="%s" class="eomr-image-preview"/>',
+                '<img src="%s" class="mr-image-preview"/>',
                 $this->thumbnailsGenerator->getThumbnail($file)
             );
             $contentOptions['help_html'] = true;

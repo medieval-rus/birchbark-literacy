@@ -27,7 +27,7 @@ namespace App\Entity\Media;
 
 use App\Repository\Media\FileRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
+use RuntimeException;
 
 /**
  * @ORM\Table(name="media__file")
@@ -192,20 +192,26 @@ class File
         $metadata = $this->getMetadata() ?? [];
 
         if (!\array_key_exists('osf', $metadata)) {
-            throw new Exception(sprintf('File with id "%s" does not contain OSF metadata', $this->id));
+            throw new RuntimeException(
+                sprintf('File with id "%s" does not contain OSF metadata', $this->id)
+            );
         }
 
         $osfMetadata = $metadata['osf'];
 
         if (!\array_key_exists('id', $osfMetadata)) {
-            throw new Exception(sprintf('OSF metadata of file with id "%s" does not contain OSF file id', $this->id));
+            throw new RuntimeException(
+                sprintf('OSF metadata of file with id "%s" does not contain OSF file id', $this->id)
+            );
         }
 
         $id = $osfMetadata['id'];
         $idParts = explode('/', $id);
 
         if (2 !== \count($idParts)) {
-            throw new Exception(sprintf('OSF file id of file with id "%s" has unknown format: "%s" ', $this->id, $id));
+            throw new RuntimeException(
+                sprintf('OSF file id of file with id "%s" has unknown format: "%s" ', $this->id, $id)
+            );
         }
 
         return $idParts[1];
