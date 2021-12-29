@@ -574,3 +574,8 @@ userMenu:
 tabMenu:
   document:
     viewOnSite: Посмотреть грамоту на сайте
+
+action:
+  regenerateThumbnails:
+    label: Сгенерировать превью
+    flash: Превью успешно сгенерированы.

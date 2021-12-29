@@ -33,6 +33,7 @@ use App\Services\Media\Thumbnails\ThumbnailsGeneratorInterface;
 use RuntimeException;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -92,6 +93,27 @@ final class FileAdmin extends AbstractEntityAdmin
             $uploadedFile->getRealPath(),
             $uploadedFile->getMimeType()
         );
+    }
+
+    protected function configureBatchActions(array $actions): array
+    {
+        unset($actions['delete']);
+
+        return $actions;
+    }
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+        $collection->add('regenerateThumbnails', $this->getRouterIdParameter().'/regenerate-thumbnails');
+    }
+
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
+    {
+        if ('edit' === $action) {
+            $buttonList['regenerateThumbnails'] = ['template' => 'admin/regenerate_thumbnails_button.html.twig'];
+        }
+
+        return $buttonList;
     }
 
     /**
@@ -250,6 +272,10 @@ final class FileAdmin extends AbstractEntityAdmin
 
     private function isImage(File $file): bool
     {
-        return \in_array($file->getMediaType(), ['image/jpeg', 'image/gif', 'image/png'], true);
+        return \in_array(
+            $file->getMediaType(),
+            ['image/gif', 'image/jpeg', 'image/png', 'image/bmp', 'image/x-ms-bmp', 'image/tiff'],
+            true
+        );
     }
 }

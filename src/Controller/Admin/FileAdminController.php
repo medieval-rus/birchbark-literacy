@@ -23,15 +23,34 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Media\Thumbnails;
+namespace App\Controller\Admin;
 
 use App\Entity\Media\File;
+use App\Services\Media\Thumbnails\ThumbnailsGeneratorInterface;
+use Sonata\AdminBundle\Controller\CRUDController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
-interface ThumbnailsGeneratorInterface
+final class FileAdminController extends CRUDController
 {
-    public function getThumbnail(File $file, string $presetKey = 'default'): string;
+    private ThumbnailsGeneratorInterface $thumbnailsGenerator;
 
-    public function generateAll(File $file): void;
+    public function __construct(ThumbnailsGeneratorInterface $thumbnailsGenerator)
+    {
+        $this->thumbnailsGenerator = $thumbnailsGenerator;
+    }
 
-    public function regenerateAll(File $file): void;
+    public function regenerateThumbnailsAction(): Response
+    {
+        /**
+         * @var $file File
+         */
+        $file = $this->admin->getSubject();
+
+        $this->thumbnailsGenerator->regenerateAll($file);
+
+        $this->addFlash('sonata_flash_success', $this->trans('action.regenerateThumbnails.flash'));
+
+        return new RedirectResponse($this->admin->generateObjectUrl('edit', $file));
+    }
 }

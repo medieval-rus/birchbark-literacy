@@ -276,7 +276,7 @@ services:
     arguments:
       - null
       - App\Entity\Media\File
-      - null
+      - App\Controller\Admin\FileAdminController
       - '@App\Repository\Media\FileRepository'
       - '@App\DataStorage\DataStorageManagerInterface'
       - '@App\Services\Media\Thumbnails\ThumbnailsGeneratorInterface'
