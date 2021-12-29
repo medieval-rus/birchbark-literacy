@@ -134,6 +134,8 @@ final class ThumbnailsGenerator implements ThumbnailsGeneratorInterface
             ->logger
             ->info(sprintf('[ThumbnailsGenerator] <regenerateAll> $file->getFileName() = "%s"', $file->getFileName()));
 
+        $this->ensureDirectoryExists();
+
         $existingThumbnails = array_filter(
             scandir($this->thumbnailsDirectory),
             fn (string $item): bool => StringHelper::startsWith($item, $file->getFileName())
