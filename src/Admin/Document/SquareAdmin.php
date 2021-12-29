@@ -38,17 +38,17 @@ final class SquareAdmin extends AbstractEntityAdmin
     protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
-            ->addIdentifier('name', null, $this->createLabeledListOptions('name'))
-            ->add('excavation.name', null, $this->createLabeledListOptions('excavation.name'))
-            ->add('excavation.town.name', null, $this->createLabeledListOptions('excavation.town.name'))
+            ->addIdentifier('name', null, $this->createListOptions('name'))
+            ->add('excavation.name', null, $this->createListOptions('excavation.name'))
+            ->add('excavation.town.name', null, $this->createListOptions('excavation.town.name'))
         ;
     }
 
     protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
-            ->add('name', null, $this->createLabeledFormOptions('name'))
-            ->add('excavation', null, $this->createLabeledFormOptions('excavation'))
+            ->add('name', null, $this->createFormOptions('name'))
+            ->add('excavation', null, $this->createFormOptions('excavation'))
         ;
     }
 }

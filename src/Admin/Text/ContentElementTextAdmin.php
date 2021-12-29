@@ -39,8 +39,8 @@ final class ContentElementTextAdmin extends AbstractEntityAdmin
     {
         $formMapper
             ->with($this->getSectionLabel('texts'))
-                ->add('originalText', null, $this->createLabeledFormOptions('originalText', ['trim' => false]))
-                ->add('translatedText', null, $this->createLabeledFormOptions('translatedText'))
+                ->add('originalText', null, $this->createFormOptions('originalText', ['trim' => false]))
+                ->add('translatedText', null, $this->createFormOptions('translatedText'))
             ->end()
         ;
     }

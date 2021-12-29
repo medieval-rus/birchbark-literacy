@@ -53,11 +53,11 @@ final class StructuralComponentAdmin extends AbstractEntityAdmin
     {
         $formMapper
             ->with($this->getSectionLabel('common'))
-                ->add('name', null, $this->createLabeledFormOptions('name'))
+                ->add('name', null, $this->createFormOptions('name'))
                 ->add(
                     'file',
                     null,
-                    $this->createLabeledFormOptions(
+                    $this->createFormOptions(
                         'file',
                         [
                             'choice_filter' => $this->dataStorageManager->getFolderFilter('bibliography_document_part'),
@@ -65,7 +65,7 @@ final class StructuralComponentAdmin extends AbstractEntityAdmin
                         ]
                     )
                 )
-                ->add('position', HiddenType::class, $this->createLabeledFormOptions('position'))
+                ->add('position', HiddenType::class, $this->createFormOptions('position'))
             ->end()
         ;
     }

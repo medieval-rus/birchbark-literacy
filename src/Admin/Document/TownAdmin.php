@@ -38,10 +38,10 @@ final class TownAdmin extends AbstractEntityAdmin
     protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
-            ->addIdentifier('id', null, $this->createLabeledListOptions('id'))
-            ->add('name', null, $this->createLabeledListOptions('name'))
-            ->add('abbreviatedName', null, $this->createLabeledListOptions('abbreviatedName'))
-            ->add('alias', null, $this->createLabeledListOptions('alias'))
+            ->addIdentifier('id', null, $this->createListOptions('id'))
+            ->add('name', null, $this->createListOptions('name'))
+            ->add('abbreviatedName', null, $this->createListOptions('abbreviatedName'))
+            ->add('alias', null, $this->createListOptions('alias'))
         ;
     }
 
@@ -49,10 +49,10 @@ final class TownAdmin extends AbstractEntityAdmin
     {
         $formMapper
             ->with($this->getSectionLabel('common'))
-                ->add('name', null, $this->createLabeledFormOptions('name'))
-                ->add('abbreviatedName', null, $this->createLabeledFormOptions('abbreviatedName'))
-                ->add('alias', null, $this->createLabeledFormOptions('alias'))
-                ->add('googleMapsPlaceId', null, $this->createLabeledFormOptions('googleMapsPlaceId'))
+                ->add('name', null, $this->createFormOptions('name'))
+                ->add('abbreviatedName', null, $this->createFormOptions('abbreviatedName'))
+                ->add('alias', null, $this->createFormOptions('alias'))
+                ->add('googleMapsPlaceId', null, $this->createFormOptions('googleMapsPlaceId'))
             ->end()
         ;
     }

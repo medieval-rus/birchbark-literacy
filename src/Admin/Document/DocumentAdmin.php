@@ -56,8 +56,8 @@ final class DocumentAdmin extends AbstractEntityAdmin
     protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
-            ->addIdentifier('number', null, $this->createLabeledListOptions('number'))
-            ->add('town.name', null, $this->createLabeledListOptions('town.name'))
+            ->addIdentifier('number', null, $this->createListOptions('number'))
+            ->add('town.name', null, $this->createListOptions('town.name'))
         ;
     }
 
@@ -66,41 +66,41 @@ final class DocumentAdmin extends AbstractEntityAdmin
         $formMapper
             ->tab($this->getTabLabel('basicInformation'))
                 ->with($this->getSectionLabel('basicInformation'), ['class' => 'col-md-6'])
-                    ->add('number', null, $this->createLabeledFormOptions('number'))
-                    ->add('town', null, $this->createLabeledFormOptions('town'))
+                    ->add('number', null, $this->createFormOptions('number'))
+                    ->add('town', null, $this->createFormOptions('town'))
                     ->add(
                         'isShownOnSite',
                         CheckboxType::class,
-                        $this->createLabeledFormOptions('isShownOnSite', ['required' => false])
+                        $this->createFormOptions('isShownOnSite', ['required' => false])
                     )
                     ->add(
                         'isPartOfCorpus',
                         CheckboxType::class,
-                        $this->createLabeledFormOptions('isPartOfCorpus', ['required' => false])
+                        $this->createFormOptions('isPartOfCorpus', ['required' => false])
                     )
                     ->add(
                         'isPreliminaryPublication',
                         CheckboxType::class,
-                        $this->createLabeledFormOptions('isPreliminaryPublication', ['required' => false])
+                        $this->createFormOptions('isPreliminaryPublication', ['required' => false])
                     )
-                    ->add('scribe', null, $this->createLabeledFormOptions('scribe'))
-                    ->add('stateOfPreservation', null, $this->createLabeledFormOptions('stateOfPreservation'))
-                    ->add('wayOfWriting', null, $this->createLabeledFormOptions('wayOfWriting'))
+                    ->add('scribe', null, $this->createFormOptions('scribe'))
+                    ->add('stateOfPreservation', null, $this->createFormOptions('stateOfPreservation'))
+                    ->add('wayOfWriting', null, $this->createFormOptions('wayOfWriting'))
                 ->end()
                 ->with($this->getSectionLabel('dates'), ['class' => 'col-md-6'])
-                    ->add('conventionalDate', null, $this->createLabeledFormOptions('conventionalDate'))
+                    ->add('conventionalDate', null, $this->createFormOptions('conventionalDate'))
                     ->add(
                         'isConventionalDateBiasedBackward',
                         CheckboxType::class,
-                        $this->createLabeledFormOptions('isConventionalDateBiasedBackward', ['required' => false])
+                        $this->createFormOptions('isConventionalDateBiasedBackward', ['required' => false])
                     )
                     ->add(
                         'isConventionalDateBiasedForward',
                         CheckboxType::class,
-                        $this->createLabeledFormOptions('isConventionalDateBiasedForward', ['required' => false])
+                        $this->createFormOptions('isConventionalDateBiasedForward', ['required' => false])
                     )
-                    ->add('stratigraphicalDate', null, $this->createLabeledFormOptions('stratigraphicalDate'))
-                    ->add('nonStratigraphicalDate', null, $this->createLabeledFormOptions('nonStratigraphicalDate'))
+                    ->add('stratigraphicalDate', null, $this->createFormOptions('stratigraphicalDate'))
+                    ->add('nonStratigraphicalDate', null, $this->createFormOptions('nonStratigraphicalDate'))
                 ->end()
             ->end()
             ->tab($this->getTabLabel('contentElements'))
@@ -108,7 +108,7 @@ final class DocumentAdmin extends AbstractEntityAdmin
                     ->add(
                         'contentElements',
                         CollectionType::class,
-                        $this->createLabeledFormOptions('contentElements', ['required' => false]),
+                        $this->createFormOptions('contentElements', ['required' => false]),
                         [
                             'edit' => 'inline',
                             'admin_code' => 'admin.content_element',
@@ -121,7 +121,7 @@ final class DocumentAdmin extends AbstractEntityAdmin
                     ->add(
                         'materialElements',
                         CollectionType::class,
-                        $this->createLabeledFormOptions('materialElements', ['required' => false]),
+                        $this->createFormOptions('materialElements', ['required' => false]),
                         [
                             'edit' => 'inline',
                         ]
@@ -130,9 +130,9 @@ final class DocumentAdmin extends AbstractEntityAdmin
             ->end()
             ->tab($this->getTabLabel('sources'))
                 ->with($this->getSectionLabel('sources'))
-                    ->add('dndVolumes', null, $this->createLabeledManyToManyFormOptions('dndVolumes'))
-                    ->add('ngbVolumes', null, $this->createLabeledManyToManyFormOptions('ngbVolumes'))
-                    ->add('literature', null, $this->createLabeledManyToManyFormOptions('literature'))
+                    ->add('dndVolumes', null, $this->createManyToManyFormOptions('dndVolumes'))
+                    ->add('ngbVolumes', null, $this->createManyToManyFormOptions('ngbVolumes'))
+                    ->add('literature', null, $this->createManyToManyFormOptions('literature'))
                 ->end()
             ->end()
             ->tab($this->getTabLabel('media'))
@@ -140,7 +140,7 @@ final class DocumentAdmin extends AbstractEntityAdmin
                     ->add(
                         'photos',
                         null,
-                        $this->createLabeledManyToManyFormOptions(
+                        $this->createManyToManyFormOptions(
                             'photos',
                             [
                                 'choice_filter' => $this->dataStorageManager->getFolderFilter('photo'),
@@ -153,7 +153,7 @@ final class DocumentAdmin extends AbstractEntityAdmin
                     ->add(
                         'drawings',
                         null,
-                        $this->createLabeledManyToManyFormOptions(
+                        $this->createManyToManyFormOptions(
                             'drawings',
                             [
                                 'choice_filter' => $this->dataStorageManager->getFolderFilter('drawing'),

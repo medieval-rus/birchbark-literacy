@@ -42,8 +42,8 @@ final class DocumentTextAdmin extends AbstractEntityAdmin
     protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
-            ->addIdentifier('number', null, $this->createLabeledListOptions('number'))
-            ->add('town.name', null, $this->createLabeledListOptions('town.name'))
+            ->addIdentifier('number', null, $this->createListOptions('number'))
+            ->add('town.name', null, $this->createListOptions('town.name'))
         ;
     }
 
@@ -54,7 +54,7 @@ final class DocumentTextAdmin extends AbstractEntityAdmin
                 ->add(
                     'contentElements',
                     CollectionType::class,
-                    $this->createLabeledFormOptions('contentElements', ['required' => false]),
+                    $this->createFormOptions('contentElements', ['required' => false]),
                     [
                         'edit' => 'inline',
                         'inline' => 'table',

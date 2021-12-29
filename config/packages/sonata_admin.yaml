@@ -92,6 +92,9 @@ sonata_admin:
     default_admin_route: edit
   templates:
     user_block: 'admin/user_block.html.twig'
+  assets:
+    extra_stylesheets:
+      - 'build/css/admin/media/file.css'
 
 sonata_block:
   blocks:

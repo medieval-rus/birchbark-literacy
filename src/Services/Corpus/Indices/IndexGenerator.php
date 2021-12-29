@@ -126,7 +126,7 @@ final class IndexGenerator implements IndexGeneratorInterface
 
         foreach ($groupedByWordModifiers as $groupingByWordModifiers) {
             /**
-             * @var InflectedFormSource $wordModifiersSource
+             * @var $wordModifiersSource InflectedFormSource
              */
             $wordModifiersSource = $groupingByWordModifiers->getItems()[0];
 
@@ -140,7 +140,7 @@ final class IndexGenerator implements IndexGeneratorInterface
 
             foreach ($groupedByLemmaModifiers as $groupingByLemmaModifiers) {
                 /**
-                 * @var InflectedFormSource $lemmaModifiersSource
+                 * @var $lemmaModifiersSource InflectedFormSource
                  */
                 $lemmaModifiersSource = $groupingByLemmaModifiers->getItems()[0];
 

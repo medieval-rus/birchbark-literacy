@@ -51,6 +51,7 @@ Encore
     .addStyleEntry('css/site/maps/towns', './assets/scss/pages/site/maps/towns.scss')
     .addEntry('js/site/maps/towns', './assets/js/pages/site/maps/towns.js')
     .addStyleEntry('css/site/maps/excavations', './assets/scss/pages/site/maps/excavations.scss')
+    .addStyleEntry('css/admin/media/file', './assets/scss/pages/admin/media/file.scss')
     .copyFiles({
         from: './assets/fonts',
         to: 'fonts/[path][name].[ext]',

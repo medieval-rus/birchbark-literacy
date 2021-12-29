@@ -38,16 +38,16 @@ final class StreetAdmin extends AbstractEntityAdmin
     protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
-            ->addIdentifier('name', null, $this->createLabeledListOptions('name'))
-            ->add('town.name', null, $this->createLabeledListOptions('town.name'))
+            ->addIdentifier('name', null, $this->createListOptions('name'))
+            ->add('town.name', null, $this->createListOptions('town.name'))
         ;
     }
 
     protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
-            ->add('name', null, $this->createLabeledFormOptions('name'))
-            ->add('town', null, $this->createLabeledFormOptions('town'))
+            ->add('name', null, $this->createFormOptions('name'))
+            ->add('town', null, $this->createFormOptions('town'))
         ;
     }
 }

@@ -29,5 +29,9 @@ interface OsfConnectorInterface
 {
     public function getUploadUrl(string $folderId): string;
 
+    public function getDeleteUrl(string $fileId): string;
+
     public function uploadFile(string $folderUploadUrl, string $fileName, string $pathToFile): array;
+
+    public function deleteFile(string $fileDeleteUrl): void;
 }

@@ -52,11 +52,11 @@ final class FileSupplementAdmin extends AbstractEntityAdmin
     {
         $formMapper
             ->with($this->getSectionLabel('common'))
-                ->add('document', null, $this->createLabeledFormOptions('document'))
+                ->add('document', null, $this->createFormOptions('document'))
                 ->add(
                     'file',
                     null,
-                    $this->createLabeledFormOptions(
+                    $this->createFormOptions(
                         'file',
                         [
                             'choice_filter' => $this

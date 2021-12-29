@@ -1,7 +1,3 @@
-<?php
-
-declare(strict_types=1);
-
 /*
  * This file is part of «Birchbark Literacy from Medieval Rus» database.
  *
@@ -23,32 +19,7 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Admin\Document;
-
-use App\Admin\AbstractEntityAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\FormMapper;
-
-final class ExcavationAdmin extends AbstractEntityAdmin
-{
-    protected $baseRouteName = 'document_excavation';
-
-    protected $baseRoutePattern = 'document/excavation';
-
-    protected function configureListFields(ListMapper $listMapper): void
-    {
-        $listMapper
-            ->addIdentifier('id', null, $this->createListOptions('id'))
-            ->add('name', null, $this->createListOptions('name'))
-            ->add('town.name', null, $this->createListOptions('town.name'))
-        ;
-    }
-
-    protected function configureFormFields(FormMapper $formMapper): void
-    {
-        $formMapper
-            ->add('name', null, $this->createFormOptions('name'))
-            ->add('town', null, $this->createFormOptions('town'))
-        ;
-    }
+.eomr-image-preview {
+  max-width: 300px;
+  max-height: 300px;
 }

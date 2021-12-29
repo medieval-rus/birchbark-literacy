@@ -39,17 +39,17 @@ final class ConventionalDateCellAdmin extends AbstractEntityAdmin
     {
         $listMapper
 
-            ->addIdentifier('id', null, $this->createLabeledListOptions('id'))
-            ->addIdentifier('initialYear', null, $this->createLabeledListOptions('initialYear'))
-            ->addIdentifier('finalYear', null, $this->createLabeledListOptions('finalYear'))
+            ->addIdentifier('id', null, $this->createListOptions('id'))
+            ->addIdentifier('initialYear', null, $this->createListOptions('initialYear'))
+            ->addIdentifier('finalYear', null, $this->createListOptions('finalYear'))
         ;
     }
 
     protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
-            ->add('initialYear', null, $this->createLabeledFormOptions('initialYear'))
-            ->add('finalYear', null, $this->createLabeledFormOptions('finalYear'))
+            ->add('initialYear', null, $this->createFormOptions('initialYear'))
+            ->add('finalYear', null, $this->createFormOptions('finalYear'))
         ;
     }
 }

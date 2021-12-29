@@ -38,16 +38,16 @@ final class DocumentListAdmin extends AbstractEntityAdmin
     protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
-            ->addIdentifier('name', null, $this->createLabeledListOptions('name'))
+            ->addIdentifier('name', null, $this->createListOptions('name'))
         ;
     }
 
     protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
-            ->add('name', null, $this->createLabeledFormOptions('name'))
-            ->add('description', null, $this->createLabeledFormOptions('description'))
-            ->add('documents', null, $this->createLabeledManyToManyFormOptions('documents'))
+            ->add('name', null, $this->createFormOptions('name'))
+            ->add('description', null, $this->createFormOptions('description'))
+            ->add('documents', null, $this->createManyToManyFormOptions('documents'))
         ;
     }
 }

@@ -89,6 +89,13 @@ final class DataStorageManager implements DataStorageManagerInterface
         $file->setOsfFileId((string) $id);
     }
 
+    public function delete(File $file): void
+    {
+        $deleteUrl = $this->osfConnector->getDeleteUrl($file->getOsfFileId());
+
+        $this->osfConnector->deleteFile($deleteUrl);
+    }
+
     public function isFileNameValid(string $fileName): bool
     {
         foreach ($this->osfFolders as $folderData) {
