@@ -29,9 +29,9 @@ use App\Repository\Document\DocumentRepository;
 use App\Services\Corpus\Yaml\Models\YamlAnalysis;
 use App\Services\Corpus\Yaml\Models\YamlDocument;
 use App\Services\Corpus\Yaml\Models\YamlLine;
-use App\Services\Corpus\Yaml\Models\YamlPiece;
 use App\Services\Corpus\Yaml\Models\YamlModel;
 use App\Services\Corpus\Yaml\Models\YamlPage;
+use App\Services\Corpus\Yaml\Models\YamlPiece;
 use App\Services\Document\Formatter\DocumentFormatterInterface;
 use RuntimeException;
 

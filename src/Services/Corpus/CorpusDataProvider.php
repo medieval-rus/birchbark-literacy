@@ -68,6 +68,48 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
         );
     }
 
+    public function getStatistics(bool $onlyShownOnSite = false): array
+    {
+        $texts = $this->getTexts($onlyShownOnSite);
+
+        return [
+            'documentsCount' => \count($texts),
+            'piecesCount' => array_sum(
+                array_map(
+                    fn (string $text): int => 1 + substr_count(
+                            str_replace(
+                                "\n",
+                                ' ',
+                                str_replace(
+                                    "‐\n",
+                                    '',
+                                    str_replace(
+                                        "\r\n",
+                                        "\n",
+                                        $text
+                                    )
+                                )
+                            ),
+                            ' '
+                        ),
+                    array_filter(
+                        array_map(
+                            fn (array $documentData): ?string => implode(
+                                "\r\n",
+                                array_map(
+                                    fn (array $pageData): ?string => trim($pageData['text']),
+                                    $documentData['pages']
+                                )
+                            ),
+                            $texts
+                        ),
+                        fn (?string $text): bool => null !== $text && mb_strlen($text) > 0
+                    )
+                )
+            ),
+        ];
+    }
+
     private function getMetadataRow(Document $document, string $baseUrl): array
     {
         return [
