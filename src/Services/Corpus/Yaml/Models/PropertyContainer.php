@@ -32,6 +32,11 @@ trait PropertyContainer
      */
     private array $properties = [];
 
+    public function getProperties(): array
+    {
+        return $this->properties;
+    }
+
     public function addProperty(int $parsingLineIndex, string $key, ?string $value): void
     {
         if (!\array_key_exists($key, $this->properties)) {

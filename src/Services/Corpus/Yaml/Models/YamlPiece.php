@@ -25,7 +25,7 @@ declare(strict_types=1);
 
 namespace App\Services\Corpus\Yaml\Models;
 
-final class YamlLineElement implements YamlPropertyContainerInterface
+final class YamlPiece implements YamlPropertyContainerInterface
 {
     use PropertyContainer;
 
@@ -68,7 +68,7 @@ final class YamlLineElement implements YamlPropertyContainerInterface
     public function addAnalysis(YamlAnalysis $analysis): void
     {
         $this->analyses[] = $analysis;
-        $analysis->setElement($this);
+        $analysis->setPiece($this);
     }
 
     public function getLine(): YamlLine
@@ -81,9 +81,9 @@ final class YamlLineElement implements YamlPropertyContainerInterface
         $this->line = $line;
     }
 
-    public function getModifiers(): YamlLineElementModifiers
+    public function getModifiers(): YamlPieceModifiers
     {
-        return new YamlLineElementModifiers(
+        return new YamlPieceModifiers(
             \in_array('реконструкция', $this->getProperty('Комментарий'), true),
             \in_array('!', $this->getProperty('?!'), true),
         );

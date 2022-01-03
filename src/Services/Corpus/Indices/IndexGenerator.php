@@ -68,8 +68,8 @@ final class IndexGenerator implements IndexGeneratorInterface
         foreach ($documents as $document) {
             foreach ($document->getPages() as $page) {
                 foreach ($page->getLines() as $line) {
-                    foreach ($line->getElements() as $element) {
-                        foreach ($element->getAnalyses() as $analysis) {
+                    foreach ($line->getPieces() as $piece) {
+                        foreach ($piece->getAnalyses() as $analysis) {
                             $indexSource
                                 ->getOrCreateWord($analysis->getLemmaWithoutModifiers(), $analysis->getPartOfSpeech())
                                 ->addEntry(
@@ -77,7 +77,7 @@ final class IndexGenerator implements IndexGeneratorInterface
                                         $this
                                             ->yamlParsingHelper
                                             ->getNumber(
-                                                $analysis->getElement()->getLine()->getPage()->getDocument(),
+                                                $analysis->getPiece()->getLine()->getPage()->getDocument(),
                                                 $numbersByConventionalName
                                             ),
                                         $analysis
@@ -119,7 +119,7 @@ final class IndexGenerator implements IndexGeneratorInterface
             $inflectedFormSources,
             fn (InflectedFormSource $itemEntrySource): string => $itemEntrySource
                 ->getAnalysis()
-                ->getElement()
+                ->getPiece()
                 ->getModifiers()
                 ->__toString()
         );
@@ -148,7 +148,7 @@ final class IndexGenerator implements IndexGeneratorInterface
                     $groupingByLemmaModifiers->getItems(),
                     fn (InflectedFormSource $itemEntrySource): string => $itemEntrySource
                         ->getAnalysis()
-                        ->getElement()
+                        ->getPiece()
                         ->getValue()
                 );
 
@@ -169,8 +169,8 @@ final class IndexGenerator implements IndexGeneratorInterface
                         ),
                         $lemmaModifiersSource->getAnalysis()->getModifiers()->getIsUnsure(),
                         $lemmaModifiersSource->getAnalysis()->getModifiers()->getIsPhonemicUnsure(),
-                        $wordModifiersSource->getAnalysis()->getElement()->getModifiers()->getIsReconstruction(),
-                        $wordModifiersSource->getAnalysis()->getElement()->getModifiers()->getIsMisspelled()
+                        $wordModifiersSource->getAnalysis()->getPiece()->getModifiers()->getIsReconstruction(),
+                        $wordModifiersSource->getAnalysis()->getPiece()->getModifiers()->getIsMisspelled()
                     );
                 }
             }

@@ -29,7 +29,7 @@ use App\Repository\Document\DocumentRepository;
 use App\Services\Corpus\Yaml\Models\YamlAnalysis;
 use App\Services\Corpus\Yaml\Models\YamlDocument;
 use App\Services\Corpus\Yaml\Models\YamlLine;
-use App\Services\Corpus\Yaml\Models\YamlLineElement;
+use App\Services\Corpus\Yaml\Models\YamlPiece;
 use App\Services\Corpus\Yaml\Models\YamlModel;
 use App\Services\Corpus\Yaml\Models\YamlPage;
 use App\Services\Document\Formatter\DocumentFormatterInterface;
@@ -68,15 +68,15 @@ final class YamlParser implements YamlParserInterface
             } elseif (1 === preg_match('/^-line: *(.*)$/', $line, $matches)) {
                 $yamlModel->addLine($humanReadableLineIndex, new YamlLine($matches[1], []));
             } elseif (1 === preg_match('/^-comment: +(.+)$/', $line, $matches)) {
-                $yamlModel->addComment($humanReadableLineIndex, new YamlLineElement('comment', $matches[1], []));
+                $yamlModel->addComment($humanReadableLineIndex, new YamlPiece('comment', $matches[1], []));
             } elseif (1 === preg_match('/^-fragment: *(.*)$/', $line, $matches)) {
-                $yamlModel->addElement($humanReadableLineIndex, new YamlLineElement('fragment', $matches[1], []));
+                $yamlModel->addPiece($humanReadableLineIndex, new YamlPiece('fragment', $matches[1], []));
             } elseif (1 === preg_match('/^-punc: (.+)$/', $line, $matches)) {
-                $yamlModel->addElement($humanReadableLineIndex, new YamlLineElement('punctuation', $matches[1], []));
+                $yamlModel->addPiece($humanReadableLineIndex, new YamlPiece('punctuation', $matches[1], []));
             } elseif (1 === preg_match('/^-word: (.+)$/', $line, $matches)) {
-                $yamlModel->addElement($humanReadableLineIndex, new YamlLineElement('word', $matches[1], []));
+                $yamlModel->addPiece($humanReadableLineIndex, new YamlPiece('word', $matches[1], []));
             } elseif (1 === preg_match('/^-part: (.+)$/', $line, $matches)) {
-                $yamlModel->addWordPart($humanReadableLineIndex, new YamlLineElement('part', $matches[1], []));
+                $yamlModel->addWordPart($humanReadableLineIndex, new YamlPiece('part', $matches[1], []));
             } elseif (1 === preg_match('/^ -ana: (.+)$/', $line, $matches)) {
                 $yamlModel->addAnalysis($humanReadableLineIndex, new YamlAnalysis($matches[1]));
             } elseif (1 === preg_match('/^ {1}([^- ].*): ?(.*)$/', $line, $matches)) {

@@ -33,11 +33,16 @@ final class YamlAnalysis implements YamlPropertyContainerInterface
     use PropertyContainer;
 
     private string $name;
-    private YamlLineElement $element;
+    private YamlPiece $piece;
 
     public function __construct(string $name)
     {
         $this->name = $name;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     public function getModifiers(): YamlAnalysisModifiers
@@ -82,14 +87,14 @@ final class YamlAnalysis implements YamlPropertyContainerInterface
         return $partsOfSpeech[0];
     }
 
-    public function getElement(): YamlLineElement
+    public function getPiece(): YamlPiece
     {
-        return $this->element;
+        return $this->piece;
     }
 
-    public function setElement(YamlLineElement $element): void
+    public function setPiece(YamlPiece $piece): void
     {
-        $this->element = $element;
+        $this->piece = $piece;
     }
 
     private function createAnalysisException(
@@ -101,10 +106,10 @@ final class YamlAnalysis implements YamlPropertyContainerInterface
                 'Found %d "%s" tags: document = %s; page = %s; line = %s; value = %s',
                 \count($properties),
                 $propertyName,
-                $this->element->getLine()->getPage()->getDocument()->getNumber(),
-                $this->element->getLine()->getPage()->getName(),
-                $this->element->getLine()->getName() ?? '',
-                $this->element->getValue() ?? ''
+                $this->piece->getLine()->getPage()->getDocument()->getNumber(),
+                $this->piece->getLine()->getPage()->getName(),
+                $this->piece->getLine()->getName() ?? '',
+                $this->piece->getValue() ?? ''
             )
         );
     }

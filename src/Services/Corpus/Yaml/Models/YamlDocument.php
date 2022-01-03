@@ -37,12 +37,13 @@ final class YamlDocument implements YamlPropertyContainerInterface
      */
     private array $pages;
     /**
-     * @var YamlLineElement[]
+     * @var YamlPiece[]
      */
     private array $wordParts;
 
     /**
      * @param YamlPage[] $pages
+     * @param YamlPiece[] $wordParts
      */
     public function __construct(string $number, array $pages, array $wordParts)
     {
@@ -57,7 +58,7 @@ final class YamlDocument implements YamlPropertyContainerInterface
         $page->setDocument($this);
     }
 
-    public function registerWordPart(YamlLineElement $wordPart): void
+    public function registerWordPart(YamlPiece $wordPart): void
     {
         $this->wordParts[] = $wordPart;
     }

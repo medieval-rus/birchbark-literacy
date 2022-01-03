@@ -37,7 +37,7 @@ use App\Services\Corpus\Indices\Models\Word;
 use App\Services\Corpus\Indices\Models\WordIndex;
 use App\Services\Corpus\Yaml\Models\YamlDocument;
 use App\Services\Corpus\Yaml\Models\YamlLine;
-use App\Services\Corpus\Yaml\Models\YamlLineElement;
+use App\Services\Corpus\Yaml\Models\YamlPiece;
 use App\Services\Corpus\Yaml\Models\YamlPage;
 use App\Services\Corpus\Yaml\YamlParserInterface;
 use App\Services\Document\Formatter\DocumentFormatterInterface;
@@ -158,11 +158,11 @@ final class CorpusYamlController extends AbstractController
                                             fn (YamlLine $yamlLine): string => implode(
                                                 ' ',
                                                 array_map(
-                                                    fn (YamlLineElement $element): string => $element->getValue(),
+                                                    fn (YamlPiece $pieces): string => $pieces->getValue(),
                                                     array_filter(
-                                                        $yamlLine->getElements(),
-                                                        fn (YamlLineElement $element): bool => null !== $element->getValue() &&
-                                                            empty($element->getProperty('label'))
+                                                        $yamlLine->getPieces(),
+                                                        fn (YamlPiece $pieces): bool => null !== $pieces->getValue() &&
+                                                            empty($pieces->getProperty('label'))
                                                     )
                                                 )
                                             ),

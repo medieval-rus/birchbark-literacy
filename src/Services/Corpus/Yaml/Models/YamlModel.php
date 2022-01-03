@@ -97,7 +97,7 @@ final class YamlModel
         $this->lastObjectsByLevel[1] = $line;
     }
 
-    public function addComment(int $parsingLineIndex, YamlLineElement $comment): void
+    public function addComment(int $parsingLineIndex, YamlPiece $comment): void
     {
         $page = $this
             ->getLastDocument('comment', $parsingLineIndex)
@@ -110,23 +110,23 @@ final class YamlModel
             return;
         }
 
-        $line->addElement($comment);
+        $line->addPiece($comment);
 
         $this->lastObjectsByLevel[1] = $line;
     }
 
-    public function addElement(int $parsingLineIndex, YamlLineElement $element): void
+    public function addPiece(int $parsingLineIndex, YamlPiece $piece): void
     {
         $this
-            ->getLastDocument($element->getType(), $parsingLineIndex)
-            ->getLastPage($element->getType(), $parsingLineIndex)
-            ->getLastLine($element->getType(), $parsingLineIndex)
-            ->addElement($element);
+            ->getLastDocument($piece->getType(), $parsingLineIndex)
+            ->getLastPage($piece->getType(), $parsingLineIndex)
+            ->getLastLine($piece->getType(), $parsingLineIndex)
+            ->addPiece($piece);
 
-        $this->lastObjectsByLevel[1] = $element;
+        $this->lastObjectsByLevel[1] = $piece;
     }
 
-    public function addWordPart(int $parsingLineIndex, YamlLineElement $wordPart): void
+    public function addWordPart(int $parsingLineIndex, YamlPiece $wordPart): void
     {
         $document = $this->getLastDocument('part', $parsingLineIndex);
 
@@ -135,7 +135,7 @@ final class YamlModel
         $document
             ->getLastPage('part', $parsingLineIndex)
             ->getLastLine('part', $parsingLineIndex)
-            ->addElement($wordPart);
+            ->addPiece($wordPart);
 
         $this->lastObjectsByLevel[1] = $wordPart;
     }
@@ -146,7 +146,7 @@ final class YamlModel
             ->getLastDocument('analysis', $parsingLineIndex)
             ->getLastPage('analysis', $parsingLineIndex)
             ->getLastLine('analysis', $parsingLineIndex)
-            ->getLastElement('analysis', $parsingLineIndex)
+            ->getLastPiece('analysis', $parsingLineIndex)
             ->addAnalysis($analysis);
 
         $this->lastObjectsByLevel[2] = $analysis;

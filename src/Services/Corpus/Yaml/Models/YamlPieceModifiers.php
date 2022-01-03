@@ -25,7 +25,7 @@ declare(strict_types=1);
 
 namespace App\Services\Corpus\Yaml\Models;
 
-final class YamlLineElementModifiers
+final class YamlPieceModifiers
 {
     private bool $isReconstruction;
     private bool $isMisspelled;

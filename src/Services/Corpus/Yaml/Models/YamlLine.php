@@ -33,24 +33,24 @@ final class YamlLine implements YamlPropertyContainerInterface
 
     private ?string $name;
     /**
-     * @var YamlLineElement[]
+     * @var YamlPiece[]
      */
-    private array $elements;
+    private array $pieces;
     private YamlPage $page;
 
     /**
-     * @param YamlLineElement[] $items
+     * @param YamlPiece[] $pieces
      */
-    public function __construct(?string $name, array $elements)
+    public function __construct(?string $name, array $pieces)
     {
         $this->name = $name;
-        $this->elements = $elements;
+        $this->pieces = $pieces;
     }
 
-    public function addElement(YamlLineElement $element): void
+    public function addPiece(YamlPiece $piece): void
     {
-        $this->elements[] = $element;
-        $element->setLine($this);
+        $this->pieces[] = $piece;
+        $piece->setLine($this);
     }
 
     public function getName(): ?string
@@ -59,26 +59,26 @@ final class YamlLine implements YamlPropertyContainerInterface
     }
 
     /**
-     * @return YamlLineElement[]
+     * @return YamlPiece[]
      */
-    public function getElements(): array
+    public function getPieces(): array
     {
-        return $this->elements;
+        return $this->pieces;
     }
 
-    public function getLastElement(string $parsingEntityName, int $parsingLineIndex): YamlLineElement
+    public function getLastPiece(string $parsingEntityName, int $parsingLineIndex): YamlPiece
     {
-        if (0 === \count($this->elements)) {
+        if (0 === \count($this->pieces)) {
             throw new RuntimeException(
                 sprintf(
-                    'Cannot parse line %d: %s doesn\'t belong to any line element.',
+                    'Cannot parse line %d: %s does not belong to any line piece.',
                     $parsingLineIndex,
                     $parsingEntityName
                 )
             );
         }
 
-        return end($this->elements);
+        return end($this->pieces);
     }
 
     public function getPage(): YamlPage

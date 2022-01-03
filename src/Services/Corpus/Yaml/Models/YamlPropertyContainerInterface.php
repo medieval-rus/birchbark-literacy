@@ -27,6 +27,8 @@ namespace App\Services\Corpus\Yaml\Models;
 
 interface YamlPropertyContainerInterface
 {
+    public function getProperties(): array;
+
     public function addProperty(int $parsingLineIndex, string $key, string $value): void;
 
     public function getProperty(string $key): array;
