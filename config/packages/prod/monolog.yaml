@@ -19,26 +19,27 @@
 
 monolog:
   handlers:
-    main_info:
+    warnings_filter:
       type: fingers_crossed
-      action_level: info
-      handler: info_messages
+      action_level: warning
+      handler: warnings
       excluded_http_codes: [404, 405]
       buffer_size: 500
-    info_messages:
+    warnings:
       type: stream
-      path: '%kernel.logs_dir%/%kernel.environment%.log'
+      path: '%kernel.logs_dir%/%kernel.environment%.warning.log'
       level: debug
-    main_error:
+    errors_filter:
       type: fingers_crossed
       action_level: error
-      handler: error_messages
+      handler: errors
       excluded_http_codes: [404, 405]
       buffer_size: 500
-    error_messages:
+    errors:
       type: stream
       path: '%kernel.logs_dir%/%kernel.environment%.error.log'
       level: debug
+      includeStacktraces: true
     console:
       type: console
       process_psr_3_messages: false
