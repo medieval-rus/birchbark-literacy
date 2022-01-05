@@ -19,15 +19,25 @@
 
 monolog:
   handlers:
-    main:
+    main_info:
       type: fingers_crossed
       action_level: error
-      handler: nested
+      handler: info_messages
       excluded_http_codes: [404, 405]
-      buffer_size: 50
-    nested:
+      buffer_size: 500
+    info_messages:
       type: stream
       path: '%kernel.logs_dir%/%kernel.environment%.log'
+      level: debug
+    main_error:
+      type: fingers_crossed
+      action_level: error
+      handler: error_messages
+      excluded_http_codes: [404, 405]
+      buffer_size: 500
+    error_messages:
+      type: stream
+      path: '%kernel.logs_dir%/%kernel.environment%.error.log'
       level: debug
     console:
       type: console
