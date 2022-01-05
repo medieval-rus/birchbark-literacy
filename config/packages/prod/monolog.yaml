@@ -39,7 +39,7 @@ monolog:
       type: stream
       path: '%kernel.logs_dir%/%kernel.environment%.error.log'
       level: debug
-      includeStacktraces: true
+      include_stacktraces: true
     console:
       type: console
       process_psr_3_messages: false
