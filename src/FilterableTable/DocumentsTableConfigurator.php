@@ -105,7 +105,7 @@ final class DocumentsTableConfigurator extends AbstractTableConfigurator
                 ->setIsRaw(true)
                 ->setValueExtractor(function (Document $document): string {
                     $preliminaryPublication = $document->getIsPreliminaryPublication()
-                        ? '<br /><span class="mr-preliminary-publication">'.
+                        ? '<br /><span class="mr-information-box mr-information-box__info">'.
                         $this->translator->trans('global.document.preliminaryPublication').
                         '</span>'
                         : '';

@@ -70,7 +70,7 @@ final class DocumentController extends AbstractController
             ->getRepository(Document::class)
             ->findOneByTownAliasAndNumber(urldecode($town), $number);
 
-        if (null === $document || !$document->getIsShownOnSite() && !$this->isGranted('ROLE_ADMIN')) {
+        if (null === $document || !$document->getIsShownOnSite() && !$this->isGranted('ROLE_EDITOR')) {
             throw $this->createNotFoundException();
         }
 
