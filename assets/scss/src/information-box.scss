@@ -19,14 +19,23 @@
  * see <http://www.gnu.org/licenses/>.
  */
 
-@import '../variables';
+@import '../pages/site/variables';
 
-.mr-preliminary-publication {
-    color: $whiteColor;
-    background-color: $darkColor;
+.mr-information-box {
     font-size: 12px;
     font-weight: bold;
     padding: 3px 4px;
     vertical-align: top;
     text-transform: uppercase;
+    margin: 1px;
+
+    &__info {
+        color: $whiteColor;
+        background-color: $darkColor;
+    }
+
+    &__warning {
+        color: $whiteColor;
+        background-color: $warningColor;
+    }
 }

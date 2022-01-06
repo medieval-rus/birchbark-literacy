@@ -117,6 +117,7 @@ controller:
       showTranslatedText: Показать перевод
       hideTranslatedText: Скрыть перевод
       preliminaryPublication: предварительная публикация
+      noPublication: грамота не видна пользователям сайта
 
 # this global subspace should be removed
 global:

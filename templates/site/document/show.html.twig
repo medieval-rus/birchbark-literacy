@@ -29,7 +29,14 @@
     <h1>
         {{ documentFormatter.label(document) }}
         {%- if document.isPreliminaryPublication -%}
-            <span class="mr-preliminary-publication">{{ 'preliminaryPublication'|transWithContext(translationContext) }}</span>
+            <span class="mr-information-box mr-information-box__info">
+                {{- 'preliminaryPublication'|transWithContext(translationContext) -}}
+            </span>
+        {%- endif -%}
+        {%- if is_granted('ROLE_EDITOR') and not document.isShownOnSite -%}
+            <span class="mr-information-box mr-information-box__warning">
+                {{- 'noPublication'|transWithContext(translationContext) -}}
+            </span>
         {%- endif -%}
     </h1>
 {%- endblock -%}

@@ -68,9 +68,9 @@ final class DocumentController extends AbstractController
         $document = $this
             ->getDoctrine()
             ->getRepository(Document::class)
-            ->findOneByTownAliasAndNumber(urldecode($town), $number, true);
+            ->findOneByTownAliasAndNumber(urldecode($town), $number);
 
-        if (null === $document) {
+        if (null === $document || !$document->getIsShownOnSite() && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createNotFoundException();
         }
 
