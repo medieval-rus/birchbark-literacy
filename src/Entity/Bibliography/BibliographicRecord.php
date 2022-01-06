@@ -68,7 +68,7 @@ class BibliographicRecord
     private $formalNotation;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="label", type="text", length=65535, nullable=true)
      */

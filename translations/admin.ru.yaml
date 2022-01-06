@@ -435,15 +435,19 @@ form:
     tab:
       main:
         label: Основная информация
-      supplements:
-        label: Материалы
       media:
         label: Изображения и файлы
+      supplements:
+        label: Материалы
+      library:
+        label: Библиотека
     section:
       basicInformation:
         label: Основная информация
-      details:
-        label: Детали библиографической записи
+      library:
+        label: Отображение в библиотеке
+      filters:
+        label: Данные для поиска
       fileSupplements:
         label: Приложения
       structuralComponents:
@@ -456,6 +460,7 @@ form:
       year: Год публикации
       authors: Авторы работы
       formalNotation: Отображаемое значение (формальная запись)
+      label: Заголовок
       description: Описание работы
       fileSupplements: Приложения, связанные с грамотами
       structuralComponents: Части источника

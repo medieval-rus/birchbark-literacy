@@ -66,12 +66,11 @@ final class BibliographicRecordAdmin extends AbstractEntityAdmin
                 ->with($this->getSectionLabel('basicInformation'), ['class' => 'col-md-7'])
                     ->add('shortName', null, $this->createFormOptions('shortName'))
                     ->add('title', null, $this->createFormOptions('title'))
+                    ->add('formalNotation', null, $this->createFormOptions('formalNotation'))
+                ->end()
+                ->with($this->getSectionLabel('filters'), ['class' => 'col-md-5'])
                     ->add('year', null, $this->createFormOptions('year'))
                     ->add('authors', null, $this->createManyToManyFormOptions('authors'))
-                ->end()
-                ->with($this->getSectionLabel('details'), ['class' => 'col-md-5'])
-                    ->add('formalNotation', null, $this->createFormOptions('formalNotation'))
-                    ->add('description', null, $this->createFormOptions('description'))
                 ->end()
             ->end()
             ->tab($this->getTabLabel('media'))
@@ -127,6 +126,12 @@ final class BibliographicRecordAdmin extends AbstractEntityAdmin
                             'admin_code' => 'admin.bibliography.structural_component',
                         ]
                     )
+                ->end()
+            ->end()
+            ->tab($this->getTabLabel('library'))
+                ->with($this->getSectionLabel('library'), ['class' => 'col-md-5'])
+                    ->add('label', null, $this->createFormOptions('label'))
+                    ->add('description', null, $this->createFormOptions('description'))
                 ->end()
             ->end()
         ;
