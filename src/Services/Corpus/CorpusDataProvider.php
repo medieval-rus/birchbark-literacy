@@ -113,8 +113,21 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
     private function getMetadataRow(Document $document, string $baseUrl): array
     {
         return [
-            'path' => $this->getPath($document, fn (string $number) => sprintf('%03d', (int) $number), 'St_R_'),
-            'number' => $this->getPath($document, fn (string $number) => sprintf('%04d', (int) $number), 'St_r_'),
+            'path' => $this->getPath($document),
+            'number' => StringHelper::removeFromStart($document->getNumber(), 'lead'),
+            'material' => implode(
+                ', ',
+                array_unique(
+                    $document
+                        ->getMaterialElements()
+                        ->map(
+                            fn (MaterialElement $materialElement): string => $materialElement
+                                ->getMaterial()
+                                ->getName()
+                        )
+                        ->toArray()
+                )
+            ),
             'header' => StringHelper::startsWith($document->getNumber(), 'lead')
                 ? sprintf('Свинцовая грамота %s', StringHelper::removeFromStart($document->getNumber(), 'lead'))
                 : sprintf('Берестяная грамота %s', $this->documentFormatter->getNumber($document)),
@@ -213,7 +226,7 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
         ];
     }
 
-    private function getPath(Document $document, callable $numberFormatter, string $starayaRussaPrefix): string
+    private function getPath(Document $document): string
     {
         $documentNumber = $document->getNumber();
 
@@ -229,14 +242,14 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
 
                 if (str_contains($documentNumber, '/')) {
                     $parts = explode('/', $documentNumber);
-                    $parts = array_map(fn (string $part): string => $numberFormatter($part), $parts);
+                    $parts = array_map(fn (string $part): string => sprintf('%03d', (int) $part), $parts);
 
                     return implode('_', $parts);
                 }
 
-                return $numberFormatter($documentNumber);
+                return sprintf('%03d', $documentNumber);
             case 'staraya-russa':
-                return $starayaRussaPrefix.str_replace('/', '_', $documentNumber);
+                return 'St_R_'.str_replace('/', '_', $documentNumber);
             case 'vologda':
                 return 'Vol_'.str_replace('/', '_', $documentNumber);
             case 'moscow':
