@@ -51,6 +51,7 @@
             {{ self.format_text_row(translationContext, 'stateOfPreservation', document.stateOfPreservation ? document.stateOfPreservation.name) }}
             {{ self.format_text_row(translationContext, 'excavation', documentFormatter.excavation(document)) }}
             {{ self.format_text_row(translationContext, 'category', documentFormatter.category(document)) }}
+            {{ self.format_text_row(translationContext, 'genre', documentFormatter.genre(document)) }}
             {{ self.format_text_row(translationContext, 'description', documentFormatter.description(document)) }}
             {{ self.format_text_row(translationContext, 'dndVolumes', documentFormatter.dnd(document)) }}
             {{ self.format_text_row(translationContext, 'ngbVolumes', documentFormatter.ngb(document)) }}

@@ -27,10 +27,12 @@ namespace App\Services\Document\Formatter;
 
 use App\Entity\Bibliography\BibliographicRecord;
 use App\Entity\Bibliography\FileSupplement;
+use App\Entity\Document\ContentElement;
 use App\Entity\Document\ConventionalDateCell;
 use App\Entity\Document\Document;
 use App\Entity\Document\Estate;
 use App\Entity\Document\Excavation;
+use App\Entity\Document\MaterialElement;
 use App\Entity\Media\File;
 use App\Services\Bibliography\Sorting\BibliographicRecordComparerInterface;
 use App\Services\Document\OriginalText\MarkupParser\OriginalTextMarkupParserInterface;
@@ -100,13 +102,11 @@ final class DocumentFormatter implements DocumentFormatterInterface
 
     public function getDescription(Document $document): string
     {
-        $descriptions = [];
-
-        foreach ($document->getContentElements() as $content) {
-            if (null !== $content->getDescription()) {
-                $descriptions[] = $content->getDescription();
-            }
-        }
+        $descriptions = $document
+            ->getContentElements()
+            ->filter(fn (ContentElement $contentElement): bool => $contentElement->getDescription() !== null)
+            ->map(fn (ContentElement $contentElement): string => $contentElement->getDescription())
+            ->toArray();
 
         if (\count($descriptions) > 0) {
             return implode(' // ', $descriptions);
@@ -185,16 +185,33 @@ final class DocumentFormatter implements DocumentFormatterInterface
 
     public function getCategory(Document $document): string
     {
-        $categories = [];
-
-        foreach ($document->getContentElements() as $content) {
-            if (null !== $content->getCategory()) {
-                $categories[(string) $content->getCategory()->getName()] = (string) $content->getCategory()->getName();
-            }
-        }
+        $categories = array_unique(
+            $document
+                ->getContentElements()
+                ->filter(fn (ContentElement $contentElement): bool => $contentElement->getCategory() !== null)
+                ->map(fn (ContentElement $contentElement): string => $contentElement->getCategory()->getName())
+                ->toArray()
+        );
 
         if (\count($categories) > 0) {
             return implode(' // ', $categories);
+        }
+
+        return '-';
+    }
+
+    public function getGenre(Document $document): string
+    {
+        $genres = array_unique(
+            $document
+                ->getContentElements()
+                ->filter(fn (ContentElement $contentElement): bool => $contentElement->getGenre() !== null)
+                ->map(fn (ContentElement $contentElement): string => $contentElement->getGenre()->getName())
+                ->toArray()
+        );
+
+        if (\count($genres) > 0) {
+            return implode(' // ', $genres);
         }
 
         return '-';
@@ -229,15 +246,13 @@ final class DocumentFormatter implements DocumentFormatterInterface
 
     public function getStoragePlace(Document $document): string
     {
-        $storagePlaces = [];
-
-        foreach ($document->getMaterialElements() as $materialElement) {
-            if (null !== $materialElement->getStoragePlace()) {
-                $storagePlaces[(string) $materialElement->getStoragePlace()->getName()] = (string) $materialElement
-                    ->getStoragePlace()
-                    ->getName();
-            }
-        }
+        $storagePlaces = array_unique(
+            $document
+                ->getMaterialElements()
+                ->filter(fn (MaterialElement $materialElement): bool => $materialElement->getStoragePlace() !== null)
+                ->map(fn (MaterialElement $materialElement): string => $materialElement->getStoragePlace()->getName())
+                ->toArray()
+        );
 
         if (\count($storagePlaces) > 0) {
             return implode(' // ', $storagePlaces);
@@ -279,14 +294,15 @@ final class DocumentFormatter implements DocumentFormatterInterface
      */
     public function getTranslatedText(Document $document): array
     {
-        $textParts = [];
+        $placeholder = $this->translator->trans('global.noTranslatedText');
 
-        foreach ($document->getContentElements() as $contentElement) {
-            $textParts[] = $contentElement->getTranslatedText() ?? $this->translator->trans('global.noTranslatedText');
-        }
+        $textParts = $document
+            ->getContentElements()
+            ->map(fn (ContentElement $contentElement): string => $contentElement->getTranslatedText() ?? $placeholder)
+            ->toArray();
 
         if (0 === \count($textParts)) {
-            $textParts[] = $this->translator->trans('global.noTranslatedText');
+            $textParts[] = $placeholder;
         }
 
         return $textParts;

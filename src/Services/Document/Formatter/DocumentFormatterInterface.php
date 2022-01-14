@@ -56,6 +56,8 @@ interface DocumentFormatterInterface
 
     public function getCategory(Document $document): string;
 
+    public function getGenre(Document $document): string;
+
     public function getDnd(Document $document): string;
 
     public function getNgb(Document $document): string;

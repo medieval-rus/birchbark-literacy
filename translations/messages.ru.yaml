@@ -101,6 +101,7 @@ controller:
         description: Содержание
         conventionalDate: Условная дата
         category: Категория
+        genre: Жанр
         excavation: Раскоп
         stratigraphicalDate: Стратиграфическая дата
         nonStratigraphicalDate: Внестратиграфическая дата
