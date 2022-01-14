@@ -114,7 +114,9 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
     {
         return [
             'path' => $this->getPath($document),
-            'number' => StringHelper::removeFromStart($document->getNumber(), 'lead'),
+            'number' => '915i' === $document->getNumber()
+                ? '915-И'
+                : StringHelper::removeFromStart($document->getNumber(), 'lead'),
             'material' => implode(
                 ', ',
                 array_unique(
