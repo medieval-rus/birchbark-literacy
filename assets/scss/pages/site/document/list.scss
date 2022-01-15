@@ -39,7 +39,9 @@
         margin-bottom: 0;
       }
 
-      .select2-container--default {
+      .select2-container {
+        width: 100% !important;
+
         .select2-selection--multiple {
           padding-top: 0;
 
