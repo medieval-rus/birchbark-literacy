@@ -78,6 +78,10 @@
       padding-right: 15px;
       padding-left: 15px;
     }
+
+    [data-vyfony-filterable-table-reset-button] {
+      display: none;
+    }
   }
 }
 
