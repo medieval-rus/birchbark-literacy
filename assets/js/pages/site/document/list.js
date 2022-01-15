@@ -21,9 +21,15 @@
 
 import $ from 'jquery';
 import 'jquery-ui/ui/widgets/slider';
+import 'select2';
 
-$(function() {
+$(document).ready(() => {
 
+    initializeSlider();
+    initializeFilters();
+});
+
+function initializeSlider() {
     $('[data-mr-number-filter]').val('');
 
     const conventionalDateLabelYearsElement = $('#conventional-date-label-years');
@@ -57,4 +63,10 @@ $(function() {
         conventionalDateInitialYearElement.val(values[0]);
         conventionalDateFinalYearElement.val(values[1]);
     }
-});
+}
+
+function initializeFilters() {
+    $('.vyfony-filterable-table-bundle-form-group select[multiple="multiple"]').select2({
+        language: $('html').prop('lang')
+    });
+}

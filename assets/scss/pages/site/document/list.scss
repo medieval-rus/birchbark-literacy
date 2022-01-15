@@ -24,6 +24,7 @@
 @import '../variables';
 @import '~jquery-ui/themes/base/theme.css';
 @import '~jquery-ui/themes/base/slider.css';
+@import '~select2/dist/css/select2.min.css';
 
 .mr-filter-container {
   form {
@@ -32,6 +33,43 @@
 
     .vyfony-filterable-table-bundle-form-group {
       @extend .col-6;
+      margin-bottom: 10px;
+
+      label {
+        margin-bottom: 0;
+      }
+
+      .select2-container--default {
+        .select2-selection--multiple {
+          padding-top: 0;
+
+          .select2-selection__choice {
+            max-width: calc(100% - 5px);
+            margin-top: 0;
+            line-height: 18px;
+          }
+
+          .select2-search--inline {
+            .select2-search__field {
+              margin-top: 0;
+              margin-bottom: 1px;
+            }
+          }
+        }
+      }
+
+      input[type=text][data-vyfony-filterable-table-filter-parameter] {
+        height: 32px;
+        border: 1px solid #aaaaaa;
+        border-radius: 4px;
+        padding: 5px;
+
+        &:focus {
+          border: solid #000000 1px;
+          outline: 0;
+          box-shadow: none;
+        }
+      }
     }
 
     .vyfony-filterable-table-bundle-button-form-group {
