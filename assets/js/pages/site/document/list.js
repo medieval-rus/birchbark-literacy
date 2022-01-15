@@ -22,7 +22,6 @@
 import $ from 'jquery';
 import 'jquery-ui/ui/widgets/slider';
 import 'select2';
-import 'select2/src/js/select2/i18n/ru'
 
 $(document).ready(() => {
 
