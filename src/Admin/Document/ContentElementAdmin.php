@@ -43,7 +43,9 @@ final class ContentElementAdmin extends AbstractEntityAdmin
                 ->add('genres', null, $this->createManyToManyFormOptions('genres'))
                 ->add('languages', null, $this->createManyToManyFormOptions('languages'))
                 ->add('originalText', null, $this->createFormOptions('originalText', ['trim' => false]))
-                ->add('translatedText', null, $this->createFormOptions('translatedText'))
+                ->add('translationRussian', null, $this->createFormOptions('translationRussian'))
+                ->add('translationEnglishKovalev', null, $this->createFormOptions('translationEnglishKovalev'))
+                ->add('translationEnglishSchaeken', null, $this->createFormOptions('translationEnglishSchaeken'))
             ->end()
         ;
     }

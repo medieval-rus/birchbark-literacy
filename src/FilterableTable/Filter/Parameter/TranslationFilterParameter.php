@@ -33,7 +33,7 @@ use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\FilterPara
 use Vyfony\Bundle\FilterableTableBundle\Persistence\QueryBuilder\Alias\AliasFactoryInterface;
 use Vyfony\Bundle\FilterableTableBundle\Persistence\QueryBuilder\Parameter\ParameterFactoryInterface;
 
-final class TranslatedTextFilterParameter implements FilterParameterInterface, ExpressionBuilderInterface
+final class TranslationFilterParameter implements FilterParameterInterface, ExpressionBuilderInterface
 {
     private ParameterFactoryInterface $parameterFactory;
     private AliasFactoryInterface $aliasFactory;
@@ -88,6 +88,10 @@ final class TranslatedTextFilterParameter implements FilterParameterInterface, E
             '%'.mb_strtolower($filterValue).'%'
         );
 
-        return (string) $queryBuilder->expr()->like('LOWER('.$contentElementAlias.'.translatedText)', $parameterName);
+        return (string) $queryBuilder->expr()->orX(
+            $queryBuilder->expr()->like('LOWER('.$contentElementAlias.'.translationRussian)', $parameterName),
+            $queryBuilder->expr()->like('LOWER('.$contentElementAlias.'.translationEnglishKovalev)', $parameterName),
+            $queryBuilder->expr()->like('LOWER('.$contentElementAlias.'.translationEnglishSchaeken)', $parameterName)
+        );
     }
 }

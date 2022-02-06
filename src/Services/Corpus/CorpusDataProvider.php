@@ -315,7 +315,7 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
             'description' => $contentElement->getDescription(),
             'text' => $contentElement->getOriginalText(),
             'translations' => [
-                'ru' => $contentElement->getTranslatedText(),
+                'ru' => $contentElement->getTranslationRussian(),
             ],
         ];
     }

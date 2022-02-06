@@ -111,12 +111,25 @@ controller:
         literature: Литература
         storagePlace: Место хранения
         originalText: Текст
-        translatedText: Перевод
+        translationRussian: Русский перевод
+        translationEnglishKovalev: |
+          English translation
+          (R. Kovalev)
+        translationEnglishSchaeken: |
+          English translation
+          (© Jos Schaeken / Brill Publishers, 2019)
       downloadFont: скачать шрифт
       showOriginalTextWithoutDivisionIntoWords: Скрыть разделение на слова
       showOriginalTextWithDivisionIntoWords: Показать разделение на слова
-      showTranslatedText: Показать перевод
-      hideTranslatedText: Скрыть перевод
+      showTranslation:
+        russian: Показать перевод
+        english: Show translation
+      hideTranslation:
+        russian: Скрыть перевод
+        english: Hide translation
+      noTranslation:
+        russian: Перевода нет
+        english: No translation available
       preliminaryPublication: предварительная публикация
       noPublication: грамота не видна пользователям сайта
 
@@ -138,7 +151,6 @@ global:
     bool:
       "true": да
       "false": нет
-  noTranslatedText: Перевода нет
   or: или
   withAProbableBias: с вероятным смещением
   forward: вперёд

@@ -79,7 +79,17 @@ interface DocumentFormatterInterface
     /**
      * @return string[]
      */
-    public function getTranslatedText(Document $document): array;
+    public function getTranslationRussian(Document $document, string $placeholder): array;
+
+    /**
+     * @return string[]
+     */
+    public function getTranslationEnglishKovalev(Document $document, string $placeholder): array;
+
+    /**
+     * @return string[]
+     */
+    public function getTranslationEnglishSchaeken(Document $document, string $placeholder): array;
 
     public function getExcavation(Document $document): string;
 

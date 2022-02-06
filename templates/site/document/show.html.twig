@@ -60,7 +60,9 @@
             {{ self.format_images_row(translationContext, 'photos', document.photos) }}
             {{ self.format_images_row(translationContext, 'drawings', document.drawings) }}
             {{ self.format_original_text_row(translationContext, 'originalText', document) }}
-            {{ self.format_text_row(translationContext, 'translatedText', self.format_translated_text_content(translationContext, document)) }}
+            {{ self.format_text_row(translationContext, 'translationRussian', self.format_translated_text_content(translationContext, document, documentFormatter.translationRussian(document, 'noTranslation.russian'|transWithContext(translationContext)), 'russian')) }}
+            {{ self.format_text_row(translationContext, 'translationEnglishKovalev', self.format_translated_text_content(translationContext, document, documentFormatter.translationEnglishKovalev(document, 'noTranslation.english'|transWithContext(translationContext)), 'english')) }}
+            {{ self.format_text_row(translationContext, 'translationEnglishSchaeken', self.format_translated_text_content(translationContext, document, documentFormatter.translationEnglishSchaeken(document, 'noTranslation.english'|transWithContext(translationContext)), 'english')) }}
         </tbody>
     </table>
     {% if is_granted('ROLE_EDITOR') %}
@@ -110,7 +112,7 @@
 {%- endmacro -%}
 
 {%- macro translate_field_label(translationContext, labelTranslationKey) -%}
-    {{ ('fields.'~labelTranslationKey)|transWithContext(translationContext) }}
+    {{ ('fields.'~labelTranslationKey)|transWithContext(translationContext)|nl2br }}
 {%- endmacro -%}
 
 {%- macro fill_row(thContent, tdContend) -%}
@@ -169,16 +171,16 @@
     {%- endfor -%}
 {%- endmacro -%}
 
-{%- macro format_translated_text_content(translationContext, document) -%}
+{%- macro format_translated_text_content(translationContext, document, translatedTextParts, language) -%}
     {% import _self as self %}
     <div data-translated-text-container class="mr-translated-text-container hidden">
         <details>
             <summary class="btn mr-spoiler-button mr-btn mr-btn-dark">
-                <span class="toggler-text show-translated-text">{{ 'showTranslatedText'|transWithContext(translationContext) }}</span>
-                <span class="toggler-text hide-translated-text">{{ 'hideTranslatedText'|transWithContext(translationContext) }}</span>
+                <span class="toggler-text show-translated-text">{{ ('showTranslation.'~language)|transWithContext(translationContext) }}</span>
+                <span class="toggler-text hide-translated-text">{{ ('hideTranslation.'~language)|transWithContext(translationContext) }}</span>
             </summary>
             <div class="translated-text-wrapper">
-                {%- for translatedTextPart in documentFormatter.translatedText(document) -%}
+                {%- for translatedTextPart in translatedTextParts -%}
                     <div>
                         {{ translatedTextPart|nl2br }}
                     </div>

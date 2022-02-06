@@ -37,7 +37,7 @@ use App\FilterableTable\Filter\Parameter\OriginalTextFilterParameter;
 use App\FilterableTable\Filter\Parameter\StateOfPreservationFilterParameter;
 use App\FilterableTable\Filter\Parameter\StoragePlaceFilterParameter;
 use App\FilterableTable\Filter\Parameter\TownFilterParameter;
-use App\FilterableTable\Filter\Parameter\TranslatedTextFilterParameter;
+use App\FilterableTable\Filter\Parameter\TranslationFilterParameter;
 use App\FilterableTable\Filter\Parameter\WayOfWritingFilterParameter;
 use App\Services\Document\Sorting\DocumentComparerInterface;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\AbstractFilterConfigurator;
@@ -62,7 +62,7 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
     private GenreFilterParameter $genreFilterParameter;
     private LanguageFilterParameter $languageFilterParameter;
     private OriginalTextFilterParameter $originalTextFilterParameter;
-    private TranslatedTextFilterParameter $translatedTextFilterParameter;
+    private TranslationFilterParameter $translationFilterParameter;
     private StoragePlaceFilterParameter $storagePlaceFilterParameter;
     private WayOfWritingFilterParameter $wayOfWritingFilterParameter;
 
@@ -78,7 +78,7 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
         GenreFilterParameter $genreFilterParameter,
         LanguageFilterParameter $languageFilterParameter,
         OriginalTextFilterParameter $originalTextFilterParameter,
-        TranslatedTextFilterParameter $translatedTextFilterParameter,
+        TranslationFilterParameter $translationFilterParameter,
         StoragePlaceFilterParameter $storagePlaceFilterParameter,
         WayOfWritingFilterParameter $wayOfWritingFilterParameter
     ) {
@@ -93,7 +93,7 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
         $this->genreFilterParameter = $genreFilterParameter;
         $this->languageFilterParameter = $languageFilterParameter;
         $this->originalTextFilterParameter = $originalTextFilterParameter;
-        $this->translatedTextFilterParameter = $translatedTextFilterParameter;
+        $this->translationFilterParameter = $translationFilterParameter;
         $this->storagePlaceFilterParameter = $storagePlaceFilterParameter;
         $this->wayOfWritingFilterParameter = $wayOfWritingFilterParameter;
     }
@@ -172,7 +172,7 @@ final class DocumentsFilterConfigurator extends AbstractFilterConfigurator
             $this->storagePlaceFilterParameter,
             $this->wayOfWritingFilterParameter,
             $this->originalTextFilterParameter,
-            $this->translatedTextFilterParameter,
+            $this->translationFilterParameter,
         ];
     }
 

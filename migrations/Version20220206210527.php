@@ -23,35 +23,25 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Admin\Text;
+namespace DoctrineMigrations;
 
-use App\Admin\AbstractEntityAdmin;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
-final class ContentElementTextAdmin extends AbstractEntityAdmin
+final class Version20220206210527 extends AbstractMigration
 {
-    protected $baseRouteName = 'text_content_element';
-
-    protected $baseRoutePattern = 'text/content-element';
-
-    protected function configureFormFields(FormMapper $formMapper): void
+    public function getDescription(): string
     {
-        $formMapper
-            ->with($this->getSectionLabel('texts'))
-                ->add('originalText', null, $this->createFormOptions('originalText', ['trim' => false]))
-                ->add('translationRussian', null, $this->createFormOptions('translationRussian'))
-            ->end()
-        ;
+        return 'Added english translation fields.';
     }
 
-    protected function configureRoutes(RouteCollectionInterface $collection): void
+    public function up(Schema $schema): void
     {
-        $collection->clearExcept(['create', 'edit']);
+        $this->addSql('ALTER TABLE bb__content_element ADD translation_english_kovalev TEXT DEFAULT NULL, ADD translation_english_schaeken TEXT DEFAULT NULL, CHANGE translated_text translation_russian TEXT DEFAULT NULL');
     }
 
-    protected function getEntityKey(): string
+    public function down(Schema $schema): void
     {
-        return 'contentElementText';
+        $this->addSql('ALTER TABLE bb__content_element ADD translated_text TEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, DROP translation_russian, DROP translation_english_kovalev, DROP translation_english_schaeken');
     }
 }

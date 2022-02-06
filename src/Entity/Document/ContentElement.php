@@ -85,9 +85,23 @@ class ContentElement
     /**
      * @var string|null
      *
-     * @ORM\Column(name="translated_text", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="translation_russian", type="text", length=65535, nullable=true)
      */
-    private $translatedText;
+    private $translationRussian;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="translation_english_kovalev", type="text", length=65535, nullable=true)
+     */
+    private $translationEnglishKovalev;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="translation_english_schaeken", type="text", length=65535, nullable=true)
+     */
+    private $translationEnglishSchaeken;
 
     /**
      * @var Document
@@ -196,14 +210,38 @@ class ContentElement
         return $this;
     }
 
-    public function getTranslatedText(): ?string
+    public function getTranslationRussian(): ?string
     {
-        return $this->translatedText;
+        return $this->translationRussian;
     }
 
-    public function setTranslatedText(?string $translatedText): self
+    public function setTranslationRussian(?string $translationRussian): self
     {
-        $this->translatedText = $translatedText;
+        $this->translationRussian = $translationRussian;
+
+        return $this;
+    }
+
+    public function getTranslationEnglishKovalev(): ?string
+    {
+        return $this->translationEnglishKovalev;
+    }
+
+    public function setTranslationEnglishKovalev(?string $translationEnglishKovalev): self
+    {
+        $this->translationEnglishKovalev = $translationEnglishKovalev;
+
+        return $this;
+    }
+
+    public function getTranslationEnglishSchaeken(): ?string
+    {
+        return $this->translationEnglishSchaeken;
+    }
+
+    public function setTranslationEnglishSchaeken(?string $translationEnglishSchaeken): self
+    {
+        $this->translationEnglishSchaeken = $translationEnglishSchaeken;
 
         return $this;
     }

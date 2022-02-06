@@ -371,7 +371,9 @@ form:
       genres: Жанр
       languages: Язык
       originalText: Текст
-      translatedText: Перевод
+      translationRussian: Перевод на русский
+      translationEnglishKovalev: Перевод на английский (Ковалев)
+      translationEnglishSchaeken: Перевод на английский (Схакен)
   materialElement:
     tab:
       main:
@@ -422,7 +424,7 @@ form:
   contentElementText:
     fields:
       originalText: Текст
-      translatedText: Перевод
+      translationRussian: Перевод
   file:
     fields:
       id: Внутренний идентификатор

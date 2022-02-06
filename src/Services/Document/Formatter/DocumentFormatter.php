@@ -306,20 +306,31 @@ final class DocumentFormatter implements DocumentFormatterInterface
     /**
      * @return string[]
      */
-    public function getTranslatedText(Document $document): array
+    public function getTranslationRussian(Document $document, string $placeholder): array
     {
-        $placeholder = $this->translator->trans('global.noTranslatedText');
+        return $this->getTranslation(
+            $document,
+            $placeholder,
+            fn (ContentElement $contentElement): ?string => $contentElement->getTranslationRussian()
+        );
+    }
 
-        $textParts = $document
-            ->getContentElements()
-            ->map(fn (ContentElement $contentElement): string => $contentElement->getTranslatedText() ?? $placeholder)
-            ->toArray();
+    public function getTranslationEnglishKovalev(Document $document, string $placeholder): array
+    {
+        return $this->getTranslation(
+            $document,
+            $placeholder,
+            fn (ContentElement $contentElement): ?string => $contentElement->getTranslationEnglishKovalev()
+        );
+    }
 
-        if (0 === \count($textParts)) {
-            $textParts[] = $placeholder;
-        }
-
-        return $textParts;
+    public function getTranslationEnglishSchaeken(Document $document, string $placeholder): array
+    {
+        return $this->getTranslation(
+            $document,
+            $placeholder,
+            fn (ContentElement $contentElement): ?string => $contentElement->getTranslationEnglishSchaeken()
+        );
     }
 
     public function getExcavation(Document $document): string
@@ -442,6 +453,20 @@ final class DocumentFormatter implements DocumentFormatterInterface
             $downloadLink,
             $remark
         );
+    }
+
+    private function getTranslation(Document $document, string $placeholder, callable $getter)
+    {
+        $textParts = $document
+            ->getContentElements()
+            ->map(fn (ContentElement $contentElement): string => $getter($contentElement) ?? $placeholder)
+            ->toArray();
+
+        if (0 === \count($textParts)) {
+            $textParts[] = $placeholder;
+        }
+
+        return $textParts;
     }
 
     private function formatConventionalDateCell(ConventionalDateCell $conventionalDateCell): string
