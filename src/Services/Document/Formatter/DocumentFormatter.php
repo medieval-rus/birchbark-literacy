@@ -27,11 +27,13 @@ namespace App\Services\Document\Formatter;
 
 use App\Entity\Bibliography\BibliographicRecord;
 use App\Entity\Bibliography\FileSupplement;
+use App\Entity\Document\ContentCategory;
 use App\Entity\Document\ContentElement;
 use App\Entity\Document\ConventionalDateCell;
 use App\Entity\Document\Document;
 use App\Entity\Document\Estate;
 use App\Entity\Document\Excavation;
+use App\Entity\Document\Genre;
 use App\Entity\Document\MaterialElement;
 use App\Entity\Media\File;
 use App\Services\Bibliography\Sorting\BibliographicRecordComparerInterface;
@@ -104,7 +106,7 @@ final class DocumentFormatter implements DocumentFormatterInterface
     {
         $descriptions = $document
             ->getContentElements()
-            ->filter(fn (ContentElement $contentElement): bool => $contentElement->getDescription() !== null)
+            ->filter(fn (ContentElement $contentElement): bool => null !== $contentElement->getDescription())
             ->map(fn (ContentElement $contentElement): string => $contentElement->getDescription())
             ->toArray();
 
@@ -186,11 +188,15 @@ final class DocumentFormatter implements DocumentFormatterInterface
     public function getCategory(Document $document): string
     {
         $categories = array_unique(
-            $document
-                ->getContentElements()
-                ->filter(fn (ContentElement $contentElement): bool => $contentElement->getCategory() !== null)
-                ->map(fn (ContentElement $contentElement): string => $contentElement->getCategory()->getName())
-                ->toArray()
+            array_map(
+                fn (ContentCategory $category): string => $category->getName(),
+                array_merge(
+                    ...array_map(
+                        fn (ContentElement $contentElement): array => $contentElement->getCategories()->toArray(),
+                        $document->getContentElements()->toArray()
+                    )
+                )
+            )
         );
 
         if (\count($categories) > 0) {
@@ -203,11 +209,15 @@ final class DocumentFormatter implements DocumentFormatterInterface
     public function getGenre(Document $document): string
     {
         $genres = array_unique(
-            $document
-                ->getContentElements()
-                ->filter(fn (ContentElement $contentElement): bool => $contentElement->getGenre() !== null)
-                ->map(fn (ContentElement $contentElement): string => $contentElement->getGenre()->getName())
-                ->toArray()
+            array_map(
+                fn (Genre $genre): string => $genre->getName(),
+                array_merge(
+                    ...array_map(
+                        fn (ContentElement $contentElement): array => $contentElement->getGenres()->toArray(),
+                        $document->getContentElements()->toArray()
+                    )
+                )
+            )
         );
 
         if (\count($genres) > 0) {
@@ -249,7 +259,7 @@ final class DocumentFormatter implements DocumentFormatterInterface
         $storagePlaces = array_unique(
             $document
                 ->getMaterialElements()
-                ->filter(fn (MaterialElement $materialElement): bool => $materialElement->getStoragePlace() !== null)
+                ->filter(fn (MaterialElement $materialElement): bool => null !== $materialElement->getStoragePlace())
                 ->map(fn (MaterialElement $materialElement): string => $materialElement->getStoragePlace()->getName())
                 ->toArray()
         );

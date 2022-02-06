@@ -27,8 +27,11 @@ namespace App\Services\Corpus;
 
 use App\Entity\Bibliography\BibliographicRecord;
 use App\Entity\Bibliography\FileSupplement;
+use App\Entity\Document\ContentCategory;
 use App\Entity\Document\ContentElement;
 use App\Entity\Document\Document;
+use App\Entity\Document\Genre;
+use App\Entity\Document\Language;
 use App\Entity\Document\MaterialElement;
 use App\Helper\StringHelper;
 use App\Repository\Document\DocumentRepository;
@@ -142,11 +145,17 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
             'lang' => implode(
                 ' | ',
                 array_unique(
-                    $document
-                        ->getContentElements()
-                        ->filter(fn (ContentElement $contentElement): bool => null !== $contentElement->getLanguage())
-                        ->map(fn (ContentElement $contentElement): string => $contentElement->getLanguage()->getName())
-                        ->toArray()
+                    array_map(
+                        fn (Language $language): string => $language->getName(),
+                        array_merge(
+                            ...array_map(
+                                fn (ContentElement $contentElement): array => $contentElement
+                                    ->getLanguages()
+                                    ->toArray(),
+                                $document->getContentElements()->toArray()
+                            )
+                        )
+                    )
                 )
             ),
             'ngb_volume' => implode(
@@ -181,11 +190,17 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
             'category' => implode(
                 ' | ',
                 array_unique(
-                    $document
-                        ->getContentElements()
-                        ->filter(fn (ContentElement $contentElement): bool => null !== $contentElement->getCategory())
-                        ->map(fn (ContentElement $contentElement): string => $contentElement->getCategory()->getName())
-                        ->toArray()
+                    array_map(
+                        fn (ContentCategory $category): string => $category->getName(),
+                        array_merge(
+                            ...array_map(
+                                fn (ContentElement $contentElement): array => $contentElement
+                                    ->getCategories()
+                                    ->toArray(),
+                                $document->getContentElements()->toArray()
+                            )
+                        )
+                    )
                 )
             ),
             'summary' => implode(
@@ -208,11 +223,15 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
             'genre' => implode(
                 ' | ',
                 array_unique(
-                    $document
-                        ->getContentElements()
-                        ->filter(fn (ContentElement $contentElement): bool => null !== $contentElement->getGenre())
-                        ->map(fn (ContentElement $contentElement): string => $contentElement->getGenre()->getName())
-                        ->toArray()
+                    array_map(
+                        fn (Genre $genre): string => $genre->getName(),
+                        array_merge(
+                            ...array_map(
+                                fn (ContentElement $contentElement): array => $contentElement->getGenres()->toArray(),
+                                $document->getContentElements()->toArray()
+                            )
+                        )
+                    )
                 )
             ),
             'excavation' => implode(

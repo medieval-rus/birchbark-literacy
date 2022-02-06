@@ -366,10 +366,10 @@ form:
       basicInformation:
         label: Основная информация
     fields:
-      category: Категория
       description: Описание
-      genre: Жанр
-      language: Язык
+      categories: Категория
+      genres: Жанр
+      languages: Язык
       originalText: Текст
       translatedText: Перевод
   materialElement:

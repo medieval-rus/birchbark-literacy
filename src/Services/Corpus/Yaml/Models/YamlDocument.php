@@ -42,7 +42,7 @@ final class YamlDocument implements YamlPropertyContainerInterface
     private array $wordParts;
 
     /**
-     * @param YamlPage[] $pages
+     * @param YamlPage[]  $pages
      * @param YamlPiece[] $wordParts
      */
     public function __construct(string $number, array $pages, array $wordParts)

@@ -25,6 +25,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Document;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -50,28 +52,28 @@ class ContentElement
     private $description;
 
     /**
-     * @var ContentCategory|null
+     * @var Collection|ContentCategory[]
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Document\ContentCategory")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Document\ContentCategory", cascade={"persist"})
+     * @ORM\JoinTable(name="content_element_category")
      */
-    private $category;
+    private $categories;
 
     /**
-     * @var Genre|null
+     * @var Collection|Genre[]
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Document\Genre")
-     * @ORM\JoinColumn(name="genre_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Document\Genre", cascade={"persist"})
+     * @ORM\JoinTable(name="content_element_genre")
      */
-    private $genre;
+    private $genres;
 
     /**
-     * @var Language|null
+     * @var Collection|Language[]
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Document\Language")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Document\Language", cascade={"persist"})
+     * @ORM\JoinTable(name="content_element_language")
      */
-    private $language;
+    private $languages;
 
     /**
      * @var string|null
@@ -99,6 +101,13 @@ class ContentElement
      */
     private $document;
 
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+        $this->genres = new ArrayCollection();
+        $this->languages = new ArrayCollection();
+    }
+
     public function __toString(): string
     {
         return (string) $this->description;
@@ -121,38 +130,56 @@ class ContentElement
         return $this;
     }
 
-    public function getCategory(): ?ContentCategory
+    /**
+     * @return Collection|ContentCategory[]
+     */
+    public function getCategories(): Collection
     {
-        return $this->category;
+        return $this->categories;
     }
 
-    public function setCategory(?ContentCategory $category): self
+    /**
+     * @param Collection|ContentCategory[] $categories
+     */
+    public function setCategories(Collection $categories): self
     {
-        $this->category = $category;
+        $this->categories = $categories;
 
         return $this;
     }
 
-    public function getGenre(): ?Genre
+    /**
+     * @return Collection|Genre[]
+     */
+    public function getGenres(): Collection
     {
-        return $this->genre;
+        return $this->genres;
     }
 
-    public function setGenre(?Genre $genre): self
+    /**
+     * @param Collection|Genre[] $genres
+     */
+    public function setGenres(Collection $genres): self
     {
-        $this->genre = $genre;
+        $this->genres = $genres;
 
         return $this;
     }
 
-    public function getLanguage(): ?Language
+    /**
+     * @return Collection|Language[]
+     */
+    public function getLanguages(): Collection
     {
-        return $this->language;
+        return $this->languages;
     }
 
-    public function setLanguage(?Language $language): self
+    /**
+     * @param Collection|Language[] $languages
+     */
+    public function setLanguages(Collection $languages): self
     {
-        $this->language = $language;
+        $this->languages = $languages;
 
         return $this;
     }
