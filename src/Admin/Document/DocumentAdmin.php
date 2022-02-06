@@ -27,6 +27,7 @@ namespace App\Admin\Document;
 
 use App\Admin\AbstractEntityAdmin;
 use App\DataStorage\DataStorageManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Knp\Menu\ItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -88,7 +89,18 @@ final class DocumentAdmin extends AbstractEntityAdmin
                     ->add('wayOfWriting', null, $this->createFormOptions('wayOfWriting'))
                 ->end()
                 ->with($this->getSectionLabel('dates'), ['class' => 'col-md-6'])
-                    ->add('conventionalDate', null, $this->createFormOptions('conventionalDate'))
+                    ->add(
+                        'conventionalDate',
+                        null,
+                        $this->createFormOptions(
+                            'conventionalDate',
+                            [
+                                'query_builder' => fn (EntityRepository $repository) => $repository
+                                    ->createQueryBuilder('c')
+                                    ->orderBy('c.initialYear', 'ASC'),
+                            ]
+                        )
+                    )
                     ->add(
                         'isConventionalDateBiasedBackward',
                         CheckboxType::class,

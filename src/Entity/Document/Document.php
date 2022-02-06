@@ -103,10 +103,10 @@ class Document
     private $stateOfPreservation;
 
     /**
-     * @var ConventionalDateCell|null
+     * @var ConventionalDateCell
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Document\ConventionalDateCell")
-     * @ORM\JoinColumn(name="conventional_date_cell_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="conventional_date_cell_id", referencedColumnName="id", nullable=false)
      */
     private $conventionalDate;
 
@@ -322,7 +322,7 @@ class Document
         return $this->conventionalDate;
     }
 
-    public function setConventionalDate(?ConventionalDateCell $conventionalDate): self
+    public function setConventionalDate(ConventionalDateCell $conventionalDate): self
     {
         $this->conventionalDate = $conventionalDate;
 
