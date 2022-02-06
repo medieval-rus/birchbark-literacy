@@ -31,9 +31,17 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\ExpressionBuilderInterface;
 use Vyfony\Bundle\FilterableTableBundle\Filter\Configurator\Parameter\FilterParameterInterface;
+use Vyfony\Bundle\FilterableTableBundle\Persistence\QueryBuilder\Parameter\ParameterFactoryInterface;
 
 final class NumberFilterParameter implements FilterParameterInterface, ExpressionBuilderInterface
 {
+    private ParameterFactoryInterface $parameterFactory;
+
+    public function __construct(ParameterFactoryInterface $parameterFactory)
+    {
+        $this->parameterFactory = $parameterFactory;
+    }
+
     public function getQueryParameterName(): string
     {
         return 'number';
@@ -66,22 +74,22 @@ final class NumberFilterParameter implements FilterParameterInterface, Expressio
 
         $queryBuilder
             ->setParameter(
-                $equalityParameter = $this->createParameter('number'),
+                $equalityParameter = $this->parameterFactory->createNamedParameter('number'),
                 $number,
                 Types::STRING
             )
             ->setParameter(
-                $composedLeftParameter = $this->createParameter('number'),
+                $composedLeftParameter = $this->parameterFactory->createNamedParameter('number'),
                 $number.'/%',
                 Types::STRING
             )
             ->setParameter(
-                $composedRightParameter = $this->createParameter('number'),
+                $composedRightParameter = $this->parameterFactory->createNamedParameter('number'),
                 '%/'.$number,
                 Types::STRING
             )
             ->setParameter(
-                $composedMiddleParameter = $this->createParameter('number'),
+                $composedMiddleParameter = $this->parameterFactory->createNamedParameter('number'),
                 '%/'.$number.'/%',
                 Types::STRING
             );
@@ -92,11 +100,5 @@ final class NumberFilterParameter implements FilterParameterInterface, Expressio
             $queryBuilder->expr()->like($entityAlias.'.number', $composedRightParameter),
             $queryBuilder->expr()->like($entityAlias.'.number', $composedMiddleParameter),
         );
-    }
-
-    // todo move to AliasFactory
-    private function createParameter(string $parameterName): string
-    {
-        return strtolower(':'.$parameterName.'_'.uniqid());
     }
 }

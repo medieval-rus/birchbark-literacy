@@ -50,7 +50,7 @@
         "symfony/yaml": "5.3.*",
         "twig/extra-bundle": "^3.3",
         "twig/twig": "^3.3",
-        "vyfony/filterable-table-bundle": "v0.6.3"
+        "vyfony/filterable-table-bundle": "v0.6.4"
     },
     "require-dev": {
         "enlightn/security-checker": "^1.9",
