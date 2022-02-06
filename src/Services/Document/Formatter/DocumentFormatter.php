@@ -282,7 +282,11 @@ final class DocumentFormatter implements DocumentFormatterInterface
             foreach ($textPieces as $textPiece) {
                 if ($textPiece instanceof ModifiableTextPieceInterface) {
                     $textPiece->modify(
-                        fn (string $text): string => str_replace(['‐'.\PHP_EOL, ' '], [\PHP_EOL, ''], $text)
+                        fn (string $text): string => str_replace(
+                            ["‐\r\n", "‐\n", ' '],
+                            ["\r\n", "\n", ''],
+                            $text
+                        )
                     );
                 }
             }
