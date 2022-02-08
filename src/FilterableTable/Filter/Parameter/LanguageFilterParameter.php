@@ -85,8 +85,8 @@ final class LanguageFilterParameter implements FilterParameterInterface, Express
                 $entityAlias.'.contentElements',
                 $contentElementAlias = $this->aliasFactory->createAlias(static::class, 'contentElements')
             )
-            ->innerJoin(
-                $contentElementAlias.'.language',
+            ->leftJoin(
+                $contentElementAlias.'.languages',
                 $languageAlias = $this->createAlias()
             )
         ;

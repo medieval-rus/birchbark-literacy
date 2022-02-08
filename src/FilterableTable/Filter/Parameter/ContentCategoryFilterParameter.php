@@ -85,8 +85,8 @@ final class ContentCategoryFilterParameter implements FilterParameterInterface, 
                 $entityAlias.'.contentElements',
                 $contentElementAlias = $this->aliasFactory->createAlias(static::class, 'contentElements')
             )
-            ->innerJoin(
-                $contentElementAlias.'.category',
+            ->leftJoin(
+                $contentElementAlias.'.categories',
                 $contentCategoryAlias = $this->createAlias()
             )
         ;

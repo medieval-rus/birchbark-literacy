@@ -85,8 +85,8 @@ final class GenreFilterParameter implements FilterParameterInterface, Expression
                 $entityAlias.'.contentElements',
                 $contentElementAlias = $this->aliasFactory->createAlias(static::class, 'contentElements')
             )
-            ->innerJoin(
-                $contentElementAlias.'.genre',
+            ->leftJoin(
+                $contentElementAlias.'.genres',
                 $genreAlias = $this->createAlias()
             )
         ;
