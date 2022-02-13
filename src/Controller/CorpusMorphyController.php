@@ -43,7 +43,6 @@ use App\Services\Corpus\Morphy\Models\Yaml\YamlLine;
 use App\Services\Corpus\Morphy\Models\Yaml\YamlPage;
 use App\Services\Corpus\Morphy\Models\Yaml\YamlPiece;
 use App\Services\Corpus\Morphy\MorphyParserInterface;
-use App\Services\Document\Formatter\DocumentFormatterInterface;
 use App\Services\Document\Sorting\DocumentComparerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
