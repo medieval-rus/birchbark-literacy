@@ -283,8 +283,8 @@ final class DocumentFormatter implements DocumentFormatterInterface
                 if ($textPiece instanceof ModifiableTextPieceInterface) {
                     $textPiece->modify(
                         fn (string $text): string => str_replace(
-                            ["‐\r\n", "‐\n", ' '],
-                            ["\r\n", "\n", ''],
+                            ["‐\r\n", "‐\n", ' ', '{', '}'],
+                            ["\r\n", "\n", '', '', ''],
                             $text
                         )
                     );

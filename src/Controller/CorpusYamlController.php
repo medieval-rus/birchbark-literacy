@@ -124,11 +124,7 @@ final class CorpusYamlController extends AbstractController
             return $this->renderInputForm($form);
         }
 
-        $documents = $documentRepository->findAllInConventionalOrder(false, true);
-        $documentsByNumber = array_combine(
-            array_map(fn (Document $document): string => $documentFormatter->getNumber($document), $documents),
-            $documents
-        );
+        $documentsByNumber = $documentRepository->getAllDocumentsByNumber(false, true);
 
         $documentComparer = fn (string $a, string $b): int => $documentComparer->compare(
             $documentsByNumber[$a],
