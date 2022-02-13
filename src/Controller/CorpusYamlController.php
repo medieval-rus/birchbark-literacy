@@ -451,6 +451,20 @@ final class CorpusYamlController extends AbstractController
                 ->getContentElements()
                 ->map($translationGetter)
                 ->filter(fn (?string $translation): bool => null !== $translation)
+                ->map(
+                    fn (string $translation): string => str_replace(
+                        ['>', '<', '‘', '’'],
+                        ['&gt;', '&lt;', '', ''],
+                        $translation
+                    )
+                )
+                ->map(
+                    fn (string $translation): string => preg_replace(
+                        '/({[^}]*})/',
+                        '<noindex>$1</noindex>',
+                        $translation
+                    )
+                )
                 ->toArray()
         );
 
