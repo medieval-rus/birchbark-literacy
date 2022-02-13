@@ -453,7 +453,7 @@ final class CorpusYamlController extends AbstractController
                 ->filter(fn (?string $translation): bool => null !== $translation)
                 ->map(
                     fn (string $translation): string => str_replace(
-                        ['>', '<', '‘', '’'],
+                        ['>', '<', '‛', '’'],
                         ['&gt;', '&lt;', '', ''],
                         $translation
                     )
