@@ -185,22 +185,22 @@ final class DocumentFormatter implements DocumentFormatterInterface
         return array_merge($document->getPhotos()->toArray(), $document->getDrawings()->toArray());
     }
 
-    public function getCategory(Document $document): string
+    public function getContentCategory(Document $document): string
     {
-        $categories = array_unique(
+        $contentCategories = array_unique(
             array_map(
-                fn (ContentCategory $category): string => $category->getName(),
+                fn (ContentCategory $contentCategory): string => $contentCategory->getName(),
                 array_merge(
                     ...array_map(
-                        fn (ContentElement $contentElement): array => $contentElement->getCategories()->toArray(),
+                        fn (ContentElement $contentElement): array => $contentElement->getContentCategories()->toArray(),
                         $document->getContentElements()->toArray()
                     )
                 )
             )
         );
 
-        if (\count($categories) > 0) {
-            return implode(' // ', $categories);
+        if (\count($contentCategories) > 0) {
+            return implode(' // ', $contentCategories);
         }
 
         return '-';

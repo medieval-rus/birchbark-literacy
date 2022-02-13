@@ -100,7 +100,7 @@ controller:
         town: Город
         description: Содержание
         conventionalDate: Условная дата
-        category: Категория
+        contentCategory: Категория
         genre: Жанр
         excavation: Раскоп
         stratigraphicalDate: Стратиграфическая дата

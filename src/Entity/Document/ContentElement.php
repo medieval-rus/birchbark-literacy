@@ -55,15 +55,15 @@ class ContentElement
      * @var Collection|ContentCategory[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Document\ContentCategory", cascade={"persist"})
-     * @ORM\JoinTable(name="content_element_category")
+     * @ORM\JoinTable(name="bb__content_element__content_category")
      */
-    private $categories;
+    private $contentCategories;
 
     /**
      * @var Collection|Genre[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Document\Genre", cascade={"persist"})
-     * @ORM\JoinTable(name="content_element_genre")
+     * @ORM\JoinTable(name="bb__content_element__genre")
      */
     private $genres;
 
@@ -71,7 +71,7 @@ class ContentElement
      * @var Collection|Language[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Document\Language", cascade={"persist"})
-     * @ORM\JoinTable(name="content_element_language")
+     * @ORM\JoinTable(name="bb__content_element__language")
      */
     private $languages;
 
@@ -117,7 +117,7 @@ class ContentElement
 
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
+        $this->contentCategories = new ArrayCollection();
         $this->genres = new ArrayCollection();
         $this->languages = new ArrayCollection();
     }
@@ -147,17 +147,17 @@ class ContentElement
     /**
      * @return Collection|ContentCategory[]
      */
-    public function getCategories(): Collection
+    public function getContentCategories(): Collection
     {
-        return $this->categories;
+        return $this->contentCategories;
     }
 
     /**
-     * @param Collection|ContentCategory[] $categories
+     * @param Collection|ContentCategory[] $contentCategories
      */
-    public function setCategories(Collection $categories): self
+    public function setContentCategories(Collection $contentCategories): self
     {
-        $this->categories = $categories;
+        $this->contentCategories = $contentCategories;
 
         return $this;
     }

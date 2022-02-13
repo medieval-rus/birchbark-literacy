@@ -191,11 +191,11 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
                 ' | ',
                 array_unique(
                     array_map(
-                        fn (ContentCategory $category): string => $category->getName(),
+                        fn (ContentCategory $contentCategory): string => $contentCategory->getName(),
                         array_merge(
                             ...array_map(
                                 fn (ContentElement $contentElement): array => $contentElement
-                                    ->getCategories()
+                                    ->getContentCategories()
                                     ->toArray(),
                                 $document->getContentElements()->toArray()
                             )

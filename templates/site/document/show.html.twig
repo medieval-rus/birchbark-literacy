@@ -50,7 +50,7 @@
             {{ self.format_text_row(translationContext, 'nonStratigraphicalDate', document.nonStratigraphicalDate) }}
             {{ self.format_text_row(translationContext, 'stateOfPreservation', document.stateOfPreservation ? document.stateOfPreservation.name) }}
             {{ self.format_text_row(translationContext, 'excavation', documentFormatter.excavation(document)) }}
-            {{ self.format_text_row(translationContext, 'category', documentFormatter.category(document)) }}
+            {{ self.format_text_row(translationContext, 'contentCategory', documentFormatter.contentCategory(document)) }}
             {{ self.format_text_row(translationContext, 'genre', documentFormatter.genre(document)) }}
             {{ self.format_text_row(translationContext, 'description', documentFormatter.description(document)) }}
             {{ self.format_text_row(translationContext, 'dndVolumes', documentFormatter.dnd(document)) }}

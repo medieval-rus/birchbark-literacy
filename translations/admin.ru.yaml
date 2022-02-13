@@ -367,7 +367,7 @@ form:
         label: Основная информация
     fields:
       description: Описание
-      categories: Категория
+      contentCategories: Категория
       genres: Жанр
       languages: Язык
       originalText: Текст

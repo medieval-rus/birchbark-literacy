@@ -54,7 +54,7 @@ interface DocumentFormatterInterface
      */
     public function getImages(Document $document): array;
 
-    public function getCategory(Document $document): string;
+    public function getContentCategory(Document $document): string;
 
     public function getGenre(Document $document): string;
 

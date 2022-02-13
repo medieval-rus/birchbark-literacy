@@ -39,7 +39,7 @@ final class ContentElementAdmin extends AbstractEntityAdmin
         $formMapper
             ->with($this->getSectionLabel('basicInformation'))
                 ->add('description', null, $this->createFormOptions('description'))
-                ->add('categories', null, $this->createManyToManyFormOptions('categories'))
+                ->add('contentCategories', null, $this->createManyToManyFormOptions('contentCategories'))
                 ->add('genres', null, $this->createManyToManyFormOptions('genres'))
                 ->add('languages', null, $this->createManyToManyFormOptions('languages'))
                 ->add('originalText', null, $this->createFormOptions('originalText', ['trim' => false]))
