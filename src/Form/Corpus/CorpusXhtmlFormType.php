@@ -23,28 +23,20 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Indices\Models\Sources;
+namespace App\Form\Corpus;
 
-use App\Services\Corpus\Morphy\Models\Yaml\YamlAnalysis;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
 
-final class InflectedFormSource
+final class CorpusXhtmlFormType extends AbstractType
 {
-    private string $documentNumber;
-    private YamlAnalysis $analysis;
-
-    public function __construct(string $documentNumber, YamlAnalysis $analysis)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $this->documentNumber = $documentNumber;
-        $this->analysis = $analysis;
-    }
-
-    public function getDocumentNumber(): string
-    {
-        return $this->documentNumber;
-    }
-
-    public function getAnalysis(): YamlAnalysis
-    {
-        return $this->analysis;
+        $builder
+            ->add('xhtml', FileType::class, ['label' => 'Xhtml file', 'required' => true])
+            ->add('submit', SubmitType::class, ['label' => 'Send'])
+        ;
     }
 }

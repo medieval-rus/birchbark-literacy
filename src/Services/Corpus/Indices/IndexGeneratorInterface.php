@@ -26,7 +26,7 @@ declare(strict_types=1);
 namespace App\Services\Corpus\Indices;
 
 use App\Services\Corpus\Indices\Models\WordIndex;
-use App\Services\Corpus\Yaml\Models\YamlDocument;
+use App\Services\Corpus\Morphy\Models\Yaml\YamlDocument;
 
 interface IndexGeneratorInterface
 {

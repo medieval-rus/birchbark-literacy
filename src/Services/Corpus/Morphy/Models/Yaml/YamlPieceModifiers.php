@@ -23,28 +23,31 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Indices\Models\Sources;
+namespace App\Services\Corpus\Morphy\Models\Yaml;
 
-use App\Services\Corpus\Morphy\Models\Yaml\YamlAnalysis;
-
-final class InflectedFormSource
+final class YamlPieceModifiers
 {
-    private string $documentNumber;
-    private YamlAnalysis $analysis;
+    private bool $isReconstruction;
+    private bool $isMisspelled;
 
-    public function __construct(string $documentNumber, YamlAnalysis $analysis)
+    public function __construct(bool $isReconstruction, bool $isMisspelled)
     {
-        $this->documentNumber = $documentNumber;
-        $this->analysis = $analysis;
+        $this->isReconstruction = $isReconstruction;
+        $this->isMisspelled = $isMisspelled;
     }
 
-    public function getDocumentNumber(): string
+    public function __toString(): string
     {
-        return $this->documentNumber;
+        return sprintf('%s%s', $this->isReconstruction ? 'реконструкция' : '', $this->isMisspelled ? '!' : '');
     }
 
-    public function getAnalysis(): YamlAnalysis
+    public function getIsReconstruction(): bool
     {
-        return $this->analysis;
+        return $this->isReconstruction;
+    }
+
+    public function getIsMisspelled(): bool
+    {
+        return $this->isMisspelled;
     }
 }

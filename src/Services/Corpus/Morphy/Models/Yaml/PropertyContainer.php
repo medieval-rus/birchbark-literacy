@@ -23,31 +23,38 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml\Models;
+namespace App\Services\Corpus\Morphy\Models\Yaml;
 
-final class YamlPieceModifiers
+trait PropertyContainer
 {
-    private bool $isReconstruction;
-    private bool $isMisspelled;
+    /**
+     * @var string[][]|null[][]
+     */
+    private array $properties = [];
 
-    public function __construct(bool $isReconstruction, bool $isMisspelled)
+    public function getProperties(): array
     {
-        $this->isReconstruction = $isReconstruction;
-        $this->isMisspelled = $isMisspelled;
+        return $this->properties;
     }
 
-    public function __toString(): string
+    public function addProperty(int $parsingLineIndex, string $key, ?string $value): void
     {
-        return sprintf('%s%s', $this->isReconstruction ? 'реконструкция' : '', $this->isMisspelled ? '!' : '');
+        if (!\array_key_exists($key, $this->properties)) {
+            $this->properties[$key] = [];
+        }
+
+        $this->properties[$key][] = $value;
     }
 
-    public function getIsReconstruction(): bool
+    /**
+     * @return string[]|null[]
+     */
+    public function getProperty(string $key): array
     {
-        return $this->isReconstruction;
-    }
+        if (!\array_key_exists($key, $this->properties)) {
+            return [];
+        }
 
-    public function getIsMisspelled(): bool
-    {
-        return $this->isMisspelled;
+        return $this->properties[$key];
     }
 }

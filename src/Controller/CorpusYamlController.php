@@ -25,7 +25,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Document\ContentElement;
 use App\Entity\Document\Document;
+use App\Form\Corpus\CorpusXhtmlFormType;
 use App\Form\Corpus\CorpusYamlFormType;
 use App\Helper\StringHelper;
 use App\Repository\Document\DocumentRepository;
@@ -35,11 +37,12 @@ use App\Services\Corpus\Indices\Models\InflectedForm;
 use App\Services\Corpus\Indices\Models\InflectedFromEntry;
 use App\Services\Corpus\Indices\Models\Word;
 use App\Services\Corpus\Indices\Models\WordIndex;
-use App\Services\Corpus\Yaml\Models\YamlDocument;
-use App\Services\Corpus\Yaml\Models\YamlLine;
-use App\Services\Corpus\Yaml\Models\YamlPage;
-use App\Services\Corpus\Yaml\Models\YamlPiece;
-use App\Services\Corpus\Yaml\YamlParserInterface;
+use App\Services\Corpus\Morphy\Models\Xhtml\XhtmlDocument;
+use App\Services\Corpus\Morphy\Models\Yaml\YamlDocument;
+use App\Services\Corpus\Morphy\Models\Yaml\YamlLine;
+use App\Services\Corpus\Morphy\Models\Yaml\YamlPage;
+use App\Services\Corpus\Morphy\Models\Yaml\YamlPiece;
+use App\Services\Corpus\Morphy\MorphyParserInterface;
 use App\Services\Document\Formatter\DocumentFormatterInterface;
 use App\Services\Document\Sorting\DocumentComparerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,6 +50,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use ZipArchive;
 
@@ -60,16 +64,16 @@ final class CorpusYamlController extends AbstractController
      */
     public function index(
         Request $request,
-        YamlParserInterface $yamlParser,
+        MorphyParserInterface $morphyParser,
         IndexGeneratorInterface $indexGenerator
     ): Response {
-        [$isSuccessful, $form] = $this->handleRequest($request);
+        [$isSuccessful, $form] = $this->handleRequest($request, CorpusYamlFormType::class);
 
         if (!$isSuccessful) {
-            return $this->renderYamlForm($form);
+            return $this->renderInputForm($form);
         }
 
-        [$yamlFileName, $yamlDocumentsByNumber] = $this->readYaml($form, $yamlParser);
+        [$yamlFileName, $yamlDocumentsByNumber] = $this->readYaml($form, $morphyParser);
 
         $index = $indexGenerator->generate($yamlDocumentsByNumber);
 
@@ -109,15 +113,15 @@ final class CorpusYamlController extends AbstractController
     public function diff(
         Request $request,
         CorpusDataProviderInterface $corpusDataProvider,
-        YamlParserInterface $yamlParser,
+        MorphyParserInterface $morphyParser,
         DocumentRepository $documentRepository,
         DocumentComparerInterface $documentComparer,
         DocumentFormatterInterface $documentFormatter
     ): Response {
-        [$isSuccessful, $form] = $this->handleRequest($request);
+        [$isSuccessful, $form] = $this->handleRequest($request, CorpusYamlFormType::class);
 
         if (!$isSuccessful) {
-            return $this->renderYamlForm($form);
+            return $this->renderInputForm($form);
         }
 
         $documents = $documentRepository->findAllInConventionalOrder(false, true);
@@ -131,7 +135,7 @@ final class CorpusYamlController extends AbstractController
             $documentsByNumber[$b]
         );
 
-        [$yamlFileName, $yamlDocumentsByNumber] = $this->readYaml($form, $yamlParser);
+        [$yamlFileName, $yamlDocumentsByNumber] = $this->readYaml($form, $morphyParser);
         uksort($yamlDocumentsByNumber, $documentComparer);
 
         $dbTexts = $corpusDataProvider->getTexts(true);
@@ -196,6 +200,70 @@ final class CorpusYamlController extends AbstractController
         );
     }
 
+    /**
+     * @Route("/parallelize/", name="corpus_yaml__parallelize", methods={"GET", "POST"})
+     */
+    public function parallelize(
+        Request $request,
+        MorphyParserInterface $morphyParser,
+        DocumentRepository $documentRepository
+    ): Response {
+        [$isSuccessful, $form] = $this->handleRequest($request, CorpusXhtmlFormType::class);
+
+        if (!$isSuccessful) {
+            return $this->renderInputForm($form);
+        }
+
+        /**
+         * @var $xhtmlDocumentsByNumber XhtmlDocument[]
+         */
+        [$xhtmlFileName, $xhtmlDocumentsByNumber] = $this->readXhtml($form, $morphyParser);
+
+        $documentsByNumber = $documentRepository->getAllDocumentsByNumber(false, true);
+
+        $parallelDocuments = [];
+        foreach ($xhtmlDocumentsByNumber as $number => $xhtmlDocument) {
+            $document = $documentsByNumber[$number];
+
+            $parallelDocuments[] = $this->formatParallelXhtmlDocument(
+                $xhtmlDocument->getNumber(),
+                [
+                    $this->wrapWithLanguageTag($xhtmlDocument->getContent(), 'orv'),
+                    $this->wrapTranslation(
+                        $document,
+                        fn (ContentElement $contentElement): ?string => $contentElement->getTranslationRussian(),
+                        'ru'
+                    ),
+                    $this->wrapTranslation(
+                        $document,
+                        fn (ContentElement $contentElement): ?string => $contentElement->getTranslationEnglishKovalev(),
+                        'en',
+                        '1'
+                    ),
+                    $this->wrapTranslation(
+                        $document,
+                        fn (ContentElement $contentElement): ?string => $contentElement->getTranslationEnglishSchaeken(),
+                        'en',
+                        '2'
+                    ),
+                ]
+            );
+        }
+
+        $response = new Response($this->formatXhtmlDocument(implode("\n", $parallelDocuments)));
+        $response->headers->set(
+            'Content-Disposition',
+            $response
+                ->headers
+                ->makeDisposition(
+                    ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                    sprintf('%s_parallel.xhtml', $xhtmlFileName)
+                )
+        );
+
+        return $response;
+    }
+
     private function createZipResponse(string $returnedFileName, array $items): Response
     {
         $zipFileName = tempnam('/tmp', 'zip');
@@ -211,33 +279,48 @@ final class CorpusYamlController extends AbstractController
 
         $response = new Response(file_get_contents($zipFileName));
         $response->headers->set('Content-Type', 'application/zip');
-        $response->headers->set('Content-Disposition', 'attachment;filename="'.$returnedFileName.'"');
+        $response->headers->set(
+            'Content-Disposition',
+            $response
+                ->headers
+                ->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $returnedFileName)
+        );
         $response->headers->set('Content-length', filesize($zipFileName));
 
         return $response;
     }
 
-    private function handleRequest(Request $request): array
+    private function handleRequest(Request $request, string $formType): array
     {
-        $form = $this->createForm(CorpusYamlFormType::class);
+        $form = $this->createForm($formType);
         $form->handleRequest($request);
 
         return [$form->isSubmitted() && $form->isValid(), $form];
     }
 
-    private function readYaml(FormInterface $form, YamlParserInterface $yamlParser): array
+    private function readYaml(FormInterface $form, MorphyParserInterface $morphyParser): array
     {
         /**
          * @var $yamlFile UploadedFile
          */
         $yamlFile = $form->get('yaml')->getData();
 
-        return [$yamlFile->getClientOriginalName(), $yamlParser->parseYaml($yamlFile->getContent())];
+        return [$yamlFile->getClientOriginalName(), $morphyParser->parseYaml($yamlFile->getContent())];
     }
 
-    private function renderYamlForm($form): Response
+    private function readXhtml(FormInterface $form, MorphyParserInterface $morphyParser): array
     {
-        return $this->render('site/corpus/yaml.html.twig', ['form' => $form->createView()]);
+        /**
+         * @var $xhtmlFile UploadedFile
+         */
+        $xhtmlFile = $form->get('xhtml')->getData();
+
+        return [$xhtmlFile->getClientOriginalName(), $morphyParser->parseXhtml($xhtmlFile->getContent())];
+    }
+
+    private function renderInputForm(FormInterface $form): Response
+    {
+        return $this->renderForm('site/corpus/form.html.twig', ['form' => $form]);
     }
 
     private function compareLemmas(string $a, string $b): int
@@ -343,5 +426,68 @@ final class CorpusYamlController extends AbstractController
     private function formatInflectedFromEntry(InflectedFromEntry $entry): string
     {
         return sprintf('%s - %s', $entry->getDocumentNumber(), $entry->getCount());
+    }
+
+    private function wrapWithLanguageTag(
+        string $document,
+        string $languageTag,
+        ?string $languageVariantId = null
+    ): string {
+        $trimmed = trim($document);
+
+        return sprintf(
+            '<se lang="%s"%s>%s</se>',
+            $languageTag,
+            null === $languageVariantId ? '' : sprintf(' variant_id="%s"', $languageVariantId),
+            '' === $trimmed ? '' : sprintf("\n%s\n", $trimmed)
+        );
+    }
+
+    private function wrapTranslation(
+        Document $document,
+        callable $translationGetter,
+        string $languageTag,
+        ?string $languageVariantId = null
+    ): string {
+        $translation = implode(
+            "\n",
+            $document
+                ->getContentElements()
+                ->map($translationGetter)
+                ->filter(fn (?string $translation): bool => null !== $translation)
+                ->toArray()
+        );
+
+        return $this->wrapWithLanguageTag($translation, $languageTag, $languageVariantId);
+    }
+
+    private function formatXhtmlDocument(string $content): string
+    {
+        return sprintf(
+            <<<'XHTML'
+<?xml version="1.0" encoding="utf-8"?>
+<html>
+<head>
+</head>
+<body>
+%s
+</body>
+</html>
+XHTML,
+            trim($content)
+        );
+    }
+
+    private function formatParallelXhtmlDocument(string $number, array $translations): string
+    {
+        return sprintf(
+            <<<'XHTML'
+<document id="%s">
+%s
+</document>
+XHTML,
+            $number,
+            implode("\n", $translations)
+        );
     }
 }

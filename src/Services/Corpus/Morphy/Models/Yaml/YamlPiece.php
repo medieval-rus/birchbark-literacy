@@ -23,7 +23,7 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml\Models;
+namespace App\Services\Corpus\Morphy\Models\Yaml;
 
 final class YamlPiece implements YamlPropertyContainerInterface
 {

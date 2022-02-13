@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace App\Repository\Document;
 
 use App\Entity\Document\Document;
+use App\Services\Document\Formatter\DocumentFormatterInterface;
 use App\Services\Document\Sorting\DocumentComparerInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -34,16 +35,19 @@ final class DocumentRepository extends ServiceEntityRepository
 {
     private TownRepository $townRepository;
     private DocumentComparerInterface $documentComparer;
+    private DocumentFormatterInterface $documentFormatter;
 
     public function __construct(
         ManagerRegistry $registry,
         TownRepository $townRepository,
-        DocumentComparerInterface $documentComparer
+        DocumentComparerInterface $documentComparer,
+        DocumentFormatterInterface $documentFormatter
     ) {
         parent::__construct($registry, Document::class);
 
         $this->townRepository = $townRepository;
         $this->documentComparer = $documentComparer;
+        $this->documentFormatter = $documentFormatter;
     }
 
     public function findOneByTownAliasAndNumber(
@@ -83,5 +87,18 @@ final class DocumentRepository extends ServiceEntityRepository
         usort($documents, fn (Document $a, Document $b): int => $this->documentComparer->compare($a, $b));
 
         return $documents;
+    }
+
+    /**
+     * @return Document[]
+     */
+    public function getAllDocumentsByNumber(bool $onlyShownOnSite = false, bool $onlyPartOfCorpus = false): array
+    {
+        $documents = $this->findAllInConventionalOrder($onlyShownOnSite, $onlyPartOfCorpus);
+
+        return array_combine(
+            array_map(fn (Document $document): string => $this->documentFormatter->getNumber($document), $documents),
+            $documents
+        );
     }
 }

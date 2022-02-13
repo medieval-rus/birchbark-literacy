@@ -23,13 +23,11 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml;
+namespace App\Services\Corpus\Morphy;
 
-use App\Services\Corpus\Yaml\Models\YamlDocument;
-
-interface YamlParsingHelperInterface
+interface MorphyParsingHelperInterface
 {
-    public function getNumber(YamlDocument $yamlDocument, array $numbersByConventionalName = null): string;
+    public function getNumber(string $morphyNumber, array $numbersByConventionalName = null): string;
 
     public function getNumbersByConventionalName(): array;
 }

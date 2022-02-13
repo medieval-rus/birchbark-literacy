@@ -23,38 +23,31 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml\Models;
+namespace App\Services\Corpus\Morphy\Models\Yaml;
 
-trait PropertyContainer
+final class YamlAnalysisModifiers
 {
-    /**
-     * @var string[][]|null[][]
-     */
-    private array $properties = [];
+    private bool $isUnsure;
+    private bool $isPhonemicUnsure;
 
-    public function getProperties(): array
+    public function __construct(bool $isUnsure, bool $isPhonemicUnsure)
     {
-        return $this->properties;
+        $this->isUnsure = $isUnsure;
+        $this->isPhonemicUnsure = $isPhonemicUnsure;
     }
 
-    public function addProperty(int $parsingLineIndex, string $key, ?string $value): void
+    public function __toString(): string
     {
-        if (!\array_key_exists($key, $this->properties)) {
-            $this->properties[$key] = [];
-        }
-
-        $this->properties[$key][] = $value;
+        return sprintf('%s%s', $this->isUnsure ? '?' : '', $this->isPhonemicUnsure ? '*' : '');
     }
 
-    /**
-     * @return string[]|null[]
-     */
-    public function getProperty(string $key): array
+    public function getIsUnsure(): bool
     {
-        if (!\array_key_exists($key, $this->properties)) {
-            return [];
-        }
+        return $this->isUnsure;
+    }
 
-        return $this->properties[$key];
+    public function getIsPhonemicUnsure(): bool
+    {
+        return $this->isPhonemicUnsure;
     }
 }

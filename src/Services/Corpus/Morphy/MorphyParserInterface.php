@@ -23,13 +23,20 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml\Models;
+namespace App\Services\Corpus\Morphy;
 
-interface YamlPropertyContainerInterface
+use App\Services\Corpus\Morphy\Models\Xhtml\XhtmlDocument;
+use App\Services\Corpus\Morphy\Models\Yaml\YamlDocument;
+
+interface MorphyParserInterface extends MorphyParsingHelperInterface
 {
-    public function getProperties(): array;
+    /**
+     * @return YamlDocument[]
+     */
+    public function parseYaml(string $rawYaml): array;
 
-    public function addProperty(int $parsingLineIndex, string $key, string $value): void;
-
-    public function getProperty(string $key): array;
+    /**
+     * @return XhtmlDocument[]
+     */
+    public function parseXhtml(string $rawXhtml): array;
 }

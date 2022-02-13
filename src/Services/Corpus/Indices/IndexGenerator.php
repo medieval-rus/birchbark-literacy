@@ -34,14 +34,14 @@ use App\Services\Corpus\Indices\Models\Sources\InflectedFormSource;
 use App\Services\Corpus\Indices\Models\Sources\WordSource;
 use App\Services\Corpus\Indices\Models\Word;
 use App\Services\Corpus\Indices\Models\WordIndex;
-use App\Services\Corpus\Yaml\Models\YamlDocument;
-use App\Services\Corpus\Yaml\YamlParsingHelperInterface;
+use App\Services\Corpus\Morphy\Models\Yaml\YamlDocument;
+use App\Services\Corpus\Morphy\MorphyParsingHelperInterface;
 
 final class IndexGenerator implements IndexGeneratorInterface
 {
-    private YamlParsingHelperInterface $yamlParsingHelper;
+    private MorphyParsingHelperInterface $yamlParsingHelper;
 
-    public function __construct(YamlParsingHelperInterface $yamlParsingHelper)
+    public function __construct(MorphyParsingHelperInterface $yamlParsingHelper)
     {
         $this->yamlParsingHelper = $yamlParsingHelper;
     }

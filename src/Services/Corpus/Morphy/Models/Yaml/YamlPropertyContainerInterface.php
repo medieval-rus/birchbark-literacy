@@ -23,14 +23,13 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml;
+namespace App\Services\Corpus\Morphy\Models\Yaml;
 
-use App\Services\Corpus\Yaml\Models\YamlDocument;
-
-interface YamlParserInterface extends YamlParsingHelperInterface
+interface YamlPropertyContainerInterface
 {
-    /**
-     * @return YamlDocument[]
-     */
-    public function parseYaml(string $rawYaml): array;
+    public function getProperties(): array;
+
+    public function addProperty(int $parsingLineIndex, string $key, string $value): void;
+
+    public function getProperty(string $key): array;
 }

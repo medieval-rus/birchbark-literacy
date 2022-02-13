@@ -23,31 +23,26 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml\Models;
+namespace App\Services\Corpus\Morphy\Models\Xhtml;
 
-final class YamlAnalysisModifiers
+final class XhtmlDocument
 {
-    private bool $isUnsure;
-    private bool $isPhonemicUnsure;
+    private string $number;
+    private string $content;
 
-    public function __construct(bool $isUnsure, bool $isPhonemicUnsure)
+    public function __construct(string $number, string $content)
     {
-        $this->isUnsure = $isUnsure;
-        $this->isPhonemicUnsure = $isPhonemicUnsure;
+        $this->number = $number;
+        $this->content = $content;
     }
 
-    public function __toString(): string
+    public function getNumber(): string
     {
-        return sprintf('%s%s', $this->isUnsure ? '?' : '', $this->isPhonemicUnsure ? '*' : '');
+        return $this->number;
     }
 
-    public function getIsUnsure(): bool
+    public function getContent(): string
     {
-        return $this->isUnsure;
-    }
-
-    public function getIsPhonemicUnsure(): bool
-    {
-        return $this->isPhonemicUnsure;
+        return $this->content;
     }
 }

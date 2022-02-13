@@ -23,19 +23,20 @@ declare(strict_types=1);
  * see <http://www.gnu.org/licenses/>.
  */
 
-namespace App\Services\Corpus\Yaml;
+namespace App\Services\Corpus\Morphy;
 
 use App\Repository\Document\DocumentRepository;
-use App\Services\Corpus\Yaml\Models\YamlAnalysis;
-use App\Services\Corpus\Yaml\Models\YamlDocument;
-use App\Services\Corpus\Yaml\Models\YamlLine;
-use App\Services\Corpus\Yaml\Models\YamlModel;
-use App\Services\Corpus\Yaml\Models\YamlPage;
-use App\Services\Corpus\Yaml\Models\YamlPiece;
+use App\Services\Corpus\Morphy\Models\Xhtml\XhtmlDocument;
+use App\Services\Corpus\Morphy\Models\Yaml\YamlAnalysis;
+use App\Services\Corpus\Morphy\Models\Yaml\YamlDocument;
+use App\Services\Corpus\Morphy\Models\Yaml\YamlLine;
+use App\Services\Corpus\Morphy\Models\Yaml\YamlModel;
+use App\Services\Corpus\Morphy\Models\Yaml\YamlPage;
+use App\Services\Corpus\Morphy\Models\Yaml\YamlPiece;
 use App\Services\Document\Formatter\DocumentFormatterInterface;
 use RuntimeException;
 
-final class YamlParser implements YamlParserInterface
+final class MorphyParser implements MorphyParserInterface
 {
     private DocumentFormatterInterface $documentFormatter;
     private DocumentRepository $documentRepository;
@@ -90,12 +91,46 @@ final class YamlParser implements YamlParserInterface
             }
         }
 
-        return $this->getDocumentsByNumber($yamlModel->getDocuments());
+        return $this->getDocumentsByNumber(
+            $yamlModel->getDocuments(),
+            fn (YamlDocument $yamlDocument): string => $yamlDocument->getNumber()
+        );
     }
 
-    public function getNumber(YamlDocument $yamlDocument, array $numbersByConventionalName = null): string
+    /**
+     * @return XhtmlDocument[]
+     */
+    public function parseXhtml(string $rawXhtml): array
     {
-        $conventionalName = $this->getConventionalName($yamlDocument);
+        $rawXhtml = preg_replace(
+            '/<\/page>\s*<\/body>\s*<\/html>\s*$/m',
+            "</page>\n</document>\n</body></html>",
+            $rawXhtml
+        );
+
+        $rawXhtml = preg_replace(
+            '/<\/page>\s*<\/page>/m',
+            '</page>',
+            $rawXhtml
+        );
+
+        $xhtmlDocuments = [];
+
+        if (preg_match_all('/<document id="([^>]+)">(.*?)<\/document>\n*/s', $rawXhtml, $matches, \PREG_SET_ORDER)) {
+            foreach ($matches as $match) {
+                $xhtmlDocuments[] = new XhtmlDocument(trim($match[1]), trim($match[2]));
+            }
+        }
+
+        return $this->getDocumentsByNumber(
+            $xhtmlDocuments,
+            fn (XhtmlDocument $xhtmlDocument): string => $xhtmlDocument->getNumber()
+        );
+    }
+
+    public function getNumber(string $morphyNumber, array $numbersByConventionalName = null): string
+    {
+        $conventionalName = $this->getConventionalName($morphyNumber);
 
         if (null === $numbersByConventionalName) {
             $numbersByConventionalName = $this->getNumbersByConventionalName();
@@ -104,9 +139,9 @@ final class YamlParser implements YamlParserInterface
         if (!\array_key_exists($conventionalName, $numbersByConventionalName)) {
             throw new RuntimeException(
                 sprintf(
-                    'Cannot find document with number "%s" in db ("%s" in yaml file).',
+                    'Cannot find document with number "%s" in db ("%s" in morphy file).',
                     $conventionalName,
-                    $yamlDocument->getNumber()
+                    $morphyNumber
                 )
             );
         }
@@ -127,19 +162,19 @@ final class YamlParser implements YamlParserInterface
         return $numbersByConventionalName;
     }
 
-    private function getConventionalName(YamlDocument $yamlDocument): string
+    private function getConventionalName(string $morphyNumber): string
     {
-        if (1 === preg_match('/^[\/\d]+$/', $yamlDocument->getNumber(), $matches)) {
+        if (1 === preg_match('/^[\/\d]+$/', $morphyNumber, $matches)) {
             $town = 'novgorod';
             $number = implode(
                 '/',
                 array_map(
                     fn (string $numberPart): string => (string) (int) $numberPart,
-                    explode('/', $yamlDocument->getNumber())
+                    explode('/', $morphyNumber)
                 )
             );
-        } elseif (1 === preg_match('/[а-яА-Я]/', $yamlDocument->getNumber(), $matches)) {
-            $parts = explode(' ', $yamlDocument->getNumber());
+        } elseif (1 === preg_match('/[а-яА-Я]/', $morphyNumber, $matches)) {
+            $parts = explode(' ', $morphyNumber);
             $number = array_pop($parts);
             $town = implode(' ', $parts);
             switch ($town) {
@@ -185,21 +220,21 @@ final class YamlParser implements YamlParserInterface
                     $town = 'mstislavl';
                     break;
                 default:
-                    if ('915-И' === $yamlDocument->getNumber()) {
+                    if ('915-И' === $morphyNumber) {
                         $town = 'novgorod';
                         $number = '915i';
                     } else {
                         throw new RuntimeException(
                             sprintf(
                                 'Cannot find document number "%s" from yaml file in db.',
-                                $yamlDocument->getNumber()
+                                $morphyNumber
                             )
                         );
                     }
             }
         } else {
             $town = 'novgorod';
-            $number = trim($yamlDocument->getNumber());
+            $number = trim($morphyNumber);
         }
 
         return $town.' '.$number;
@@ -210,13 +245,15 @@ final class YamlParser implements YamlParserInterface
      *
      * @return YamlDocument[]
      */
-    private function getDocumentsByNumber(array $yamlDocuments): array
+    private function getDocumentsByNumber(array $yamlDocuments, callable $documentNumberGetter): array
     {
         $numbersByConventionalName = $this->getNumbersByConventionalName();
 
         $yamlDocumentsByNumber = [];
         foreach ($yamlDocuments as $yamlDocument) {
-            $yamlDocumentsByNumber[$this->getNumber($yamlDocument, $numbersByConventionalName)] = $yamlDocument;
+            $documentNumber = $this->getNumber($documentNumberGetter($yamlDocument), $numbersByConventionalName);
+
+            $yamlDocumentsByNumber[$documentNumber] = $yamlDocument;
         }
 
         return $yamlDocumentsByNumber;
