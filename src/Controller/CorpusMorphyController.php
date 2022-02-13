@@ -55,12 +55,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use ZipArchive;
 
 /**
- * @Route("/corpus/yaml")
+ * @Route("/corpus/morphy")
  */
-final class CorpusYamlController extends AbstractController
+final class CorpusMorphyController extends AbstractController
 {
     /**
-     * @Route("/index/", name="corpus_yaml__index", methods={"GET", "POST"})
+     * @Route("/index/", name="corpus_morphy__index", methods={"GET", "POST"})
      */
     public function index(
         Request $request,
@@ -108,15 +108,14 @@ final class CorpusYamlController extends AbstractController
     }
 
     /**
-     * @Route("/diff/", name="corpus_yaml__diff", methods={"GET", "POST"})
+     * @Route("/diff/", name="corpus_morphy__diff", methods={"GET", "POST"})
      */
     public function diff(
         Request $request,
         CorpusDataProviderInterface $corpusDataProvider,
         MorphyParserInterface $morphyParser,
         DocumentRepository $documentRepository,
-        DocumentComparerInterface $documentComparer,
-        DocumentFormatterInterface $documentFormatter
+        DocumentComparerInterface $documentComparer
     ): Response {
         [$isSuccessful, $form] = $this->handleRequest($request, CorpusYamlFormType::class);
 
@@ -197,7 +196,7 @@ final class CorpusYamlController extends AbstractController
     }
 
     /**
-     * @Route("/parallelize/", name="corpus_yaml__parallelize", methods={"GET", "POST"})
+     * @Route("/parallelize/", name="corpus_morphy__parallelize", methods={"GET", "POST"})
      */
     public function parallelize(
         Request $request,
