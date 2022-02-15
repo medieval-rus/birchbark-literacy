@@ -226,17 +226,20 @@ final class CorpusMorphyController extends AbstractController
                     $this->wrapTranslation(
                         $document,
                         fn (ContentElement $contentElement): ?string => $contentElement->getTranslationRussian(),
+                        fn (string $translation): string => str_replace(['‛', '’'], ['', ''], $translation),
                         'ru'
                     ),
                     $this->wrapTranslation(
                         $document,
                         fn (ContentElement $contentElement): ?string => $contentElement->getTranslationEnglishKovalev(),
+                        fn (string $translation): string => $translation,
                         'en',
                         '1'
                     ),
                     $this->wrapTranslation(
                         $document,
                         fn (ContentElement $contentElement): ?string => $contentElement->getTranslationEnglishSchaeken(),
+                        fn (string $translation): string => $translation,
                         'en',
                         '2'
                     ),
@@ -440,6 +443,7 @@ final class CorpusMorphyController extends AbstractController
     private function wrapTranslation(
         Document $document,
         callable $translationGetter,
+        callable $translationPreprocessor,
         string $languageTag,
         ?string $languageVariantId = null
     ): string {
@@ -449,13 +453,8 @@ final class CorpusMorphyController extends AbstractController
                 ->getContentElements()
                 ->map($translationGetter)
                 ->filter(fn (?string $translation): bool => null !== $translation)
-                ->map(
-                    fn (string $translation): string => str_replace(
-                        ['>', '<', '‛', '’'],
-                        ['&gt;', '&lt;', '', ''],
-                        $translation
-                    )
-                )
+                ->map($translationPreprocessor)
+                ->map(fn (string $translation): string => str_replace(['>', '<'], ['&gt;', '&lt;'], $translation))
                 ->map(
                     fn (string $translation): string => preg_replace(
                         '/({[^}]*})/',
