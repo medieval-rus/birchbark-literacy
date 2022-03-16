@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Form\Document\DocumentsSearchType;
 use App\Repository\Content\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,7 +42,6 @@ final class InformationController extends AbstractController
             [
                 'translationContext' => 'controller.information.aboutSite',
                 'assetsContext' => 'content/post',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'post' => $postRepository->findAboutSite(),
             ]
         );
@@ -59,7 +57,6 @@ final class InformationController extends AbstractController
             [
                 'translationContext' => 'controller.information.aboutSource',
                 'assetsContext' => 'content/post',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'post' => $postRepository->findAboutSource(),
             ]
         );
@@ -75,7 +72,6 @@ final class InformationController extends AbstractController
             [
                 'translationContext' => 'controller.information.generalInformation',
                 'assetsContext' => 'content/post',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'post' => $postRepository->findGeneralInformationAboutBirchbarkDocuments(),
             ]
         );
@@ -91,7 +87,6 @@ final class InformationController extends AbstractController
             [
                 'translationContext' => 'controller.information.news',
                 'assetsContext' => 'content/post',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'post' => $postRepository->findNews(),
             ]
         );

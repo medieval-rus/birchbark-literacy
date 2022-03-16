@@ -26,7 +26,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Document\Town;
-use App\Form\Document\DocumentsSearchType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,7 +42,6 @@ final class MapsController extends AbstractController
             [
                 'translationContext' => 'controller.maps.index',
                 'assetsContext' => 'maps/index',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
             ]
         );
     }
@@ -68,7 +66,6 @@ final class MapsController extends AbstractController
             [
                 'translationContext' => 'controller.maps.towns',
                 'assetsContext' => 'maps/towns',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'townsData' => $townsData,
                 'apiKey' => $this->getParameter('google_maps_api_key'),
             ]
@@ -85,7 +82,6 @@ final class MapsController extends AbstractController
             [
                 'translationContext' => 'controller.maps.excavations',
                 'assetsContext' => 'maps/excavations',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
             ]
         );
     }

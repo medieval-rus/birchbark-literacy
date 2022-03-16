@@ -28,7 +28,6 @@ namespace App\Controller;
 use App\Entity\Bibliography\BibliographicRecord;
 use App\Entity\Bibliography\ReferencesList;
 use App\Entity\Bibliography\ReferencesListItem;
-use App\Form\Document\DocumentsSearchType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,7 +55,6 @@ final class LibraryController extends AbstractController
             [
                 'translationContext' => 'controller.library.list',
                 'assetsContext' => 'book/list',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'bibliographicRecords' => $bibliographicRecords,
             ]
         );
@@ -78,7 +76,6 @@ final class LibraryController extends AbstractController
             [
                 'translationContext' => 'controller.library.show',
                 'assetsContext' => 'book/show',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'bibliographicRecord' => $bibliographicRecord,
             ]
         );

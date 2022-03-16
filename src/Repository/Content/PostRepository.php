@@ -70,4 +70,9 @@ final class PostRepository extends ServiceEntityRepository
     {
         return $this->find(7);
     }
+
+    public function findFooter()
+    {
+        return $this->find(8);
+    }
 }

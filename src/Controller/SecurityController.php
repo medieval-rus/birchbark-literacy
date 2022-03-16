@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Form\Document\DocumentsSearchType;
 use App\Form\Security\AdminLoginForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +47,6 @@ final class SecurityController extends AbstractController
             [
                 'translationContext' => 'controller.security.login',
                 'assetsContext' => 'security/login',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'error' => $authenticationUtils->getLastAuthenticationError(),
                 'form' => $this
                     ->createForm(

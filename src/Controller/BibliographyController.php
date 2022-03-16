@@ -26,7 +26,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Bibliography\BibliographicRecord;
-use App\Form\Document\DocumentsSearchType;
 use App\Repository\Content\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,7 +47,6 @@ final class BibliographyController extends AbstractController
             [
                 'translationContext' => 'controller.bibliography.list',
                 'assetsContext' => 'bibliography/list',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'records' => $entityManager
                     ->getRepository(BibliographicRecord::class)
                     ->findBy([], ['shortName' => 'ASC']),

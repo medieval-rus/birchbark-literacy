@@ -26,7 +26,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Document\Document;
-use App\Form\Document\DocumentsSearchType;
 use App\Repository\Content\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +47,6 @@ final class DocumentController extends AbstractController
             [
                 'translationContext' => 'controller.document.list',
                 'assetsContext' => 'document/list',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'filterForm' => $filterableTable->getFormView(),
                 'table' => $filterableTable->getTableMetadata(),
                 'post' => $postRepository->findDatabase(),
@@ -79,7 +77,6 @@ final class DocumentController extends AbstractController
             [
                 'translationContext' => 'controller.document.show',
                 'assetsContext' => 'document/show',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'document' => $document,
             ]
         );

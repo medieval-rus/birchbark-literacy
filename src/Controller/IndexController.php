@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Form\Document\DocumentsSearchType;
 use App\Repository\Content\PostRepository;
 use App\Repository\Document\DocumentListRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -56,7 +55,6 @@ final class IndexController extends AbstractController
             [
                 'translationContext' => 'controller.index.index',
                 'assetsContext' => 'index/index',
-                'documentsSearchForm' => $this->createForm(DocumentsSearchType::class)->createView(),
                 'documents' => $favoriteDocuments,
                 'post' => $postRepository->findIndex(),
             ]

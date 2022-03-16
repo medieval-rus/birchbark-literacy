@@ -19,6 +19,8 @@
  # see <http://www.gnu.org/licenses/>.
  #}
 
+{% import 'site/content/post.html.twig' as post_helper %}
+
 <!doctype html>
 <html lang="{{ app.request.locale }}">
     <head>
@@ -73,15 +75,7 @@
                 <div class="row">
                     <div class="col-2"></div>
                     <div class="col-8">
-                        <div class="mr-footer-content">
-                            {{ 'page.footer'|trans }}
-                        </div>
-                        <div class="mr-author">
-                            Дизайн: А. В. Санников &lt;san@calligraphers.ru&gt;
-                        </div>
-                        <div class="mr-author">
-                            Разработка и техническая поддержка: Антон Дышкант &lt;vyshkant@gmail.com&gt;
-                        </div>
+                        {{ post_helper.render_post_body(footer, false) }}
                     </div>
                 </div>
             </div>
