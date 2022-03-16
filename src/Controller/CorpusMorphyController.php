@@ -227,20 +227,20 @@ final class CorpusMorphyController extends AbstractController
                         $document,
                         fn (ContentElement $contentElement): ?string => $contentElement->getTranslationRussian(),
                         fn (string $translation): string => str_replace(['‛', '’'], ['', ''], $translation),
-                        'ru'
+                        'rus'
                     ),
                     $this->wrapTranslation(
                         $document,
                         fn (ContentElement $contentElement): ?string => $contentElement->getTranslationEnglishKovalev(),
                         fn (string $translation): string => $translation,
-                        'en',
+                        'eng',
                         '1'
                     ),
                     $this->wrapTranslation(
                         $document,
                         fn (ContentElement $contentElement): ?string => $contentElement->getTranslationEnglishSchaeken(),
                         fn (string $translation): string => $translation,
-                        'en',
+                        'eng',
                         '2'
                     ),
                 ]
