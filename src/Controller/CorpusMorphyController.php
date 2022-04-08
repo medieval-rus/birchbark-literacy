@@ -490,7 +490,9 @@ XHTML,
         return sprintf(
             <<<'XHTML'
 <document id="%s">
+<para>
 %s
+</para>
 </document>
 XHTML,
             $number,
