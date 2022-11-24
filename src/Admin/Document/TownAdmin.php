@@ -53,6 +53,7 @@ final class TownAdmin extends AbstractEntityAdmin
                 ->add('abbreviatedName', null, $this->createFormOptions('abbreviatedName'))
                 ->add('alias', null, $this->createFormOptions('alias'))
                 ->add('googleMapsPlaceId', null, $this->createFormOptions('googleMapsPlaceId'))
+                ->add('googleMapsLatLng', null, $this->createFormOptions('googleMapsLatLng'))
             ->end()
         ;
     }

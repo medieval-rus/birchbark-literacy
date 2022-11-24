@@ -261,6 +261,7 @@ form:
       abbreviatedName: Сокращенное название
       alias: Имя в системе
       googleMapsPlaceId: Google Maps Place Id
+      googleMapsLatLng: Широта и долгота
     section:
       common:
         label: Сведения о городе
