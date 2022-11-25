@@ -219,6 +219,9 @@ final class MorphyParser implements MorphyParserInterface
                 case 'Мст.':
                     $town = 'mstislavl';
                     break;
+                case 'Переясл. Ряз.':
+                    $town = 'pereyaslavl-ryazansky';
+                    break;
                 default:
                     if ('915-И' === $morphyNumber) {
                         $town = 'novgorod';
@@ -226,7 +229,7 @@ final class MorphyParser implements MorphyParserInterface
                     } else {
                         throw new RuntimeException(
                             sprintf(
-                                'Cannot find document number "%s" from yaml file in db.',
+                                'Cannot parse DB town name of document with number "%s" from yaml file.',
                                 $morphyNumber
                             )
                         );

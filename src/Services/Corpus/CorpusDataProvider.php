@@ -291,6 +291,8 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
                 return 'Mst_'.str_replace('/', '_', $documentNumber);
             case 'staraya-ryazan':
                 return 'St_Ryazan_'.str_replace('/', '_', $documentNumber);
+            case 'pereyaslavl-ryazansky':
+                return 'Pereyasl_Ryaz_'.str_replace('/', '_', $documentNumber);
             default:
                 throw new RuntimeException(
                     sprintf('Town "%s" does not have a proper mapping to RNC format.', $document->getTown()->getAlias())
