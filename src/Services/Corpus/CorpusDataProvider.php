@@ -244,6 +244,7 @@ final class CorpusDataProvider implements CorpusDataProviderInterface
                         ->toArray()
                 )
             ),
+            '__num__' => $document->getId(),
         ];
     }
 
