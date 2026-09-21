@@ -70,6 +70,10 @@
         "symfony/web-profiler-bundle": "^5.3"
     },
     "config": {
+        "allow-plugins": {
+            "symfony/flex": true,
+            "symfony/runtime": true
+        },
         "preferred-install": {
             "*": "dist"
         },
