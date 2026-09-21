@@ -30,6 +30,12 @@
 
     {{ post_helper.render_post_body(post, false) }}
 
+    <p class="mr-full-bibliography-link">
+        <a class="btn mr-btn mr-btn-light" href="{{ path('bibliographic_record__full') }}" style="color: #cc6600; font-weight: bold;">
+            {{ 'global.bibliography.fullList'|trans }}
+        </a>
+    </p>
+
     {% for record in records %}
         <p>{{ self.render_record(record) }}</p>
     {% endfor %}

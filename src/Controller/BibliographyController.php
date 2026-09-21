@@ -54,4 +54,18 @@ final class BibliographyController extends AbstractController
             ]
         );
     }
+
+    /**
+     * @Route("/full", name="bibliographic_record__full", methods={"GET"})
+     */
+    public function full(): Response
+    {
+        return $this->render(
+            'site/bibliography/full.html.twig',
+            [
+                'translationContext' => 'controller.bibliography.list',
+                'assetsContext' => 'bibliography/list',
+            ]
+        );
+    }
 }

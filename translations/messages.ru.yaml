@@ -159,6 +159,8 @@ global:
   post:
     admin: Редактировать запись в админке
   bibliography:
+    fullList: Полная библиография берестяных грамот
+    backToList: Назад к избранной библиографии
     fileSupplement: посмотреть
     prePublicationMark: '[Предв.]'
     prePublicationRemark: Публикация готовится к печати

@@ -105,6 +105,7 @@ final class MenuBuilder
 
         $menu
             ->addChild('page.menu.bibliography', ['route' => 'bibliographic_record__list'])
+            ->setCurrent(\in_array($currentRoute, ['bibliographic_record__list', 'bibliographic_record__full'], true))
         ;
 
         $menu

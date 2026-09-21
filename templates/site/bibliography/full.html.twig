@@ -1,0 +1,41 @@
+{%- extends 'site/base.html.twig' -%}
+
+{%- block title -%}Полная библиография берестяных грамот{%- endblock -%}
+
+{%- block page_content -%}
+    <style>
+        .eomr-full-bibliography { overflow-wrap: anywhere; }
+        .eomr-full-bibliography .eomr-bibliography-content a,
+        .eomr-full-bibliography .eomr-bibliography-content a:hover,
+        .eomr-full-bibliography .eomr-bibliography-content a:focus,
+        .eomr-full-bibliography .eomr-bibliography-contact a { color: #cc6600 !important; text-decoration: none !important; }
+        .eomr-full-bibliography .eomr-bibliography-toc { margin: 1.5rem 0 2rem; }
+        .eomr-full-bibliography .eomr-bibliography-toc ul { columns: 2; padding-left: 1.5rem; }
+        .eomr-full-bibliography .eomr-bibliography-toc a { color: #cc6600; text-decoration: none; font-weight: 700; }
+        .eomr-full-bibliography .eomr-bibliography-content p { line-height: 1.55; margin-bottom: 0.9rem; }
+        .eomr-full-bibliography .eomr-bibliography-content h2 { margin: 2rem 0 1rem; border-bottom: 1px solid #dee2e6; }
+        .eomr-full-bibliography .eomr-bibliography-footnotes li { margin-bottom: 0.8rem; }
+        .eomr-full-bibliography .eomr-bibliography-footnote-back { display: inline-block; padding: 0.05rem 0.35rem; border: 1px solid #cc6600; border-radius: 0.2rem; white-space: nowrap; }
+        .eomr-full-bibliography strong { font-weight: 700; text-decoration: none; }
+        @media (max-width: 767px) { .eomr-full-bibliography .eomr-bibliography-toc ul { columns: 1; } }
+    </style>
+    <article class="eomr-full-bibliography" lang="ru">
+        <p><a href="{{ path('bibliographic_record__list') }}">{{ 'global.bibliography.backToList'|trans }}</a></p>
+        <p class="eomr-bibliography-contact">Связь: <a href="mailto:m.a.sokolov@list.ru">m.a.sokolov@list.ru</a>.</p>
+        <nav class="eomr-bibliography-toc" aria-label="Разделы библиографии">
+            <h2>Содержание</h2>
+            <ul>
+                <li><a href="#bibliography-publications">Публикации грамот</a></li>
+                <li><a href="#bibliography-overviews">Обзоры</a></li>
+                <li><a href="#bibliography-interpretations">Поправки и интерпретации</a></li>
+                <li><a href="#bibliography-philology">Филология</a></li>
+                <li><a href="#bibliography-history">История и археология</a></li>
+                <li><a href="#bibliography-parallels">Типологические параллели</a></li>
+                <li><a href="#bibliography-other">Прочее</a></li>
+                <li><a href="#bibliography-old-novgorod">Древненовгородский диалект</a></li>
+                <li><a href="#bibliography-references">Сокращения</a></li>
+            </ul>
+        </nav>
+        {{ source('site/bibliography/full_content.html')|raw }}
+    </article>
+{%- endblock -%}
