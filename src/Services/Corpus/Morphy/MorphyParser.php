@@ -128,7 +128,7 @@ final class MorphyParser implements MorphyParserInterface
         );
     }
 
-    public function getNumber(string $morphyNumber, array $numbersByConventionalName = null): string
+    public function getNumber(string $morphyNumber, ?array $numbersByConventionalName = null): string
     {
         $conventionalName = $this->getConventionalName($morphyNumber);
 

@@ -27,7 +27,7 @@ namespace App\Services\Corpus\Morphy;
 
 interface MorphyParsingHelperInterface
 {
-    public function getNumber(string $morphyNumber, array $numbersByConventionalName = null): string;
+    public function getNumber(string $morphyNumber, ?array $numbersByConventionalName = null): string;
 
     public function getNumbersByConventionalName(): array;
 }

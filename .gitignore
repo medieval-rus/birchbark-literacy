@@ -60,3 +60,7 @@ yarn-error.log
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+# Local dependency verification directories
+/vendor-next/
+/vendor-prod-check/

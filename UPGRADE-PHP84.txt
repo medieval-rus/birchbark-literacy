@@ -1,0 +1,87 @@
+gramoty.ru: подготовка приложения для PHP 8.4
+Дата проверки: 23 октября 2026 года
+
+Изменения подготовлены локально, на основе production-коммита 1990aaa.
+На рабочем сервере ничего не устанавливалось и не запускалось.
+
+Изменения
+=========
+- PHP: ^8.4; явно требуются mbstring, PDO и pdo_mysql, помимо прежних расширений.
+- Symfony 5.3 -> 5.4 LTS, включая исправления безопасности текущей ветки.
+- Doctrine ORM 2.20 и DBAL 3; обновлены Sonata, Twig, Laminas и инструменты тестов.
+- WebpackEncoreBundle 2.4; удалены неиспользуемые SensioFrameworkExtraBundle,
+  MakerBundle и старый отдельный security-checker (используется composer audit).
+- Локальный пакет packages/filterable-table-bundle заменяет upstream v0.6.4.
+  Исходная MIT-лицензия сохранена; пакет включается через Composer path repository
+  с symlink=false. Папку packages обязательно включать в Git и артефакт сборки.
+- В общей ветке сортировки БД разрешены только поля из конфигурации и ASC/DESC.
+  В «Грамотах» сохраняется собственная сортировка документов.
+- Некорректные фильтры, истёкшие ссылки поиска и циклы поиска возвращают HTTP 400.
+- Явные nullable-типы в собственном коде, актуальные имена Sonata bundles.
+- Исправлена передача номера документа в ZIP-генераторе; временный ZIP удаляется
+  после чтения ответа. Это ошибка, найденная функциональной проверкой.
+
+Локальная проверка
+==================
+Инфраструктура и команды: ../README.txt. Исходные отчёты: ../reports/.
+База для браузера: gramoty_local. Для функциональных тестов: gramoty_local_test.
+Вторую базу создаёт ../prepare_test_database.py из сохранённого SQL-дампа.
+Повторный запуск этого скрипта восстанавливает таблицы только тестовой БД.
+Тесты отказываются работать с именем БД без суффикса _test.
+
+Из папки стенда:
+  ./lab exec -T php php vendor/bin/phpunit
+  ./lab exec -T php composer --no-plugins --no-scripts check-platform-reqs
+  ./lab run --rm composer --no-plugins --no-scripts validate --strict
+  ./lab run --rm composer --no-plugins --no-scripts audit --locked --format=json
+
+Production-проверка без dev-зависимостей:
+  ./lab run --rm -e COMPOSER_VENDOR_DIR=/app/vendor-prod-check composer --no-plugins --no-scripts install --no-dev --prefer-dist --no-interaction
+  ./lab run --rm -e COMPOSER_VENDOR_DIR=/app/vendor-prod-check composer dump-autoload --no-dev --no-scripts --no-interaction
+  ./lab run --rm --no-deps production-check /lab/smoke-production.php
+Production-check монтирует код и vendor только для чтения, использует временный
+кеш и закрытую сеть. PHPUnit и другие dev-пакеты в этой проверке отсутствуют.
+
+Будущая сборка для TeamCity
+==========================
+Это описание следующего этапа; команды на существующем сервере не выполнялись.
+Сначала требуется подготовленный PHP 8.4 с расширениями и безопасный TeamCity.
+Старая Ubuntu 18.04 и установленный там PHP 7.4 этим изменением не обновляются.
+
+В новом чистом каталоге релиза, с PHP 8.4 в CLI:
+  composer --no-plugins --no-scripts install --no-dev --prefer-dist --no-interaction
+  composer dump-autoload --no-dev --no-scripts --no-interaction
+  composer check-platform-reqs --no-dev
+  APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear --no-debug
+  APP_ENV=prod APP_DEBUG=0 php bin/console assets:install public --no-interaction
+
+Включать разрешённые Flex/Runtime плагины только после установки из lock:
+вторая команда создаёт autoload_runtime.php. Не применять ignore-platform-reqs.
+Не переносить vendor с macOS; собирать в целевом Linux-окружении.
+Не запускать старый скомпилированный кеш с новыми зависимостями. При обновлении
+постоянного каталога кеш нужно удалить/пересобрать, а PHP-FPM перезапустить.
+Новый релиз с отдельным var/cache предпочтительнее замены работающего vendor.
+SQL-миграции для этого изменения не выполнялись и не требовались для проверок.
+
+Не переносить локальный .env на сервер: в стенде там заглушки и локальные пароли.
+Использовать сохранённую production-конфигурацию и проверить каждый новый релиз.
+Архивные public/build в стенде сохранены, исходники frontend здесь не менялись.
+Полная пересборка frontend (старый node-sass 6) остаётся отдельной задачей.
+
+Оставшиеся ограничения
+======================
+- Аудит Composer не обнаружил известных advisories на дату проверки. Пакеты
+  doctrine/annotations, doctrine/cache, symfony/security-guard помечены abandoned;
+  они нужны текущей архитектуре Symfony 5.4/Doctrine ORM 2. Для удаления нужна
+  отдельная миграция конфигурации/ORM, а не отключение проверок Composer.
+  Composer audit сообщает о них ненулевым exit code даже без advisories.
+- Остаются предупреждения устаревших API в сторонних библиотеках; они не скрыты.
+- Полный OSF в стенд не копировался; реальные записи в OSF и отправка почты
+  отключены. Генерация миниатюр проверена на локальном JPEG.
+- Проверено Linux arm64 на Mac. Проверка будущего Linux amd64/FPM,
+  обновления ОС, TeamCity и развёртывания ещё не выполнена.
+- Тесты проверяют основные сценарии, а не все возможные документы и интеграции.
+
+Источники сроков поддержки и перехода:
+https://symfony.com/releases/5.4
+https://www.php.net/manual/en/migration84.deprecated.php

@@ -22,7 +22,7 @@ grumphp:
   process_timeout: null
   tasks:
     phpversion:
-      project: '7.4'
+      project: '8.4'
       metadata:
         priority: 0
     git_blacklist:
@@ -50,7 +50,7 @@ grumphp:
       triggered_by: ['php']
       metadata:
         priority: -70
-    phpcsfixer2:
+    phpcsfixer:
       config: .php-cs-fixer.dist.php
       metadata:
         priority: -90
@@ -68,11 +68,6 @@ grumphp:
       always_execute: true
       metadata:
         priority: -110
-    securitychecker_enlightn:
-      lockfile: ./composer.lock
-      run_always: true
-      metadata:
-        priority: -120
     phan:
       config_file: .phan.dist
       metadata:

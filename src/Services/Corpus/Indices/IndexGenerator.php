@@ -77,7 +77,7 @@ final class IndexGenerator implements IndexGeneratorInterface
                                         $this
                                             ->yamlParsingHelper
                                             ->getNumber(
-                                                $analysis->getPiece()->getLine()->getPage()->getDocument(),
+                                                $analysis->getPiece()->getLine()->getPage()->getDocument()->getNumber(),
                                                 $numbersByConventionalName
                                             ),
                                         $analysis

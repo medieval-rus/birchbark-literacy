@@ -24,19 +24,19 @@ sonata_admin:
       - { type: sonata.admin.block.admin_list, position: left }
     groups:
       security:
-        label_catalogue: admin
+        translation_domain: admin
         label: menu.groups.security.label
         items:
           - admin.user
         roles: [ROLE_SUPER_ADMIN]
       text:
-        label_catalogue: admin
+        translation_domain: admin
         label: menu.groups.text.label
         items:
           - admin.document_text
         roles: [ROLE_TEXT_EDITOR]
       document:
-        label_catalogue: admin
+        translation_domain: admin
         label: menu.groups.document.label
         items:
           - admin.document
@@ -45,7 +45,7 @@ sonata_admin:
           - admin.scribe
         roles: [ROLE_EDITOR]
       contentAspect:
-        label_catalogue: admin
+        translation_domain: admin
         label: menu.groups.contentAspect.label
         items:
           - admin.content_category
@@ -54,7 +54,7 @@ sonata_admin:
           - admin.language
         roles: [ROLE_EDITOR]
       materialAspect:
-        label_catalogue: admin
+        translation_domain: admin
         label: menu.groups.materialAspect.label
         items:
           - admin.excavation
@@ -67,20 +67,20 @@ sonata_admin:
           - admin.street
         roles: [ROLE_EDITOR]
       content:
-        label_catalogue: admin
+        translation_domain: admin
         label: menu.groups.content.label
         items:
           - admin.content.post
           - admin.document_list
         roles: [ROLE_EDITOR]
       media:
-        label_catalogue: admin
+        translation_domain: admin
         label: menu.groups.media.label
         items:
           - admin.media.file
         roles: [ROLE_EDITOR]
       bibliography:
-        label_catalogue: admin
+        translation_domain: admin
         label: menu.groups.bibliography.label
         items:
           - admin.bibliography.bibliographic_record

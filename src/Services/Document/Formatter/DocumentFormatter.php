@@ -427,7 +427,7 @@ final class DocumentFormatter implements DocumentFormatterInterface
         return sprintf('%s (%s)', $excavation->getName(), $excavation->getTown()->getName());
     }
 
-    public function getBibliographicRecordName(BibliographicRecord $record, string $downloadIcon = null): string
+    public function getBibliographicRecordName(BibliographicRecord $record, ?string $downloadIcon = null): string
     {
         $downloadLink = null !== $downloadIcon && null !== $record->getMainFile()
             ? sprintf(

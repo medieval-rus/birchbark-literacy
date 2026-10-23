@@ -65,7 +65,7 @@ final class DocumentTextAdmin extends AbstractEntityAdmin
         ;
     }
 
-    protected function configureTabMenu(ItemInterface $menu, string $action, AdminInterface $childAdmin = null): void
+    protected function configureTabMenu(ItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
     {
         if ('edit' === $action || null !== $childAdmin) {
             $admin = $this->isChild() ? $this->getParent() : $this;

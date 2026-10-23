@@ -283,6 +283,7 @@ final class CorpusMorphyController extends AbstractController
                 ->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $returnedFileName)
         );
         $response->headers->set('Content-length', filesize($zipFileName));
+        unlink($zipFileName);
 
         return $response;
     }
