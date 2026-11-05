@@ -26,8 +26,14 @@
     src: url('../../../../fonts/novgorod-unicode-2012/novgorod-unicode-2012.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'NovgorodUpd2';
+    src: url('../../../../fonts/novgorod-unicode-2012/Novgorod_upd2.ttf') format('truetype');
+    font-display: swap;
+}
+
 .original-text {
-    font-family: NovgorodUnicode2012 !important;
+    font-family: 'NovgorodUpd2', 'NovgorodUnicode2012', serif !important;
     font-size: 20px;
     color: black;
 
